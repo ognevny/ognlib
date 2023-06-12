@@ -1,0 +1,14 @@
+[package]
+name = "ognlib"
+version = "0.3.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Some code that is written to practice Rust"
+authors = ["Maksim Bondarenkov"]
+repository = "https://github.com/ognevnydemon/ognlib"
+readme = "README.md"
+
+[dependencies]
+rayon = "1.7.0"
+num-bigint = "0.4.3"
+rand = "0.8.5"
