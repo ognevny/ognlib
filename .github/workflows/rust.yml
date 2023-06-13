@@ -9,7 +9,7 @@ env:
 
 jobs:
   build_and_test:
-    name: ognlib - latest
+    name: latest rust
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,7 +19,9 @@ jobs:
           - nightly
     steps:
       - uses: actions/checkout@v3
-      - name: use ${{ matrix.toolchain }} branch
+      - name: update to ${{ matrix.toolchain }} branch
         run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
-      - run: cargo build --verbose
-      - run: cargo test --verbose
+      - name: build ognlib
+        run: cargo build --verbose
+      - name: test ognlib
+        run: cargo test --verbose
