@@ -4,7 +4,7 @@
 
 use std::{error::Error, fmt};
 
-/// If number is less than 2, we couldn't say that number is either prime or composite
+/// If number is less than 2, we can't say that number is either prime or composite
 #[derive(Debug, PartialEq)]
 pub struct PrimeStatusError;
 
@@ -23,6 +23,57 @@ pub enum PrimeStatus {
     ProbablyPrime,
 }
 
+impl PrimeStatus {
+    /// Returns `true` if [`PrimeStatus`] is [`Prime`].
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::*;
+    ///
+    /// assert!(sqrtest(13).unwrap().is_prime());
+    /// assert!(!sqrtest(455).unwrap().is_prime());
+    /// ```
+    ///
+    /// [`Prime`]: PrimeStatus::Prime
+
+    pub fn is_prime(self) -> bool {
+        matches!(self, PrimeStatus::Prime)
+    }
+
+    /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::*;
+    ///
+    /// assert!(miller_rabin(13).unwrap().is_probably_prime());
+    /// assert!(miller_rabin(455).unwrap().is_probably_prime());
+    /// ```
+    ///
+    /// [`Composite`]: PrimeStatus::Composite
+
+    pub fn is_probably_prime(self) -> bool {
+        !matches!(self, PrimeStatus::Composite)
+    }
+
+    /// Returns `true` if [`PrimeStatus`] is [`Composite`].
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::*;
+    ///
+    /// assert!(!sqrtest(13).unwrap().is_composite());
+    /// assert!(sqrtest(455).unwrap().is_composite());
+    /// ```
+    ///
+    /// [`Composite`]: PrimeStatus::Composite
+
+    pub fn is_composite(self) -> bool {
+        matches!(self, PrimeStatus::Composite)
+    }
+}
+
+/// Methods to check prime status.
 pub trait Prime {
     fn is_prime(&self) -> bool;
     fn is_probably_prime(&self) -> bool;
@@ -30,26 +81,46 @@ pub trait Prime {
 }
 
 impl Prime for isize {
+    /// Returns `true` if number is prime.
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::Prime;
+    ///
+    /// assert!(13.is_prime());
+    /// assert!(!455.is_prime());
+    /// ```
+
     fn is_prime(&self) -> bool {
-        if let Ok(PrimeStatus::Prime) = wilson_th(*self) {
-            true
-        } else {
-            false
-        }
+        matches!(wilson_th(*self), Ok(PrimeStatus::Prime))
     }
+
+    /// Returns `true` if number is either probably prime or prime.
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::Prime;
+    ///
+    /// assert!(13.is_probably_prime());
+    /// assert!(455.is_probably_prime());
+    /// ```
+
     fn is_probably_prime(&self) -> bool {
-        if let Ok(PrimeStatus::Composite) = miller_rabin(*self) {
-            false
-        } else {
-            true
-        }
+        !matches!(miller_rabin(*self), Ok(PrimeStatus::Composite))
     }
+
+    /// Returns `true` if number is composite.
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::Prime;
+    ///
+    /// assert!(!13.is_composite());
+    /// assert!(455.is_composite());
+    /// ```
+
     fn is_composite(&self) -> bool {
-        if let Ok(PrimeStatus::Composite) = wilson_th(*self) {
-            true
-        } else {
-            false
-        }
+        matches!(wilson_th(*self), Ok(PrimeStatus::Composite))
     }
 }
 
