@@ -4,9 +4,16 @@
 use std::ops::{AddAssign, DivAssign, MulAssign, Rem};
 
 pub trait Digit {
+    /// Calculate size of number (how many digits it contains)
     fn count(self) -> u8;
+
+    /// Checks, if digit is in number
     fn has_digit(self, k: u8) -> bool;
+
+    /// Reverse number
     fn rev(self) -> Self;
+
+    /// Calculate sum of number digits
     fn sum(self) -> Self;
 }
 
