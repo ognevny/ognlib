@@ -95,7 +95,7 @@ impl Prime for isize {
         matches!(wilson_th(*self), Ok(PrimeStatus::Prime))
     }
 
-    /// Returns `true` if number is either probably prime or prime.
+    /// Returns `true` if number is not composite.
     /// # Examples
     ///
     /// ```
