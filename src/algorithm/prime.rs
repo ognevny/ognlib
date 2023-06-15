@@ -23,6 +23,36 @@ pub enum PrimeStatus {
     ProbablyPrime,
 }
 
+pub trait Prime {
+    fn is_prime(&self) -> bool;
+    fn is_probably_prime(&self) -> bool;
+    fn is_composite(&self) -> bool;
+}
+
+impl Prime for isize {
+    fn is_prime(&self) -> bool {
+        if let Ok(PrimeStatus::Prime) = wilson_th(*self) {
+            true
+        } else {
+            false
+        }
+    }
+    fn is_probably_prime(&self) -> bool {
+        if let Ok(PrimeStatus::Composite) = miller_rabin(*self) {
+            false
+        } else {
+            true
+        }
+    }
+    fn is_composite(&self) -> bool {
+        if let Ok(PrimeStatus::Composite) = wilson_th(*self) {
+            true
+        } else {
+            false
+        }
+    }
+}
+
 /// Simple prime test. Takes ceil of sqrt(n) as upper bound and checks if there is any divisor from
 /// 3 to ceil with step 2.
 ///
@@ -53,7 +83,7 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
     Ok(PrimeStatus::Prime)
 }
 
-/// Wilson's theory. From [Wikipedia](https://en.wikipedia.org/wiki/Wilson%27s_theorem): "Wilson's 
+/// Wilson's theory. From [Wikipedia](https://en.wikipedia.org/wiki/Wilson%27s_theorem): "Wilson's
 /// theorem states that a natural number n > 1 is a prime number if and only if the product of all
 /// the positive integers less than n is one less than a multiple of n. That is the factorial
 /// (n - 1)! satisfies (n - 1)! % n == -1."
@@ -90,7 +120,7 @@ pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// [Wikipedia](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test): the Miller–Rabin
 /// primality test or Rabin–Miller primality test is a probabilistic primality test: an algorithm
 /// which determines whether a given number is likely to be prime.
-/// 
+///
 /// # Examples
 /// ```
 /// use ognlib::algorithm::prime::*;
