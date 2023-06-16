@@ -100,7 +100,7 @@ impl Prime for isize {
         matches!(wilson_th(*self), Ok(PrimeStatus::Prime))
     }
 
-    /// Returns `true` if number is not composite.
+    /// Returns `true` if number is either prime or probably prime.
     /// # Examples
     ///
     /// ```
@@ -129,8 +129,8 @@ impl Prime for isize {
     }
 }
 
-/// Simple prime test. Takes ceil of sqrt(n) as upper bound and checks if there is any divisor from
-/// 3 to ceil with step 2.
+/// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3 
+/// to ceil with step 2.
 ///
 /// # Examples
 /// ```

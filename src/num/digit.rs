@@ -4,6 +4,9 @@
 use std::ops::{AddAssign, DivAssign, MulAssign, Rem};
 
 pub trait Digit {
+    /// Represent number as bool like in C
+    fn as_bool(&self) -> bool;
+
     /// Calculate size of number (how many digits it contains)
     fn count(self) -> u8;
 
@@ -21,6 +24,20 @@ impl<N> Digit for N
 where
     N: AddAssign + DivAssign + MulAssign + Rem<Output = N> + From<u8> + Copy + Eq,
 {
+    /// Represent number as bool like in C
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::num::digit::Digit;
+    ///
+    /// assert!(123.as_bool());
+    /// assert!(!0.as_bool());
+    /// ```
+
+    fn as_bool(&self) -> bool {
+        *self != N::from(0)
+    }
+
     /// Calculate sum of number digits
     /// # Examples
     ///
