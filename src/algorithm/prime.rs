@@ -75,10 +75,10 @@ impl PrimeStatus {
 
 /// Methods to check prime status.
 pub trait Prime {
-    /// Returns `true` if number is not composite.
+    /// Returns `true` if number is prime.
     fn is_prime(&self) -> bool;
 
-    /// Returns `true` if number is not composite.
+    /// Returns `true` if number is either prime or probably prime.
     fn is_probably_prime(&self) -> bool;
 
     /// Returns `true` if number is composite.
