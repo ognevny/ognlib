@@ -50,7 +50,7 @@ where
 
     fn sum(mut self) -> Self {
         let mut sum = N::from(0);
-        while self != N::from(0) {
+        while self.as_bool() {
             sum += self % N::from(10);
             self /= N::from(10);
         }
@@ -69,7 +69,7 @@ where
 
     fn count(mut self) -> u8 {
         let mut count = 0;
-        while self != N::from(0) {
+        while self.as_bool() {
             self /= N::from(10);
             count += 1;
         }
@@ -88,7 +88,7 @@ where
 
     fn rev(mut self) -> Self {
         let mut rev = N::from(0);
-        while self != N::from(0) {
+        while self.as_bool() {
             rev *= N::from(10);
             rev += self % N::from(10);
             self /= N::from(10);
@@ -107,7 +107,7 @@ where
     /// ```
 
     fn has_digit(mut self, k: u8) -> bool {
-        while self != N::from(0) {
+        while self.as_bool() {
             if self % N::from(10) == N::from(k) {
                 return true;
             }

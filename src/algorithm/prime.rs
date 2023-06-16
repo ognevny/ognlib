@@ -129,7 +129,7 @@ impl Prime for isize {
     }
 }
 
-/// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3 
+/// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3
 /// to ceil with step 2.
 ///
 /// # Examples
