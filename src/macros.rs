@@ -46,8 +46,9 @@ macro_rules! read_str {
     };
 }
 
-/// Read a line from stdin and parse it to a [`Vec`]. Took from
-/// [stackoverflow](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
+/// Read a line from stdin and parse it to a [`Vec`]. Based on
+/// [stackoverflow code](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
+/// with addition to read String vec.
 ///
 /// # Panics
 /// Panics if the line contains incorrect symbols.
@@ -70,5 +71,10 @@ macro_rules! read_vec {
             .split_whitespace()
             .map(|s| s.parse::<$type>().unwrap())
             .collect::<Vec<$type>>();
+    };
+    ($out:ident as String) => {
+        let mut inner = String::new();
+        std::io::stdin().read_line(&mut inner).unwrap();
+        let $out = inner.trim().split_whitespace().collect::<Vec<String>>();
     };
 }
