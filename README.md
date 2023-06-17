@@ -1,6 +1,6 @@
 # ognlib
 
-[![Test Status](https://github.com/ognevnydemon/ognlib/workflows/Tests/badge.svg?event=push)](https://github.com/ognevnydemon/ognlib/actions)
+[![CI Status](https://github.com/ognevnydemon/ognlib/workflows/CI/badge.svg?event=push)](https://github.com/ognevnydemon/ognlib/actions)
 [![Crate](https://img.shields.io/crates/v/ognlib.svg)](https://crates.io/crates/ognlib)
 [![API](https://docs.rs/ognlib/badge.svg)](https://docs.rs/ognlib)
 
