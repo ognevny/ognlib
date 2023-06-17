@@ -20,7 +20,13 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.toolchain }}
-      - uses: actions-rs/cargo@v1
+      - name: build
+        uses: actions-rs/cargo@v1
         with:
           command: b
+          args: -v
+      - name: test
+        uses: actions-rs/cargo@v1
+        with:
+          command: t
           args: -v
