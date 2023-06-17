@@ -22,5 +22,5 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
       - uses: actions-rs/cargo@v1
         with:
-          command: [b, t]
+          command: b
           args: -v
