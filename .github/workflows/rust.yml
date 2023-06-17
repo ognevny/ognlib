@@ -17,9 +17,10 @@ jobs:
           - nightly
     steps:
       - uses: actions/checkout@v3
-      - name: update to ${{ matrix.toolchain }} rust
-        run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
-      - name: build using ${{ matrix.toolchain }} rust
-        run: cargo b -v
-      - name: test using ${{ matrix.toolchain }} rust
-        run: cargo t -v
+      - uses actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+      - uses: actions-rs/cargo@v1
+        with:
+          command: [b, t]
+          args: -v
