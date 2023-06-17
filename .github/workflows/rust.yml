@@ -1,15 +1,13 @@
-name: ognlib build and test
+name: build and test
 
-on:
-  push:
-  pull_request:
+on: [push, pull_request]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build_and_test:
-    name: latest rust
+    name: build using latest rust
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,9 +17,9 @@ jobs:
           - nightly
     steps:
       - uses: actions/checkout@v3
-      - name: update to ${{ matrix.toolchain }} branch
+      - name: update to ${{ matrix.toolchain }} rust
         run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
-      - name: build ognlib
-        run: cargo build --verbose
-      - name: test ognlib
-        run: cargo test --verbose
+      - name: build using ${{ matrix.toolchain }} rust
+        run: cargo b -v
+      - name: test using ${{ matrix.toolchain }} rust
+        run: cargo t -v
