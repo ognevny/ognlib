@@ -3,7 +3,8 @@
 [![CI Status](https://github.com/ognevnydemon/ognlib/workflows/CI/badge.svg?event=push)](https://github.com/ognevnydemon/ognlib/actions)
 [![Crate](https://img.shields.io/crates/v/ognlib.svg)](https://crates.io/crates/ognlib)
 [![API](https://docs.rs/ognlib/badge.svg)](https://docs.rs/ognlib)
-[![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&col)](https://open.vscode.dev/ognevnydemon/ognlib)
+[![Open in Visual Studio Code](https://img.shields.io/badge/Open%20in%20Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=0078d7)](https://open.vscode.dev/ognevnydemon/ognlib)
+
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/ognevnydemon/ognlib/blob/master/LICENSE-APACHE)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ognevnydemon/ognlib/blob/master/LICENSE-MIT)
 
