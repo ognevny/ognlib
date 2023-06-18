@@ -59,7 +59,7 @@ macro_rules! read_str {
 ///
 /// // this creates a Vec `x` from the line and parse every number into i32
 /// read_vec!(x as i32);
-/// 
+///
 /// // this creates a Vec `y` from the line which contains every word
 /// read_vec!(y as String)
 /// ```
