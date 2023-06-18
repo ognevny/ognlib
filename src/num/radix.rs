@@ -1,4 +1,4 @@
-//! Structs and impls for radix numbers (String nums and int nums). All numbers are unsigned ints.
+//! Structs for radix numbers (String nums and int nums). All numbers are unsigned ints.
 
 // TODO: write tests
 
@@ -9,6 +9,40 @@ pub const RADIX: &[char] = &[
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
     'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 ];
+
+/// Translate [`Radix`] into a [`usize`] dec number
+/// # Examples
+///
+/// ```
+/// use ognlib::translate;
+/// use ognlib::num::radix::Radix;
+///
+/// let n = Radix::from_radix(444, 8).unwrap();
+/// assert_eq!(translate!(n), 292)
+/// ```
+#[macro_export]
+macro_rules! translate {
+    ($radix:expr) => {
+        usize::from_str_radix(&$radix.number.to_string(), $radix.base.into()).unwrap()
+    };
+}
+
+/// Translate [`StringRadix`] into a [`usize`] dec number
+/// # Examples
+///
+/// ```
+/// use ognlib::translate_str;
+/// use ognlib::num::radix::StringRadix;
+///
+/// let n = StringRadix::from_radix("444", 8).unwrap();
+/// assert_eq!(translate_str!(n), 292)
+/// ```
+#[macro_export]
+macro_rules! translate_str {
+    ($radix:expr) => {
+        usize::from_str_radix(&$radix.number, $radix.base.into()).unwrap()
+    };
+}
 
 /// You can have 2 problems with radix numbers: first, base could be incorrect when it's not in
 /// range `2..=10` for [`Radix`] or `2..=36` for [`StringRadix`]; second, number can be incorrect,
@@ -46,19 +80,13 @@ pub struct Radix {
 
 impl PartialOrd for Radix {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        usize::from_str_radix(&self.number.to_string(), self.base.into())
-            .unwrap()
-            .partial_cmp(
-                &usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-            )
+        translate!(self).partial_cmp(&translate!(other))
     }
 }
 
 impl Ord for Radix {
     fn cmp(&self, other: &Self) -> Ordering {
-        usize::from_str_radix(&self.number.to_string(), self.base.into())
-            .unwrap()
-            .cmp(&usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap())
+        translate!(self).cmp(&translate!(other))
     }
 }
 
@@ -80,13 +108,10 @@ impl ops::Add for Radix {
 
     fn add(self, other: Self) -> Self::Output {
         Self {
-            number: Self::from(
-                usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                    + usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-            )
-            .to_radix(self.base)
-            .unwrap()
-            .number,
+            number: Self::from(translate!(self) + translate!(other))
+                .to_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -108,13 +133,10 @@ impl ops::AddAssign for Radix {
     /// ```
 
     fn add_assign(&mut self, other: Self) {
-        self.number = Self::from(
-            usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                + usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-        )
-        .to_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Self::from(translate!(self) + translate!(other))
+            .to_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -137,26 +159,18 @@ impl ops::Sub for Radix {
     fn sub(self, other: Self) -> Self::Output {
         if self > other {
             Self {
-                number: Self::from(
-                    usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                        - usize::from_str_radix(&other.number.to_string(), other.base.into())
-                            .unwrap(),
-                )
-                .to_radix(self.base)
-                .unwrap()
-                .number,
+                number: Self::from(translate!(self) - translate!(other))
+                    .to_radix(self.base)
+                    .unwrap()
+                    .number,
                 base: self.base,
             }
         } else {
             Self {
-                number: Self::from(
-                    usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap()
-                        - usize::from_str_radix(&self.number.to_string(), self.base.into())
-                            .unwrap(),
-                )
-                .to_radix(other.base)
-                .unwrap()
-                .number,
+                number: Self::from(translate!(other) - translate!(self))
+                    .to_radix(other.base)
+                    .unwrap()
+                    .number,
                 base: other.base,
             }
         }
@@ -181,13 +195,10 @@ impl ops::Mul for Radix {
 
     fn mul(self, other: Self) -> Self::Output {
         Self {
-            number: Self::from(
-                usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                    * usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-            )
-            .to_radix(self.base)
-            .unwrap()
-            .number,
+            number: Self::from(translate!(self) * translate!(other))
+                .to_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -210,13 +221,10 @@ impl ops::MulAssign for Radix {
     /// ```
 
     fn mul_assign(&mut self, other: Self) {
-        self.number = Self::from(
-            usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                * usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-        )
-        .to_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Self::from(translate!(self) * translate!(other))
+            .to_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -238,13 +246,10 @@ impl ops::Div for Radix {
 
     fn div(self, other: Self) -> Self::Output {
         Self {
-            number: Self::from(
-                usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                    / usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-            )
-            .to_radix(self.base)
-            .unwrap()
-            .number,
+            number: Self::from(translate!(self) / translate!(other))
+                .to_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -267,13 +272,10 @@ impl ops::DivAssign for Radix {
     /// ```
 
     fn div_assign(&mut self, other: Self) {
-        self.number = Self::from(
-            usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                / usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-        )
-        .to_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Self::from(translate!(self) / translate!(other))
+            .to_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -295,13 +297,10 @@ impl ops::Rem for Radix {
 
     fn rem(self, other: Self) -> Self::Output {
         Self {
-            number: Self::from(
-                usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                    % usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-            )
-            .to_radix(self.base)
-            .unwrap()
-            .number,
+            number: Self::from(translate!(self) % translate!(other))
+                .to_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -324,13 +323,10 @@ impl ops::RemAssign for Radix {
     /// ```
 
     fn rem_assign(&mut self, other: Self) {
-        self.number = Self::from(
-            usize::from_str_radix(&self.number.to_string(), self.base.into()).unwrap()
-                % usize::from_str_radix(&other.number.to_string(), other.base.into()).unwrap(),
-        )
-        .to_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Self::from(translate!(self) % translate!(other))
+            .to_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -345,17 +341,13 @@ pub struct StringRadix {
 
 impl PartialOrd for StringRadix {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        usize::from_str_radix(&self.number, self.base.into())
-            .unwrap()
-            .partial_cmp(&usize::from_str_radix(&other.number, other.base.into()).unwrap())
+        translate_str!(self).partial_cmp(&translate_str!(other))
     }
 }
 
 impl Ord for StringRadix {
     fn cmp(&self, other: &Self) -> Ordering {
-        usize::from_str_radix(&self.number, self.base.into())
-            .unwrap()
-            .cmp(&usize::from_str_radix(&other.number, other.base.into()).unwrap())
+        translate_str!(self).cmp(&translate_str!(other))
     }
 }
 
@@ -377,13 +369,10 @@ impl ops::Add for StringRadix {
 
     fn add(self, other: Self) -> Self::Output {
         Self {
-            number: Radix::from(
-                usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                    + usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-            )
-            .to_str_radix(self.base)
-            .unwrap()
-            .number,
+            number: Radix::from(translate_str!(self) + translate_str!(other))
+                .to_str_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -405,13 +394,10 @@ impl ops::AddAssign for StringRadix {
     /// ```
 
     fn add_assign(&mut self, other: Self) {
-        self.number = Radix::from(
-            usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                + usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-        )
-        .to_str_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Radix::from(translate_str!(self) + translate_str!(other))
+            .to_str_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -434,24 +420,18 @@ impl ops::Sub for StringRadix {
     fn sub(self, other: Self) -> Self::Output {
         if self > other {
             Self {
-                number: Radix::from(
-                    usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                        - usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-                )
-                .to_str_radix(self.base)
-                .unwrap()
-                .number,
+                number: Radix::from(translate_str!(self) - translate_str!(other))
+                    .to_str_radix(self.base)
+                    .unwrap()
+                    .number,
                 base: self.base,
             }
         } else {
             Self {
-                number: Radix::from(
-                    usize::from_str_radix(&other.number, other.base.into()).unwrap()
-                        - usize::from_str_radix(&self.number, self.base.into()).unwrap(),
-                )
-                .to_str_radix(other.base)
-                .unwrap()
-                .number,
+                number: Radix::from(translate_str!(other) - translate_str!(self))
+                    .to_str_radix(other.base)
+                    .unwrap()
+                    .number,
                 base: other.base,
             }
         }
@@ -476,13 +456,10 @@ impl ops::Mul for StringRadix {
 
     fn mul(self, other: Self) -> Self::Output {
         Self {
-            number: Radix::from(
-                usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                    * usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-            )
-            .to_str_radix(self.base)
-            .unwrap()
-            .number,
+            number: Radix::from(translate_str!(self) * translate_str!(other))
+                .to_str_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -505,13 +482,10 @@ impl ops::MulAssign for StringRadix {
     /// ```
 
     fn mul_assign(&mut self, other: Self) {
-        self.number = Radix::from(
-            usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                * usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-        )
-        .to_str_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Radix::from(translate_str!(self) * translate_str!(other))
+            .to_str_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -533,13 +507,10 @@ impl ops::Div for StringRadix {
 
     fn div(self, other: Self) -> Self::Output {
         Self {
-            number: Radix::from(
-                usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                    / usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-            )
-            .to_str_radix(self.base)
-            .unwrap()
-            .number,
+            number: Radix::from(translate_str!(self) / translate_str!(other))
+                .to_str_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -562,13 +533,10 @@ impl ops::DivAssign for StringRadix {
     /// ```
 
     fn div_assign(&mut self, other: Self) {
-        self.number = Radix::from(
-            usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                / usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-        )
-        .to_str_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Radix::from(translate_str!(self) / translate_str!(other))
+            .to_str_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
@@ -590,13 +558,10 @@ impl ops::Rem for StringRadix {
 
     fn rem(self, other: Self) -> Self::Output {
         Self {
-            number: Radix::from(
-                usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                    % usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-            )
-            .to_str_radix(self.base)
-            .unwrap()
-            .number,
+            number: Radix::from(translate_str!(self) % translate_str!(other))
+                .to_str_radix(self.base)
+                .unwrap()
+                .number,
             base: self.base,
         }
     }
@@ -619,13 +584,10 @@ impl ops::RemAssign for StringRadix {
     /// ```
 
     fn rem_assign(&mut self, other: Self) {
-        self.number = Radix::from(
-            usize::from_str_radix(&self.number, self.base.into()).unwrap()
-                % usize::from_str_radix(&other.number, other.base.into()).unwrap(),
-        )
-        .to_str_radix(self.base)
-        .unwrap()
-        .number;
+        self.number = Radix::from(translate_str!(self) % translate_str!(other))
+            .to_str_radix(self.base)
+            .unwrap()
+            .number;
     }
 }
 
