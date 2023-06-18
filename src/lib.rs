@@ -18,4 +18,4 @@ pub mod algorithm {
 
 pub mod mcko;
 
-pub mod macros;
+mod macros;

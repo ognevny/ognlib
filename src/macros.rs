@@ -1,4 +1,4 @@
-//! Some macros. Not all of them are written by me, but by Rust community ❤️🦀.
+//! Some macros.
 
 /// Read a line from stdin and parse it to a certain type. Took from
 /// [stackoverflow](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
@@ -59,6 +59,9 @@ macro_rules! read_str {
 ///
 /// // this creates a Vec `x` from the line and parse every number into i32
 /// read_vec!(x as i32);
+/// 
+/// // this creates a Vec `y` from the line which contains every word
+/// read_vec!(y as String)
 /// ```
 #[cfg(not(doctest))]
 #[macro_export]
@@ -75,6 +78,6 @@ macro_rules! read_vec {
     ($out:ident as String) => {
         let mut inner = String::new();
         std::io::stdin().read_line(&mut inner).unwrap();
-        let $out = inner.trim().split_whitespace().collect::<Vec<String>>();
+        let $out: Vec<String> = inner.trim().split_whitespace().collect();
     };
 }
