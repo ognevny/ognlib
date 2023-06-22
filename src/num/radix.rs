@@ -769,7 +769,10 @@ impl<'a> Radix {
     /// assert_eq!(res, StringRadix::from_radix("D0", 16).unwrap());
     ///
     /// let e = n.to_str_radix(42).unwrap_err();
-    /// assert_eq!(e.to_string(), "Base error: base is more than thirty six (36)");
+    /// assert_eq!(
+    ///     e.to_string(),
+    ///     "Base error: base is more than thirty six (36)",
+    /// );
     /// ```
 
     pub fn to_str_radix(self, k: u8) -> Result<StringRadix, RadixError<'a>> {
@@ -886,7 +889,10 @@ impl<'a> StringRadix {
     /// assert_eq!(e1.to_string(), "Base error: base is less than two");
     ///
     /// let e2 = StringRadix::new(255).unwrap_err();
-    /// assert_eq!(e2.to_string(), "Base error: base is more than thirty six (36)");
+    /// assert_eq!(
+    ///     e2.to_string(),
+    ///     "Base error: base is more than thirty six (36)",
+    /// );
     /// ```
 
     pub fn new(k: u8) -> Result<Self, RadixError<'a>> {
@@ -919,7 +925,10 @@ impl<'a> StringRadix {
     /// assert_eq!(n.base, 10);
     ///
     /// let e = StringRadix::from("123A").unwrap_err();
-    /// assert_eq!(e.to_string(), "Number error: number contains digit from range `'A'..='Z'`");
+    /// assert_eq!(
+    ///     e.to_string(),
+    ///     "Number error: number contains digit from range `'A'..='Z'`",
+    /// );
     /// ```
 
     pub fn from(n: &str) -> Result<Self, RadixError<'a>> {
@@ -955,7 +964,10 @@ impl<'a> StringRadix {
     /// assert_eq!(n.base, 2);
     ///
     /// let e = StringRadix::from_radix("123A", 9).unwrap_err();
-    /// assert_eq!(e.to_string(), "Number error: number contains digit that is more or equal than base");
+    /// assert_eq!(
+    ///     e.to_string(),
+    ///     "Number error: number contains digit that is more or equal than base",
+    /// );
     /// ```
 
     pub fn from_radix(n: &str, k: u8) -> Result<Self, RadixError<'a>> {
@@ -1000,7 +1012,10 @@ impl<'a> StringRadix {
     /// assert_eq!(res, StringRadix::from_radix("D0", 16).unwrap());
     ///
     /// let e = res.to_radix(42).unwrap_err();
-    /// assert_eq!(e.to_string(), "Base error: base is more than thirty six (36)");
+    /// assert_eq!(
+    ///     e.to_string(),
+    ///     "Base error: base is more than thirty six (36)",
+    /// );
     /// ```
 
     pub fn to_radix(&mut self, k: u8) -> Result<Self, RadixError<'a>> {
