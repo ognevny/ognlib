@@ -6,9 +6,29 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build_and_test:
-    name: full check (${{ matrix.toolchain }} rust)
-    runs-on: [ubuntu-latest, windows-latest]
+  build_and_test_ubuntu:
+    name: full check on ubuntu (${{ matrix.toolchain }} channel)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v3
+      - name: switch to ${{ matrix.toolchain }} channel
+        run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }} && rustup component add rustfmt clippy
+      - name: build
+        run: cargo b -v
+      - name: fmt and clippy check
+        run: cargo fmt -- --check && cargo clippy -- -D warnings
+      - name: test
+        run: cargo t -v
+
+  build_and_test_windows:
+    name: full check on windows (${{ matrix.toolchain }} channel)
+    runs-on: windows-latest
     strategy:
       matrix:
         toolchain:
