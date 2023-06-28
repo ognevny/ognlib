@@ -1,6 +1,6 @@
 # ognlib
 
-[![CI Status](https://github.com/ognevnydemon/ognlib/workflows/CI/badge.svg?event=push&style=flat-square)](https://github.com/ognevnydemon/ognlib/actions)
+[![CI Status](https://github.com/ognevnydemon/ognlib/workflows/CI/badge.svg?style=flat-square)](https://github.com/ognevnydemon/ognlib/actions)
 [![Crate](https://img.shields.io/crates/v/ognlib.svg?style=flat-square)](https://crates.io/crates/ognlib)
 [![API](https://docs.rs/ognlib/badge.svg?style=flag-square)](https://docs.rs/ognlib)
 [![Open in Visual Studio Code](https://img.shields.io/badge/Open%20in%20Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=ffffff&style=flat-square)](https://open.vscode.dev/ognevnydemon/ognlib)
