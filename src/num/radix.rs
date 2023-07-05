@@ -10,7 +10,7 @@ pub const RADIX: &[char] = &[
     'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 ];
 
-/// Translate [`Radix`] or [`StringRadix`] or `integer` or [`String`] number from given base into a
+/// Translate [`Radix`] or [`StringRadix`], `integer` or [`String`] number from given base into a
 /// [`usize`] dec number
 /// # Examples
 ///
@@ -69,18 +69,6 @@ impl<'a> Error for RadixError<'a> {}
 pub struct Radix {
     pub number: usize,
     pub base: u8,
-}
-
-impl PartialOrd for Radix {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        dec!(self).partial_cmp(&dec!(other))
-    }
-}
-
-impl Ord for Radix {
-    fn cmp(&self, other: &Self) -> Ordering {
-        dec!(self).cmp(&dec!(other))
-    }
 }
 
 impl ops::Add for Radix {
@@ -332,18 +320,6 @@ pub struct StringRadix {
     pub base: u8,
 }
 
-impl PartialOrd for StringRadix {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        dec!(self).partial_cmp(&dec!(other))
-    }
-}
-
-impl Ord for StringRadix {
-    fn cmp(&self, other: &Self) -> Ordering {
-        dec!(self).cmp(&dec!(other))
-    }
-}
-
 impl ops::Add for StringRadix {
     type Output = Self;
 
@@ -559,6 +535,23 @@ impl ops::Rem for StringRadix {
         }
     }
 }
+
+macro_rules! impl_ord {
+    ($($radix:ident)*) => {
+        $(impl PartialOrd for $radix {
+            fn partial_cmp(&self, other: &$radix) -> Option<Ordering> {
+                dec!(self).partial_cmp(&dec!(other))
+            }
+        })*
+        $(impl Ord for $radix {
+            fn cmp(&self, other: &$radix) -> Ordering {
+                dec!(self).cmp(&dec!(other))
+            }
+        })*
+    };
+}
+
+impl_ord!(Radix StringRadix);
 
 impl ops::RemAssign for StringRadix {
     /// Performs a `%=` operation.
