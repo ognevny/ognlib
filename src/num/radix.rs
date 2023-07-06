@@ -458,7 +458,51 @@ macro_rules! impl_traits {
     };
 }
 
+macro_rules! impl_froms {
+    ($($type:ty)*) => {
+        $(impl From<$type> for Radix {
+            /// Creates a new [`Radix`] with base 10 and given number.
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::Radix;
+            ///
+            /// let n = Radix::from(123);
+            /// assert_eq!(n.number, 123);
+            /// assert_eq!(n.base, 10);
+            /// ```
+
+            fn from(n: $type) -> Self {
+                Self {
+                    number: n as usize,
+                    base: 10,
+                }
+            }
+        }
+        impl From<$type> for StringRadix {
+            /// Creates a new [`StringRadix`] with base 10 and given [`usize`] number.
+            ///
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::StringRadix;
+            ///
+            /// let n = StringRadix::from(123);
+            /// assert_eq!(n.number, "123");
+            /// assert_eq!(n.base, 10);
+
+            fn from(n: $type) -> Self {
+                Self {
+                    number: n.to_string(),
+                    base: 10,
+                }
+            }
+        })*
+    };
+}
+
 impl_traits!(Radix StringRadix);
+impl_froms!(u8 u16 u32 u64 usize i8 i16 i32 i64 isize);
 
 impl<'a> Radix {
     /// Creates a new [`Radix`].
@@ -491,24 +535,6 @@ impl<'a> Radix {
             return Err(RadixError::BaseError("base is more than ten"));
         } else {
             Ok(Self { number: 0, base: k })
-        }
-    }
-
-    /// Creates a new [`Radix`] with base 10 and given number.
-    /// # Examples
-    ///
-    /// ```
-    /// use ognlib::num::radix::Radix;
-    ///
-    /// let n = Radix::from(123);
-    /// assert_eq!(n.number, 123);
-    /// assert_eq!(n.base, 10);
-    /// ```
-
-    pub fn from(n: usize) -> Self {
-        Self {
-            number: n,
-            base: 10,
         }
     }
 
@@ -784,24 +810,6 @@ impl<'a> StringRadix {
         }
     }
 
-    /// Creates a new [`StringRadix`] with base 10 and given [`usize`] number.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use ognlib::num::radix::StringRadix;
-    ///
-    /// let n = StringRadix::from(123);
-    /// assert_eq!(n.number, "123");
-    /// assert_eq!(n.base, 10);
-
-    pub fn from(n: usize) -> Self {
-        Self {
-            number: n.to_string(),
-            base: 10,
-        }
-    }
-
     /// Creates a new [`StringRadix`] with given [`usize`] number and base.
     ///
     /// # Error
@@ -931,7 +939,7 @@ impl<'a> StringRadix {
             Ok(Self::from(self.to_dec()?.number))
         } else if self.base == 10 {
             Ok(Self::from_dec(
-                &mut Radix::from(match self.number.parse() {
+                &mut Radix::from(match self.number.parse::<usize>() {
                     Ok(n) => n,
                     Err(e) => return Err(RadixError::ParseError(e)),
                 }),
@@ -992,7 +1000,7 @@ impl<'a> StringRadix {
             return Err(RadixError::BaseError("base is more than ten"));
         } else if self.base == 10 {
             Ok(Self::from_dec_to_int(
-                &mut Radix::from(match self.number.parse() {
+                &mut Radix::from(match self.number.parse::<usize>() {
                     Ok(n) => n,
                     Err(e) => return Err(RadixError::ParseError(e)),
                 }),
