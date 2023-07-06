@@ -776,7 +776,7 @@ impl<'a> Radix {
         } else if self.base == 10 {
             Ok(self.to_str_radix_from_dec(k)?)
         } else if k == 10 {
-            Ok(StringRadix::from(&self.to_dec()?.number.to_string())?)
+            Ok(StringRadix::from(&self.to_dec()?.number.to_string()))
         } else {
             Ok(self.to_dec()?.to_str_radix_from_dec(k)?)
         }
@@ -901,41 +901,40 @@ impl<'a> StringRadix {
         }
     }
 
-    /// Creates a new [`StringRadix`] with base 10 and given str number.
-    ///
-    /// # Error
-    /// Return a [`NumberError`] when number contains digit from range `'A'..='Z'`.
-    ///
-    /// [`NumberError`]: RadixError::NumberError
+    /// Creates a new [`StringRadix`] with base 10 and given str number. If number contains digit
+    /// from range `'A'..='Z'`, it will be converted into dec number, base is max digit plus 1.
     ///
     /// # Examples
     ///
     /// ```
     /// use ognlib::num::radix::StringRadix;
     ///
-    /// let n = StringRadix::from("123").unwrap();
+    /// let n = StringRadix::from("123");
     /// assert_eq!(n.number, "123");
     /// assert_eq!(n.base, 10);
     ///
-    /// let e = StringRadix::from("123A").unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Number error: number contains digit from range `'A'..='Z'`",
-    /// );
+    /// let n1 = StringRadix::from("12A");
+    /// assert_eq!(n1.number, "153");
+    /// assert_eq!(n1.base, 10);
     /// ```
 
-    pub fn from(n: &str) -> Result<Self, RadixError<'a>> {
+    pub fn from(n: &str) -> Self {
         for i in RADIX.iter().skip(10) {
             if n.contains(*i) {
-                return Err(RadixError::NumberError(
-                    "number contains digit from range `'A'..='Z'`",
-                ));
+                return Self {
+                    number: dec!(
+                        &n,
+                        RADIX.binary_search(&n.chars().max().unwrap()).unwrap() as u32 + 1
+                    )
+                    .to_string(),
+                    base: 10,
+                };
             }
         }
-        Ok(Self {
+        Self {
             number: n.to_string(),
             base: 10,
-        })
+        }
     }
 
     /// Creates a new [`StringRadix`] with given number and base.
@@ -1017,7 +1016,7 @@ impl<'a> StringRadix {
         } else if k > 36 {
             return Err(RadixError::BaseError("base is more than thirty six (36)"));
         } else if k == 10 {
-            Ok(Self::from(&self.to_dec()?.number.to_string())?)
+            Ok(Self::from(&self.to_dec()?.number.to_string()))
         } else if self.base == 10 {
             Ok(Self::from_dec(
                 &mut Radix::from(match self.number.parse() {
