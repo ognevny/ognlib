@@ -461,7 +461,7 @@ macro_rules! impl_traits {
 macro_rules! impl_froms {
     ($($type:ty)*) => {
         $(impl From<$type> for Radix {
-            /// Creates a new [`Radix`] with base 10 and given number.
+            /// Creates a new [`Radix`] with base 10 and given int number.
             /// # Examples
             ///
             /// ```
@@ -480,7 +480,7 @@ macro_rules! impl_froms {
             }
         }
         impl From<$type> for StringRadix {
-            /// Creates a new [`StringRadix`] with base 10 and given [`usize`] number.
+            /// Creates a new [`StringRadix`] with base 10 and given int number.
             ///
             /// # Examples
             ///
