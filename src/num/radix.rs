@@ -91,7 +91,6 @@ impl FromStr for Radix {
     ///
     /// let e = Radix::from_str("12A").unwrap_err();
     /// assert_eq!(e.to_string(), "invalid digit found in string");
-    /// );
     /// ```
 
     fn from_str(n: &str) -> Result<Self, Self::Err> {
