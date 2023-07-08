@@ -70,42 +70,33 @@ pub struct Radix {
 }
 
 impl FromStr for Radix {
-    type Err = RadixError<'static>;
+    type Err = std::num::ParseIntError;
 
     /// Creates a new [`Radix`] with base 10 and given str number.
     ///
     /// # Error
-    /// Return [`NumberError`] if number contains digit from range `A..=Z`.
+    /// Returns [`ParseIntError`] if number contains invalid digits.
     ///
-    /// [`NumberError`]: RadixError::NumberError
+    /// [`ParseIntError`]: std::num::ParseIntError
     ///
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::StringRadix;
+    /// use ognlib::num::radix::Radix;
     /// use std::str::FromStr;
     ///
-    /// let n = StringRadix::from_str("123").unwrap();
+    /// let n = Radix::from_str("123").unwrap();
     /// assert_eq!(n.number, "123");
     /// assert_eq!(n.base, 10);
     ///
-    /// let e = StringRadix::from_str("12A").unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Number error: number contains a digit from range `A..=Z`",
+    /// let e = Radix::from_str("12A").unwrap_err();
+    /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// );
     /// ```
 
     fn from_str(n: &str) -> Result<Self, Self::Err> {
-        for i in RADIX.iter().skip(10) {
-            if n.contains(*i) {
-                return Err(RadixError::NumberError(
-                    "number contains a digit from range `A..=Z`",
-                ));
-            }
-        }
         Ok(Self {
-            number: n.parse().unwrap(),
+            number: n.parse()?,
             base: 10,
         })
     }
@@ -121,14 +112,14 @@ pub struct StringRadix {
 }
 
 impl FromStr for StringRadix {
-    type Err = RadixError<'static>;
+    type Err = std::num::ParseIntError;
 
     /// Creates a new [`StringRadix`] with base 10 and given str number.
     ///
     /// # Error
-    /// Return [`NumberError`] if number contains digit from range `A..=Z`.
+    /// Returns [`ParseIntError`] if number contains invalid digit.
     ///
-    /// [`NumberError`]: RadixError::NumberError
+    /// [`ParseIntError`]: std::num::ParseIntError
     ///
     /// # Examples
     ///
@@ -141,22 +132,12 @@ impl FromStr for StringRadix {
     /// assert_eq!(n.base, 10);
     ///
     /// let e = StringRadix::from_str("12A").unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Number error: number contains a digit from range `A..=Z`",
-    /// );
+    /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// ```
 
     fn from_str(n: &str) -> Result<Self, Self::Err> {
-        for i in RADIX.iter().skip(10) {
-            if n.contains(*i) {
-                return Err(RadixError::NumberError(
-                    "number contains a digit from range `A..=Z`",
-                ));
-            }
-        }
         Ok(Self {
-            number: n.to_string(),
+            number: n.parse::<usize>()?.to_string(),
             base: 10,
         })
     }
