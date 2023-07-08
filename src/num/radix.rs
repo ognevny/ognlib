@@ -86,7 +86,7 @@ impl FromStr for Radix {
     /// use std::str::FromStr;
     ///
     /// let n = Radix::from_str("123").unwrap();
-    /// assert_eq!(n.number, "123");
+    /// assert_eq!(n.number, 123);
     /// assert_eq!(n.base, 10);
     ///
     /// let e = Radix::from_str("12A").unwrap_err();
