@@ -482,7 +482,7 @@ macro_rules! impl_froms {
 }
 
 impl_traits!(Radix StringRadix);
-impl_froms!(u8 u16 u32 u64 usize i8 i16 i32 i64 isize);
+impl_froms!(u8 u16 u32 u64 usize);
 
 impl<'a> Radix {
     /// Creates a new [`Radix`].
