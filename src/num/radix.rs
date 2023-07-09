@@ -447,7 +447,7 @@ macro_rules! impl_froms {
             /// ```
             /// use ognlib::num::radix::Radix;
             ///
-            /// let n = Radix::from(123);
+            /// let n = Radix::from(123usize);
             /// assert_eq!(n.number, 123);
             /// assert_eq!(n.base, 10);
             /// ```
@@ -467,7 +467,7 @@ macro_rules! impl_froms {
             /// ```
             /// use ognlib::num::radix::StringRadix;
             ///
-            /// let n = StringRadix::from(123);
+            /// let n = StringRadix::from(123usize);
             /// assert_eq!(n.number, "123");
             /// assert_eq!(n.base, 10);
 
@@ -578,14 +578,14 @@ impl<'a> Radix {
     /// ```
     /// use ognlib::num::radix::Radix;
     ///
-    /// let n1 = Radix::from(123);
+    /// let n1 = Radix::from(123usize);
     /// let new1 = n1.to_radix(8).unwrap();
     ///
     /// let n2 = Radix::from_radix(173, 8).unwrap();
     /// let new2 = n2.to_radix(10).unwrap();
     ///
     /// assert_eq!(new1, Radix::from_radix(173, 8).unwrap());
-    /// assert_eq!(new2, Radix::from(123));
+    /// assert_eq!(new2, Radix::from(123usize));
     ///
     /// let e = new2.to_radix(1).unwrap_err();
     /// assert_eq!(e.to_string(), "Base error: base is less than two");
