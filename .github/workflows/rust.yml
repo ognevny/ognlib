@@ -47,7 +47,7 @@ jobs:
         run: cargo t -v
 
   msys2:
-    name: full check on windows (msys2)
+    name: full check on windows (msys2 - ${{ matrix.sys }})
     runs-on: windows-latest
     strategy:
       matrix:
@@ -65,6 +65,6 @@ jobs:
       - name: build
         run: cargo b -v
       - name: fmt and clippy check
-        run: cargo fmt && cargo clippy
+        run: cargo fmt -- --check && cargo clippy -- -D warnings
       - name: test
         run: cargo t -v
