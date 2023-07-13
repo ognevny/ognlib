@@ -6,7 +6,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build_and_test_ubuntu:
+  ubuntu:
     name: full check on ubuntu (${{ matrix.toolchain }} channel)
     runs-on: ubuntu-latest
     strategy:
@@ -26,7 +26,7 @@ jobs:
       - name: test
         run: cargo t -v
 
-  build_and_test_windows:
+  windows:
     name: full check on windows (${{ matrix.toolchain }} channel)
     runs-on: windows-latest
     strategy:
@@ -43,5 +43,30 @@ jobs:
         run: cargo b -v
       - name: clippy check
         run: cargo clippy -- -D warnings
+      - name: test
+        run: cargo t -v
+
+  msys2:
+    name: full check on windows (msys2)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    strategy:
+      matrix:
+        sys:
+          - clang64
+          - mingw64
+          - ucrt64
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.sys }}
+          pacboy: rust:p
+      - uses: actions-checkout@v3
+      - name: build
+        run: cargo b -v
+      - name: fmt and clippy check
+        run: cargo fmt && cargo clippy
       - name: test
         run: cargo t -v
