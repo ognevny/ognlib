@@ -49,21 +49,22 @@ jobs:
   msys2:
     name: full check on windows (msys2)
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
     strategy:
       matrix:
         sys:
           - clang64
           - mingw64
           - ucrt64
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
+      - uses: actions-checkout@v3
       - uses: msys2/setup-msys2@v2
         with:
+          update: true
           msystem: ${{ matrix.sys }}
           pacboy: rust:p
-      - uses: actions-checkout@v3
       - name: build
         run: cargo b -v
       - name: fmt and clippy check
