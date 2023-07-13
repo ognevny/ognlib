@@ -64,7 +64,7 @@ jobs:
           pacboy: rust:p
       - name: build
         run: cargo b -v
-      - name: fmt and clippy check
-        run: cargo fmt -- --check && cargo clippy -- -D warnings
+      - name: clippy check
+        run: cargo clippy -- -D warnings
       - name: test
         run: cargo t -v
