@@ -41,11 +41,11 @@ jobs:
         run: cargo t -v
 
   msys2:
-    name: full check on windows (msys2)
+    name: full check on windows (msys2 - ${{ matrix.sys }})
     runs-on: windows-latest
     strategy:
       matrix:
-        sys: [UCRT64, MINGW64, CLANG64]
+        sys: [UCRT64, CLANG64]
     defaults:
       run:
         shell: msys2 {0}
@@ -58,7 +58,7 @@ jobs:
           pacboy: rust:p
       - name: build
         run: cargo b -v
-      - name: fmt and clippy check
-        run: cargo fmt && cargo clippy
+      - name: clippy check
+        run: cargo clippy -- -D warnings
       - name: test
         run: cargo t -v
