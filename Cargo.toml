@@ -10,6 +10,6 @@ readme = "README.md"
 rust-version = "1.59.0"
 
 [dependencies]
-rayon = "1.7.0"
-num-bigint = "0.4.3"
-rand = "0.8.5"
+rayon = "1.7"
+num-bigint = "0.4"
+rand = "0.8"
