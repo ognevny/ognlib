@@ -208,10 +208,7 @@ macro_rules! impl_traits {
             /// ```
 
             fn add_assign(&mut self, other: Self) {
-                self.number = Self::from(dec!(self) + dec!(other))
-                    .to_radix(self.base)
-                    .unwrap()
-                    .number;
+                *self = self.clone() + other
             }
         }
         impl ops::Sub for $radix {
@@ -253,6 +250,32 @@ macro_rules! impl_traits {
                         base: other.base,
                     }
                 }
+            }
+        }
+        impl ops::SubAssign for $radix {
+            /// Performs a `-=` operation.
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::*;
+            ///
+            /// let mut n1 = Radix::from_radix(123, 4).unwrap();
+            /// let n2 = Radix::from_radix(444, 5).unwrap();
+            /// let mut n_str1 = StringRadix::from_radix(123, 4).unwrap();
+            /// let n_str2 = StringRadix::from_radix(444, 5).unwrap();
+            ///
+            /// n1 -= n2;
+            /// n_str1 -= n_str2;
+            ///
+            /// n1 = n1.to_radix(8).unwrap();
+            /// n_str1 = n_str1.to_radix(8).unwrap();
+            ///
+            /// assert_eq!(n1, Radix::from_radix(141, 8).unwrap());
+            /// assert_eq!(n_str1, StringRadix::from_str_radix("141", 8).unwrap());
+            /// ```
+
+            fn sub_assign(&mut self, other: Self) {
+                *self = self.clone() - other;
             }
         }
         impl ops::Mul for $radix {
@@ -309,10 +332,7 @@ macro_rules! impl_traits {
             /// ```
 
             fn mul_assign(&mut self, other: Self) {
-                self.number = Self::from(dec!(self) * dec!(other))
-                    .to_radix(self.base)
-                    .unwrap()
-                    .number;
+                *self = self.clone() * other;
             }
         }
         impl ops::Div for $radix {
@@ -369,10 +389,7 @@ macro_rules! impl_traits {
             /// ```
 
             fn div_assign(&mut self, other: Self) {
-                self.number = Self::from(dec!(self) / dec!(other))
-                    .to_radix(self.base)
-                    .unwrap()
-                    .number;
+                *self = self.clone() / other;
             }
         }
         impl ops::Rem for $radix {
@@ -429,10 +446,7 @@ macro_rules! impl_traits {
             /// ```
 
             fn rem_assign(&mut self, other: Self) {
-                self.number = Self::from(dec!(self) % dec!(other))
-                    .to_radix(self.base)
-                    .unwrap()
-                    .number;
+                *self = self.clone() % other;
             }
         })*
     };
