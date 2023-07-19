@@ -146,7 +146,7 @@ macro_rules! impl_traits {
     ($($radix:ident)*) => {
         $(impl PartialOrd for $radix {
             fn partial_cmp(&self, other: &$radix) -> Option<Ordering> {
-                dec!(self).partial_cmp(&dec!(other))
+                Some(self.cmp(other))
             }
         }
         impl Ord for $radix {
