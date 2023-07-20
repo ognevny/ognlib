@@ -145,12 +145,12 @@ impl FromStr for StringRadix {
 macro_rules! impl_traits {
     ($($radix:ident)*) => {
         $(impl PartialOrd for $radix {
-            fn partial_cmp(&self, other: &$radix) -> Option<Ordering> {
+            fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
                 Some(self.cmp(other))
             }
         }
         impl Ord for $radix {
-            fn cmp(&self, other: &$radix) -> Ordering {
+            fn cmp(&self, other: &Self) -> Ordering {
                 dec!(self).cmp(&dec!(other))
             }
         }
