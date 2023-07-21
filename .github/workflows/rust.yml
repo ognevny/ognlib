@@ -10,6 +10,7 @@ jobs:
     name: full check on ubuntu (${{ matrix.toolchain }} channel)
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         toolchain: [stable, beta, nightly]
     steps:
