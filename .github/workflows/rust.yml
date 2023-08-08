@@ -28,6 +28,7 @@ jobs:
     name: full check on windows (${{ matrix.toolchain }} channel)
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         toolchain: [stable, beta, nightly]
     steps:
@@ -45,6 +46,7 @@ jobs:
     name: full check on windows (msys2 - ${{ matrix.sys }})
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         sys: [UCRT64, CLANG64]
     defaults:
