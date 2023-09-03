@@ -37,7 +37,7 @@ impl PrimeStatus {
     /// [`Prime`]: PrimeStatus::Prime
 
     pub fn is_prime(self) -> bool {
-        matches!(self, PrimeStatus::Prime)
+        self == PrimeStatus::Prime
     }
 
     /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
@@ -53,7 +53,7 @@ impl PrimeStatus {
     /// [`Composite`]: PrimeStatus::Composite
 
     pub fn is_probably_prime(self) -> bool {
-        !matches!(self, PrimeStatus::Composite)
+        self != PrimeStatus::Composite
     }
 
     /// Returns `true` if [`PrimeStatus`] is [`Composite`].
@@ -69,7 +69,7 @@ impl PrimeStatus {
     /// [`Composite`]: PrimeStatus::Composite
 
     pub fn is_composite(self) -> bool {
-        matches!(self, PrimeStatus::Composite)
+        self == PrimeStatus::Composite
     }
 }
 
@@ -97,7 +97,7 @@ impl Prime for isize {
     /// ```
 
     fn is_prime(&self) -> bool {
-        matches!(wilson_th(*self), Ok(PrimeStatus::Prime))
+        wilson_th(*self) == Ok(PrimeStatus::Prime)
     }
 
     /// Returns `true` if number is either prime or probably prime.
@@ -111,7 +111,7 @@ impl Prime for isize {
     /// ```
 
     fn is_probably_prime(&self) -> bool {
-        !matches!(miller_rabin(*self), Ok(PrimeStatus::Composite))
+        miller_rabin(*self) != Ok(PrimeStatus::Composite)
     }
 
     /// Returns `true` if number is composite.
@@ -125,7 +125,7 @@ impl Prime for isize {
     /// ```
 
     fn is_composite(&self) -> bool {
-        matches!(wilson_th(*self), Ok(PrimeStatus::Composite))
+        wilson_th(*self) == Ok(PrimeStatus::Composite)
     }
 }
 
