@@ -161,7 +161,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -190,7 +190,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let mut n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -218,7 +218,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -257,7 +257,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let mut n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -285,7 +285,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -314,7 +314,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let mut n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -342,7 +342,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -371,7 +371,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let mut n2 = Radix::from_radix(444, 5).unwrap();
@@ -399,7 +399,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -428,7 +428,7 @@ macro_rules! impl_traits {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::radix::*;
+            /// use ognlib::num::radix::{Radix, StringRadix};
             ///
             /// let n1 = Radix::from_radix(123, 4).unwrap();
             /// let mut n2 = Radix::from_radix(444, 5).unwrap();
@@ -658,7 +658,7 @@ impl<'a> Radix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n = Radix::from_radix(11010000, 2).unwrap();
     /// let res = n.to_str_radix(16).unwrap();
@@ -704,7 +704,7 @@ impl<'a> Radix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n1 = Radix::from_radix(123, 4).unwrap();
     /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -750,7 +750,7 @@ impl<'a> Radix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n1 = Radix::from_radix(123, 4).unwrap();
     /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -977,7 +977,7 @@ impl<'a> StringRadix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let mut n = StringRadix::from_str_radix("D14", 16).unwrap();
     /// let res = n.to_int_radix(2).unwrap();
@@ -1032,7 +1032,7 @@ impl<'a> StringRadix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n1 = StringRadix::from_radix(123, 4).unwrap();
     /// let n2 = StringRadix::from_radix(444, 5).unwrap();
@@ -1055,7 +1055,7 @@ impl<'a> StringRadix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n1 = StringRadix::from_radix(123, 4).unwrap();
     /// let n2 = StringRadix::from_radix(444, 5).unwrap();
@@ -1078,7 +1078,7 @@ impl<'a> StringRadix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n1 = StringRadix::from_radix(123, 4).unwrap();
     /// let n2 = StringRadix::from_radix(444, 5).unwrap();
