@@ -25,7 +25,6 @@ jobs:
         run: cargo b -v
       - name: fmt and clippy check
         run: cargo fmt -- --check && cargo clippy -- -D warnings
-        continue-on-error: true
       - name: test
         run: cargo t -v
 
@@ -44,7 +43,6 @@ jobs:
         run: cargo b -v
       - name: clippy check
         run: cargo clippy -- -D warnings
-        continue-on-error: true
       - name: test
         run: cargo t -v
 
@@ -69,6 +67,5 @@ jobs:
         run: cargo b -v
       - name: clippy check
         run: cargo clippy -- -D warnings
-        continue-on-error: true
       - name: test
         run: cargo t -v
