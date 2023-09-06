@@ -28,7 +28,7 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{aqrtest, PrimeStatus};
+    /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus};
     ///
     /// assert!(sqrtest(13).unwrap().is_prime());
     /// assert!(!sqrtest(455).unwrap().is_prime());
