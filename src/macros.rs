@@ -7,7 +7,7 @@
 /// Panics if the line contains incorrect symbols.
 ///
 /// # Examples
-/// ```
+/// ```no_run
 /// use ognlib::read;
 ///
 /// // this creates a variable `x` from the line and parse it into i32
@@ -30,7 +30,7 @@ macro_rules! read {
 /// Panics if the line contains incorrect symbols.
 ///
 /// # Examples
-/// ```
+/// ```no_run
 /// use ognlib::read_str;
 ///
 /// // this creates a String `x` from the line and trim it
@@ -54,7 +54,7 @@ macro_rules! read_str {
 /// Panics if the line contains incorrect symbols.
 ///
 /// # Examples
-/// ```
+/// ```no_run
 /// use ognlib::read_vec;
 ///
 /// // this creates a Vec `x` from the line and parse every number into i32
