@@ -28,7 +28,7 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{PrimeStatus, sqrtest};
+    /// use ognlib::algorithm::prime::{aqrtest, PrimeStatus};
     ///
     /// assert!(sqrtest(13).unwrap().is_prime());
     /// assert!(!sqrtest(455).unwrap().is_prime());
@@ -60,7 +60,7 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{PrimeStatus, sqrtest};
+    /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus};
     ///
     /// assert!(!sqrtest(13).unwrap().is_composite());
     /// assert!(sqrtest(455).unwrap().is_composite());
@@ -134,7 +134,7 @@ impl Prime for isize {
 ///
 /// # Examples
 /// ```
-/// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, sqrtest};
+/// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(sqrtest(1).err(), Some(PrimeStatusError));
 /// assert_eq!(sqrtest(13).ok(), Some(PrimeStatus::Prime));
@@ -166,7 +166,7 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 ///
 /// # Examples
 /// ```
-/// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, wilson_th};
+/// use ognlib::algorithm::prime::{wilson_th, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(wilson_th(1).err(), Some(PrimeStatusError));
 /// assert_eq!(wilson_th(13).ok(), Some(PrimeStatus::Prime));
