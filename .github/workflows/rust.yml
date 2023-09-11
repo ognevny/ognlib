@@ -65,10 +65,10 @@ jobs:
             autotools:p
       - name: build
         shell: msys2 {0}
-        run: cargo b -v
+        run: ${MINGW_PREFIX}/bin/cargo b -v
       - name: clippy check
         shell: msys2 {0}
-        run: cargo clippy -- -D warnings
+        run: ${MINGW_PREFIX}/bin/cargo clippy -- -D warnings
       - name: test
         shell: msys2 {0}
-        run: cargo t -v
+        run: ${MINGW_PREFIX}/bin/cargo t -v
