@@ -43,7 +43,6 @@ jobs:
           msystem: ${{ matrix.sys }}
           pacboy: >-
             rust:p
-            gmp:p
             autotools:p
       - name: build
         shell: msys2 {0}
