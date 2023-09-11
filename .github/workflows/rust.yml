@@ -63,6 +63,8 @@ jobs:
             rust:p
             gmp:p
             autotools:p
+      - name: uninstall bundled rust
+        run: rustup self uninstall
       - name: build
         shell: msys2 {0}
         run: ${MINGW_PREFIX}/bin/cargo b -v
