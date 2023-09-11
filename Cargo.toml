@@ -11,7 +11,11 @@ rust-version = "1.65.0"
 
 [dependencies]
 rayon = "1.7"
-rand = "0.8"
+
+[dependencies.rand]
+version = "0.8"
+default-features = false
+features = ["std", "std_rng"]
 
 [dependencies.rug]
 version = "1.22"
