@@ -62,7 +62,9 @@ jobs:
         with:
           update: true  
           msystem: ${{ matrix.sys }}
-          pacboy: rust:p
+          pacboy: >-
+            rust:p
+            gmp:p
       - name: build
         run: cargo b -v
       - name: clippy check
