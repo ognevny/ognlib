@@ -1,11 +1,19 @@
-# ognlib
+<p align="center">
+  <a title="GitHub Actions" href="https://github.com/ognevnydemon/ognlib/actions"><img alt="workflow Status" src="https://img.shields.io/github/actions/workflow/status/ognevnydemon/ognlib/rust.yml?branch=master&longCache=true&style=flat-square&label=build&logo=github"></a><!--
+  -->
+  <a title="Crate" href="https://crates.io/crates/ognlib"><img src="https://img.shields.io/crates/v/ognlib.svg?style=flat-square"></a><!--
+  -->
+  <a title="Docs" href="https://docs.rs/ognlib"><img src="https://docs.rs/ognlib/badge.svg?style=flag-square"></a><!--
+  -->
+  <a title="Open in vscode.dev" href="https://open.vscode.dev/ognevnydemon/ognlib"><img src="https://img.shields.io/badge/Open%20in%20Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=ffffff&style=flat-square"></a><!--
+  -->
+  <a title="Apache 2.0 license" href="https://github.com/ognevnydemon/ognlib/blob/master/LICENSE-APACHE"><img src="https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=flat-square"></a><!--
+  -->
+  <a title="MIT license" href="https://github.com/ognevnydemon/ognlib/blob/master/LICENSE-MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square"></a><!--
+  -->
+</p>
 
-[![CI Status](https://github.com/ognevnydemon/ognlib/workflows/CI/badge.svg?style=flat-square)](https://github.com/ognevnydemon/ognlib/actions)
-[![Crate](https://img.shields.io/crates/v/ognlib.svg?style=flat-square)](https://crates.io/crates/ognlib)
-[![API](https://docs.rs/ognlib/badge.svg?style=flag-square)](https://docs.rs/ognlib)
-[![Open in Visual Studio Code](https://img.shields.io/badge/Open%20in%20Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=ffffff&style=flat-square)](https://open.vscode.dev/ognevnydemon/ognlib)
-[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=flat-square)](https://github.com/ognevnydemon/ognlib/blob/master/LICENSE-APACHE)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/ognevnydemon/ognlib/blob/master/LICENSE-MIT)
+# ognlib
 
 ognlib is created to practice Rust (for me), so you won't find any new code, that can be used for your projects. It contains code for operations under number digits, some power algorithms, radix numbers and some algorithms.
 ## How to build on Windows?
