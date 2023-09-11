@@ -65,6 +65,7 @@ jobs:
           pacboy: >-
             rust:p
             gmp:p
+            m4
       - name: build
         run: cargo b -v
       - name: clippy check
