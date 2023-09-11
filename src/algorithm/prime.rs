@@ -185,7 +185,7 @@ pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
             _ => Integer::from(n) * factorial(n - 1),
         }
     }
-    if (factorial(n - 1) % Integer::from(n)) - Integer::from(n) == Integer::from(-1) {
+    if (factorial(n - 1) % Integer::from(n)) - Integer::from(n) == -1 {
         Ok(PrimeStatus::Prime)
     } else {
         Ok(PrimeStatus::Composite)
