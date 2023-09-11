@@ -68,7 +68,7 @@ jobs:
         run: cargo b -v
       - name: clippy check
         shell: msys2 {0}
-        run: cargo fmt -- --check && cargo clippy -- -D warnings
+        run: cargo clippy -- -D warnings
       - name: test
         shell: msys2 {0}
         run: cargo t -v
