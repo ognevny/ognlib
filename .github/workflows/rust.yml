@@ -53,9 +53,6 @@ jobs:
       fail-fast: false
       matrix:
         sys: [UCRT64, CLANG64]
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
       - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
@@ -67,8 +64,11 @@ jobs:
             gmp:p
             autotools:p
       - name: build
+        shell: msys2 {0}
         run: cargo b -v
       - name: clippy check
-        run: cargo clippy -- -D warnings
+        shell: msys2 {0}
+        run: cargo fmt -- --check && cargo clippy -- -D warnings
       - name: test
+        shell: msys2 {0}
         run: cargo t -v
