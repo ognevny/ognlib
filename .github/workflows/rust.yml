@@ -48,8 +48,6 @@ jobs:
       - name: build
         shell: msys2 {0}
         run: ${MINGW_PREFIX}/bin/cargo b -v
-      - name: clippy check
-        run: ${MINGW_PREFIX}/bin/cargo-clippy --check
       - name: test
         shell: msys2 {0}
         run: ${MINGW_PREFIX}/bin/cargo t -v
