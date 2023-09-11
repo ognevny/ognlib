@@ -18,7 +18,7 @@ jobs:
       matrix:
         toolchain: [stable, beta, nightly]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: switch to ${{ matrix.toolchain }} channel
         run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }} && rustup component add rustfmt clippy
       - name: build
@@ -36,7 +36,7 @@ jobs:
       matrix:
         toolchain: [stable, beta, nightly]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: switch to ${{ matrix.toolchain }} channel
         run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }} && rustup component add clippy
       - name: build
@@ -57,7 +57,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
         with:
           update: true  
