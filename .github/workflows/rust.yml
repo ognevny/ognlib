@@ -34,7 +34,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sys: [UCRT64, CLANG64]
+        include:
+          - { sys: UCRT64, prefix: ucrt64 }
+          - { sys: CLANG64, prefix: clang64 }
     steps:
       - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
@@ -45,9 +47,8 @@ jobs:
             rust:p
             autotools:p
       - name: hack rustup
-        shell: msys2 {0}
         run: |
-          rustup toolchain link msys2 /c/msys64/${MINGW_PREFIX}
+          rustup toolchain link msys2 C:\msys64\${{ matrix.prefix }}
           rustup default msys2
       - name: build
         shell: msys2 {0}
