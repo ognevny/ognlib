@@ -45,8 +45,9 @@ jobs:
             rust:p
             autotools:p
       - name: hack rustup
+        shell: msys2 {0}
         run: |
-          rustup toolchain link msys2 /c/msys64/clang64
+          rustup toolchain link msys2 /c/msys64/${MINGW_PREFIX}
           rustup default msys2
       - name: build
         shell: msys2 {0}
