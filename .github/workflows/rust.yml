@@ -44,9 +44,15 @@ jobs:
           pacboy: >-
             rust:p
             autotools:p
+      - name: hack rustup
+        run: |
+          rustup toolchain install stable-x86_64-pc-windows-gnu
+          rustup default stable-x86_64-pc-windows-gnu
       - name: build
         shell: msys2 {0}
         run: ${MINGW_PREFIX}/bin/cargo b -v
+      - name: clippy
+        run: ${MINGW_PREFIX}/bin/cargo clippy -- -D warnings
       - name: test
         shell: msys2 {0}
         run: ${MINGW_PREFIX}/bin/cargo t -v
