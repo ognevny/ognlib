@@ -46,14 +46,14 @@ jobs:
             autotools:p
       - name: hack rustup
         run: |
-          rustup toolchain install stable-x86_64-pc-windows-gnu
-          rustup default stable-x86_64-pc-windows-gnu
+          rustup toolchain link msys2 /c/msys64/clang64
+          rustup default msys2
       - name: build
         shell: msys2 {0}
-        run: ${MINGW_PREFIX}/bin/cargo b -v
+        run: cargo b -v
       - name: clippy
         shell: msys2 {0}
-        run: ${MINGW_PREFIX}/bin/cargo clippy -- -D warnings
+        run: cargo clippy -- -D warnings
       - name: test
         shell: msys2 {0}
-        run: ${MINGW_PREFIX}/bin/cargo t -v
+        run: cargo t -v
