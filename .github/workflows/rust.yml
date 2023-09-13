@@ -34,9 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - { sys: UCRT64, prefix: ucrt64 }
-          - { sys: CLANG64, prefix: clang64 }
+        sys: [CLANG64, UCRT64]
     steps:
       - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
@@ -48,8 +46,9 @@ jobs:
             autotools:p
       - name: hack rustup
         run: |
-          rustup toolchain link msys2 C:\msys64\${{ matrix.prefix }}
-          rustup default msys2
+          rustup toolchain install x86_64-pc-windows-gnu
+          rustup default stable-x86_64-pc-windows-gnu
+          rustup component add clippy
       - name: build
         shell: msys2 {0}
         run: cargo b -v
