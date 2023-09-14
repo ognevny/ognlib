@@ -1,5 +1,4 @@
-//! A list of sorting algorithms that are written to practice Rust. There are many efficient code,
-//! that are faster than mine, obviously.
+//! Some sort algorithmes
 
 // TODO: write a code for more sorts.
 

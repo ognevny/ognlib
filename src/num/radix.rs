@@ -1,4 +1,6 @@
-//! Structs for radix numbers (String nums and int nums). All numbers are unsigned ints.
+//! Structs for radix numbers (String nums and int nums). All numbers are unsigned integers.
+
+// TODO: write `rug::Integer` implementation.
 
 use std::{cmp::Ordering, error::Error, fmt, ops, str::FromStr};
 
@@ -9,7 +11,7 @@ pub const RADIX: &[char] = &[
 ];
 
 /// Translate [`Radix`] or [`StringRadix`], `integer` or [`String`] number from given base into a
-/// [`usize`] dec number
+/// [`usize`] dec number.
 /// # Examples
 ///
 /// ```

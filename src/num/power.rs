@@ -1,4 +1,4 @@
-//! Power algorithms
+//! Some algorithms with power operations.
 
 use std::ops::{Mul, MulAssign, Rem};
 
@@ -28,7 +28,7 @@ where
     v
 }
 
-/// Modular exponentation
+/// Modular exponentation.
 /// # Examples
 ///
 /// ```

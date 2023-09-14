@@ -1,10 +1,10 @@
 //! Primality tests. These tests are divided into 2 major groups: first group of tests gives exact
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
-//! or not. This code uses enum of 3: Prime, Composite and ProbablyPrime.
+//! or not.
 
 use std::{error::Error, fmt};
 
-/// If number is less than 2, we can't say that number is either prime or composite
+/// If number is less than 2, we can't say that number is either prime or composite.
 #[derive(Debug, PartialEq)]
 pub struct PrimeStatusError;
 

@@ -2,26 +2,26 @@
 //! quick, than `while` loops in these cases.
 
 pub trait Digit {
-    /// Represent number as bool like in C
+    /// Represent number as bool like in C.
     fn as_bool(&self) -> bool;
 
-    /// Calculate size of number (how many digits it contains)
+    /// Calculate size of number (how many digits it contains).
     fn count(self) -> u8;
 
-    /// Checks, if digit is in number
+    /// Checks, if digit is in number.
     fn has_digit(self, k: u8) -> bool;
 
-    /// Reverse number
+    /// Reverse number.
     fn rev(self) -> Self;
 
-    /// Calculate sum of number digits
+    /// Calculate sum of number digits.
     fn sum(self) -> Self;
 }
 
 macro_rules! impl_digit {
     ($($type:ty)*) => {
         $(impl Digit for $type {
-            /// Represent number as bool like in C
+            /// Represent number as bool like in C.
             /// # Examples
             ///
             /// ```
@@ -35,7 +35,7 @@ macro_rules! impl_digit {
                 *self != 0
             }
 
-            /// Calculate sum of number digits
+            /// Calculate sum of number digits.
             /// # Examples
             ///
             /// ```
@@ -54,7 +54,7 @@ macro_rules! impl_digit {
                 sum
             }
 
-            /// Calculate size of number (how many digits it contains)
+            /// Calculate size of number (how many digits it contains).
             /// # Examples
             ///
             /// ```
@@ -73,7 +73,7 @@ macro_rules! impl_digit {
                 count
             }
 
-            /// Reverse number
+            /// Reverse number.
             /// # Examples
             ///
             /// ```
@@ -93,7 +93,7 @@ macro_rules! impl_digit {
                 rev
             }
 
-            /// Checks, if digit is in number
+            /// Checks, if digit is in number.
             /// # Examples
             ///
             /// ```
