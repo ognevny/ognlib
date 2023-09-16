@@ -34,21 +34,32 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sys: [CLANG64, UCRT64]
+        include:
+          - { sys: CLANG64, prefix: clang64 }
+          - { sys: UCRT64, prefix: ucrt64 }
     steps:
       - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
         with:
           update: true  
           msystem: ${{ matrix.sys }}
+          location: 'D:\M'
           pacboy: >-
             rust:p
             autotools:p
       - name: hack rustup
         run: |
-          rustup toolchain install x86_64-pc-windows-gnu
-          rustup default stable-x86_64-pc-windows-gnu
-          rustup component add clippy
+          rustup toolchain link msys2 D:\M\msys64\${{ matrix.prefix }}
+          rustup default msys2
+      - name: Add staging repo 
+        shell: msys2 {0} 
+        run: | 
+          cp /etc/pacman.conf /etc/pacman.conf.bak 
+          grep -qFx '[staging]' /etc/pacman.conf || sed -i '/^# \[staging\]/,/^$/ s|^# ||g' /etc/pacman.conf 
+      - name: Update using staging 
+        run: | 
+          msys2 -c 'pacman --noconfirm -Suuy' 
+          msys2 -c 'pacman --noconfirm -Suu'
       - name: build
         shell: msys2 {0}
         run: cargo b -v
