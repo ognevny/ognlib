@@ -62,7 +62,7 @@ jobs:
           msys2 -c 'pacman --noconfirm -Suu'
       - name: build
         shell: msys2 {0}
-        run: cargo b -v
+        run: cargo b -vv
       - name: clippy
         shell: msys2 {0}
         run: cargo clippy -- -D warnings
