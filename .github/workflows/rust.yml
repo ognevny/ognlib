@@ -2,9 +2,9 @@ name: CI
 
 on: 
   push:
-    paths: ['**.rs', '**.toml', '**.yml', '**.lock']
+    paths: ['**.rs', '**.toml', '**/rust.yml', '**.lock']
   pull_request:
-    paths: ['**.rs', '**.toml', '**.yml', '**.lock']
+    paths: ['**.rs', '**.toml', '**/rust.yml', '**.lock']
 
 env:
   CARGO_TERM_COLOR: always
