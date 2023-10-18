@@ -30,11 +30,11 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 
 /// Factorial of number
 /// # Examples
-/// 
+///
 /// ```
-/// use ognlib::algorithm::extra::factorial;
 /// use num_bigint::BigInt;
-/// 
+/// use ognlib::algorithm::extra::factorial;
+///
 /// let (n1, n2) = (factorial(3), factorial(5));
 /// assert_eq!(n1, BigInt::from(6));
 /// assert_eq!(n2, BigInt::from(120))
