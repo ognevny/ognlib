@@ -174,18 +174,13 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 
 pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    use rug::Integer;
+    use super::extra::factorial;
+    use num_bigint::BigInt;
 
     if n < 2 {
         return Err(PrimeStatusError);
     }
-    fn factorial(n: isize) -> Integer {
-        match n {
-            0 | 1 => Integer::from(1),
-            _ => Integer::from(n) * factorial(n - 1),
-        }
-    }
-    if (factorial(n - 1) % Integer::from(n)) - Integer::from(n) == -1 {
+    if (factorial(n - 1) % BigInt::from(n)) - BigInt::from(n) == BigInt::from(-1) {
         Ok(PrimeStatus::Prime)
     } else {
         Ok(PrimeStatus::Composite)

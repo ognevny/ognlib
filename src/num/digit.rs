@@ -105,7 +105,7 @@ macro_rules! impl_digit {
 
             fn has_digit(mut self, k: u8) -> bool {
                 while self.as_bool() {
-                    if self % 10 == k as $type {
+                    if self % 10 == k.try_into().unwrap() {
                         return true;
                     }
                     self /= 10;
@@ -116,4 +116,4 @@ macro_rules! impl_digit {
     }
 }
 
-impl_digit!(i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+impl_digit!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);

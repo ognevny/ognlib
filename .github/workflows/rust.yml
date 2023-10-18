@@ -44,9 +44,7 @@ jobs:
           update: true  
           msystem: ${{ matrix.sys }}
           location: 'D:\M'
-          pacboy: >-
-            rust:p
-            autotools:p
+          pacboy: rust:p
       - name: hack rustup
         run: |
           rustup toolchain link msys2 D:\M\msys64\${{ matrix.prefix }}

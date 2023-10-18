@@ -16,17 +16,6 @@
 # ognlib
 
 ognlib is created to practice Rust (for me), so you won't find any new code, that can be used for your projects. It contains code for operations under number digits, some power algorithms, radix numbers and some algorithms.
-## How to build on Windows?
-first: this crate DOES NOT compiles for `*-msvc` targets, so use cargo from MSYS2.
-#### Installing MSYS2
-to cleanly install MSYS2 follow these steps:
-- install it from https://msys2.org/ and follow all steps provided
-- install all needed dependencies with
-```console
-$ pacman -S mingw-w64-ucrt-x86_64-rust mingw-w64-ucrt-x86_64-autotools 
-```
-then you can use this crate for your projects.
-IMPORTANT: compile-time may take up to 10 minutes (or even more!), so just be patient.
 ## Contributing
 I'm open for your feedback! If you want to improve my code and explain everything that is new for me, feel free to open PR in GitHub repo.
 ## Why was it created?

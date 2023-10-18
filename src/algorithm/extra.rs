@@ -1,5 +1,7 @@
 //! A list of algorithms that is not categorized currently.
 
+use num_bigint::BigInt;
+
 /// A binary search algorithm (sorted array is requiered).
 /// # Examples
 ///
@@ -24,4 +26,23 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
         }
     }
     None
+}
+
+/// Factorial of number
+/// # Examples
+/// 
+/// ```
+/// use ognlib::algorithm::extra::factorial;
+/// use num_bigint::BigInt;
+/// 
+/// let (n1, n2) = (factorial(3), factorial(5));
+/// assert_eq!(n1, BigInt::from(6));
+/// assert_eq!(n2, BigInt::from(120))
+/// ```
+
+pub fn factorial(n: isize) -> BigInt {
+    match n {
+        0 | 1 => BigInt::from(1),
+        _ => BigInt::from(n) * factorial(n - 1),
+    }
 }
