@@ -5,7 +5,7 @@
 //! features it has.
 
 pub mod num {
-    pub mod digit;
+    pub mod methods;
     pub mod power;
     pub mod radix;
 }

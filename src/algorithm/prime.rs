@@ -36,9 +36,7 @@ impl PrimeStatus {
     ///
     /// [`Prime`]: PrimeStatus::Prime
 
-    pub fn is_prime(self) -> bool {
-        self == PrimeStatus::Prime
-    }
+    pub fn is_prime(self) -> bool { self == PrimeStatus::Prime }
 
     /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
     /// # Examples
@@ -52,9 +50,7 @@ impl PrimeStatus {
     ///
     /// [`Composite`]: PrimeStatus::Composite
 
-    pub fn is_probably_prime(self) -> bool {
-        self != PrimeStatus::Composite
-    }
+    pub fn is_probably_prime(self) -> bool { self != PrimeStatus::Composite }
 
     /// Returns `true` if [`PrimeStatus`] is [`Composite`].
     /// # Examples
@@ -68,9 +64,7 @@ impl PrimeStatus {
     ///
     /// [`Composite`]: PrimeStatus::Composite
 
-    pub fn is_composite(self) -> bool {
-        self == PrimeStatus::Composite
-    }
+    pub fn is_composite(self) -> bool { self == PrimeStatus::Composite }
 }
 
 /// Methods to check prime status.
@@ -96,9 +90,7 @@ impl Prime for isize {
     /// assert!(!455.is_prime());
     /// ```
 
-    fn is_prime(&self) -> bool {
-        wilson_th(*self) == Ok(PrimeStatus::Prime)
-    }
+    fn is_prime(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Prime) }
 
     /// Returns `true` if number is either prime or probably prime.
     /// # Examples
@@ -110,9 +102,7 @@ impl Prime for isize {
     /// assert!(455.is_probably_prime());
     /// ```
 
-    fn is_probably_prime(&self) -> bool {
-        miller_rabin(*self) != Ok(PrimeStatus::Composite)
-    }
+    fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
 
     /// Returns `true` if number is composite.
     /// # Examples
@@ -124,9 +114,7 @@ impl Prime for isize {
     /// assert!(455.is_composite());
     /// ```
 
-    fn is_composite(&self) -> bool {
-        wilson_th(*self) == Ok(PrimeStatus::Composite)
-    }
+    fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
 }
 
 /// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3
@@ -174,13 +162,13 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 
 pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    use super::extra::factorial;
+    use crate::num::methods::Num;
     use num_bigint::BigInt;
 
     if n < 2 {
         return Err(PrimeStatusError);
     }
-    if (factorial(n - 1) % BigInt::from(n)) - BigInt::from(n) == BigInt::from(-1) {
+    if ((n - 1).factorial() % BigInt::from(n)) - BigInt::from(n) == BigInt::from(-1) {
         Ok(PrimeStatus::Prime)
     } else {
         Ok(PrimeStatus::Composite)

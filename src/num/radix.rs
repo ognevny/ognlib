@@ -15,8 +15,10 @@ pub const RADIX: &[char] = &[
 /// # Examples
 ///
 /// ```
-/// use ognlib::dec;
-/// use ognlib::num::radix::{Radix, StringRadix};
+/// use ognlib::{
+///     dec,
+///     num::radix::{Radix, StringRadix},
+/// };
 ///
 /// let n = Radix::from_radix(444, 8).unwrap();
 /// let n_str = StringRadix::from_radix(444, 8).unwrap();
@@ -564,7 +566,7 @@ impl<'a> Radix {
         } else if k > 10 {
             return Err(RadixError::BaseError("base is more than ten"));
         } else {
-            use super::digit::Digit;
+            use super::methods::Num;
 
             for i in k..10 {
                 if n.has_digit(i) {
@@ -729,7 +731,7 @@ impl<'a> Radix {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::num::radix::*;
+    /// use ognlib::num::radix::{Radix, StringRadix};
     ///
     /// let n1 = Radix::from_radix(123, 4).unwrap();
     /// let n2 = Radix::from_radix(444, 5).unwrap();
@@ -837,7 +839,7 @@ impl<'a> StringRadix {
         } else if k > 36 {
             return Err(RadixError::BaseError("base is more than thirty six (36)"));
         } else {
-            use super::digit::Digit;
+            use super::methods::Num;
 
             for i in k..10 {
                 if n.has_digit(i) {

@@ -1,7 +1,9 @@
 //! Functions for operations with number digits. It has already been tested, that Iterators are less
 //! quick, than `while` loops in these cases.
 
-pub trait Digit {
+use num_bigint::BigInt;
+
+pub trait Num {
     /// Represent number as bool like in C.
     fn as_bool(&self) -> bool;
 
@@ -16,16 +18,19 @@ pub trait Digit {
 
     /// Calculate sum of number digits.
     fn sum(self) -> Self;
+
+    /// Calculates factorial of number (result is BigInt)
+    fn factorial(self) -> BigInt;
 }
 
-macro_rules! impl_digit {
+macro_rules! impl_num {
     ($($type:ty)*) => {
-        $(impl Digit for $type {
+        $(impl Num for $type {
             /// Represent number as bool like in C.
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::digit::Digit;
+            /// use ognlib::num::methods::Num;
             ///
             /// assert!(123.as_bool());
             /// assert!(!0.as_bool());
@@ -39,7 +44,7 @@ macro_rules! impl_digit {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::digit::Digit;
+            /// use ognlib::num::methods::Num;
             ///
             /// assert_eq!(123.sum(), 6);
             /// assert_eq!(444.sum(), 12);
@@ -58,7 +63,7 @@ macro_rules! impl_digit {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::digit::Digit;
+            /// use ognlib::num::methods::Num;
             ///
             /// assert_eq!(123.count(), 3);
             /// assert_eq!(1337228.count(), 7);
@@ -77,7 +82,7 @@ macro_rules! impl_digit {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::digit::Digit;
+            /// use ognlib::num::methods::Num;
             ///
             /// assert_eq!(123.rev(), 321);
             /// assert_eq!(444.rev(), 444);
@@ -97,7 +102,7 @@ macro_rules! impl_digit {
             /// # Examples
             ///
             /// ```
-            /// use ognlib::num::digit::Digit;
+            /// use ognlib::num::methods::Num;
             ///
             /// assert_eq!(123.has_digit(2), true);
             /// assert_eq!(444.has_digit(9), false);
@@ -112,8 +117,31 @@ macro_rules! impl_digit {
                 }
                 false
             }
+
+            /// Factorial of number
+            /// # Examples
+            ///
+            /// ```
+            /// use num_bigint::BigInt;
+            /// use ognlib::num::methods::Num;
+            ///
+            /// let (n1, n2) = (3.factorial(), 5.factorial());
+            /// assert_eq!(n1, BigInt::from(6));
+            /// assert_eq!(n2, BigInt::from(120))
+            /// ```
+
+            fn factorial(self) -> BigInt {
+                if self <= 0 {
+                    return BigInt::from(1);
+                }
+                let mut res = BigInt::from(1);
+                for i in (1..=self) {
+                    res *= BigInt::from(i);
+                }
+                res
+            }
         })*
     }
 }
 
-impl_digit!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
