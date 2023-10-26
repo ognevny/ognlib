@@ -16,6 +16,4 @@ pub mod algorithm {
     pub mod sort;
 }
 
-pub mod mcko;
-
 mod macros;
