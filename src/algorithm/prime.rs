@@ -162,8 +162,7 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 
 pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    use crate::num::methods::Num;
-    use num_bigint::BigInt;
+    use {crate::num::methods::Num, num_bigint::BigInt};
 
     if n < 2 {
         return Err(PrimeStatusError);
@@ -197,8 +196,7 @@ pub fn miller_rabin(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
     } else if n % 2 == 0 || n % 3 == 0 {
         return Ok(PrimeStatus::Composite);
     } else {
-        use crate::num::power::modpow;
-        use rand::Rng;
+        use {crate::num::power::modpow, rand::Rng};
 
         let k = ((n as f64).log2().ceil() * (n as f64).log2().ceil()) as isize;
         let (mut t, mut s) = (n - 1, 0);
