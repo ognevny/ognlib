@@ -187,6 +187,35 @@ macro_rules! impl_traits {
                 }
             }
         }
+        impl ops::Add<usize> for $radix {
+            type Output = Self;
+
+            /// Performs a `+` operation ([`usize`] as `rhs`).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let n = Radix::from_radix(123, 4).unwrap();
+            /// let n_str = StringRadix::from_radix(123, 4).unwrap();
+            ///
+            /// let res = (n + 124).to_radix(8).unwrap();
+            /// let res_str = (n_str + 124).to_radix(8).unwrap();
+            ///
+            /// assert_eq!(res, Radix::from_radix(227, 8).unwrap());
+            /// assert_eq!(res_str, StringRadix::from_str_radix("227", 8).unwrap());
+            /// ```
+
+            fn add(self, other: usize) -> Self::Output {
+                Self {
+                    number: Self::from(dec!(self) + other)
+                        .to_radix(self.base)
+                        .unwrap()
+                        .number,
+                    base: self.base,
+                }
+            }
+        }
         impl ops::AddAssign for $radix {
             /// Performs a `+=` operation.
             /// # Examples
@@ -213,10 +242,35 @@ macro_rules! impl_traits {
                 *self = self.clone() + other
             }
         }
+        impl ops::AddAssign<usize> for $radix {
+            /// Performs a `+=` operation ([`usize`] is rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let mut n = Radix::from_radix(123, 4).unwrap();
+            /// let mut n_str = StringRadix::from_radix(123, 4).unwrap();
+            ///
+            /// n += 124;
+            /// n_str += 124;
+            ///
+            /// n = n.to_radix(8).unwrap();
+            /// n_str = n_str.to_radix(8).unwrap();
+            ///
+            /// assert_eq!(n, Radix::from_radix(227, 8).unwrap());
+            /// assert_eq!(n_str, StringRadix::from_radix(227, 8).unwrap());
+            /// ```
+
+            fn add_assign(&mut self, other: usize) {
+                *self = self.clone() + Self::from(other)
+            }
+        }
         impl ops::Sub for $radix {
             type Output = Self;
 
-            /// Performs a `-` operation.
+            /// Performs a `-` operation. Result of the operation is the absolute value. Base of the
+            /// resulting number is the base of the greater number
             /// # Examples
             ///
             /// ```
@@ -254,8 +308,48 @@ macro_rules! impl_traits {
                 }
             }
         }
+        impl ops::Sub<usize> for $radix {
+            type Output = Self;
+
+            /// Performs a `-` operation ([`usize`] is rhs). Result of operation is the absolute
+            /// value. Base of resulting number is the base of greater number
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let n = Radix::from_radix(123, 4).unwrap();
+            /// let n_str = StringRadix::from_radix(123, 4).unwrap();
+            ///
+            /// let res = (n - 124).to_radix(8).unwrap();
+            /// let res_str = (n_str - 124).to_radix(8).unwrap();
+            ///
+            /// assert_eq!(res, Radix::from_radix(141, 8).unwrap());
+            /// assert_eq!(res_str, StringRadix::from_str_radix("141", 8).unwrap());
+            /// ```
+
+            fn sub(self, other: usize) -> Self::Output {
+                if self > Self::from(other) {
+                    Self {
+                        number: Self::from(dec!(self) - other)
+                            .to_radix(self.base)
+                            .unwrap()
+                            .number,
+                        base: self.base,
+                    }
+                } else {
+                    Self {
+                        number: Self::from(other - dec!(self))
+                            .to_radix(10)
+                            .unwrap()
+                            .number,
+                        base: 10,
+                    }
+                }
+            }
+        }
         impl ops::SubAssign for $radix {
-            /// Performs a `-=` operation.
+            /// Performs a `-=` operation. The same rules are applied.
             /// # Examples
             ///
             /// ```
@@ -277,6 +371,30 @@ macro_rules! impl_traits {
             /// ```
 
             fn sub_assign(&mut self, other: Self) {
+                *self = self.clone() - other;
+            }
+        }
+        impl ops::SubAssign<usize> for $radix {
+            /// Performs a `-=` operation ([`usize`] as rhs). The same rules are applied.
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let mut n = Radix::from_radix(123, 4).unwrap();
+            /// let mut n_str = StringRadix::from_radix(123, 4).unwrap();
+            ///
+            /// n -= 124;
+            /// n_str -= 124;
+            ///
+            /// n = n.to_radix(8).unwrap();
+            /// n_str = n_str.to_radix(8).unwrap();
+            ///
+            /// assert_eq!(n, Radix::from_radix(141, 8).unwrap());
+            /// assert_eq!(n_str, StringRadix::from_str_radix("141", 8).unwrap());
+            /// ```
+
+            fn sub_assign(&mut self, other: usize) {
                 *self = self.clone() - other;
             }
         }
@@ -311,6 +429,35 @@ macro_rules! impl_traits {
                 }
             }
         }
+        impl ops::Mul<usize> for $radix {
+            type Output = Self;
+
+            /// Performs a `*` operation ([`usize`] as rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let n = Radix::from_radix(123, 4).unwrap();
+            /// let n_str = StringRadix::from_radix(123, 4).unwrap();
+            ///
+            /// let res = (n * 124).to_radix(8).unwrap();
+            /// let res_str = (n_str * 124).to_radix(8).unwrap();
+            ///
+            /// assert_eq!(res, Radix::from_radix(6424, 8).unwrap());
+            /// assert_eq!(res_str, StringRadix::from_str_radix("6424", 8).unwrap());
+            /// ```
+
+            fn mul(self, other: usize) -> Self::Output {
+                Self {
+                    number: Self::from(dec!(self) * other)
+                        .to_radix(self.base)
+                        .unwrap()
+                        .number,
+                    base: self.base,
+                }
+            }
+        }
         impl ops::MulAssign for $radix {
             /// Performs a `*=` operation.
             /// # Examples
@@ -334,6 +481,30 @@ macro_rules! impl_traits {
             /// ```
 
             fn mul_assign(&mut self, other: Self) {
+                *self = self.clone() * other;
+            }
+        }
+        impl ops::MulAssign<usize> for $radix {
+            /// Performs a `*=` operation ([`usize`] as rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let mut n = Radix::from_radix(123, 4).unwrap();
+            /// let mut n_str = StringRadix::from_radix(123, 4).unwrap();
+            ///
+            /// n *= 124;
+            /// n_str *= 124;
+            ///
+            /// n = n.to_radix(8).unwrap();
+            /// n_str = n_str.to_radix(8).unwrap();
+            ///
+            /// assert_eq!(n, Radix::from_radix(6424, 8).unwrap());
+            /// assert_eq!(n_str, StringRadix::from_str_radix("6424", 8).unwrap());
+            /// ```
+
+            fn mul_assign(&mut self, other: usize) {
                 *self = self.clone() * other;
             }
         }
@@ -368,6 +539,35 @@ macro_rules! impl_traits {
                 }
             }
         }
+        impl ops::Div<usize> for $radix {
+            type Output = Self;
+
+            /// Performs a `/` operation ([`usize`] as rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let n = Radix::from_radix(444, 5).unwrap();
+            /// let n_str = StringRadix::from_radix(444, 5).unwrap();
+            ///
+            /// let res = (n / 27).to_radix(8).unwrap();
+            /// let res_str = (n_str / 27).to_radix(8).unwrap();
+            ///
+            /// assert_eq!(res, Radix::from_radix(4, 8).unwrap());
+            /// assert_eq!(res_str, StringRadix::from_str_radix("4", 8).unwrap());
+            /// ```
+
+            fn div(self, other: usize) -> Self::Output {
+                Self {
+                    number: Self::from(dec!(self) / other)
+                        .to_radix(self.base)
+                        .unwrap()
+                        .number,
+                    base: self.base,
+                }
+            }
+        }
         impl ops::DivAssign for $radix {
             /// Performs a `/=` operation.
             /// # Examples
@@ -391,6 +591,30 @@ macro_rules! impl_traits {
             /// ```
 
             fn div_assign(&mut self, other: Self) {
+                *self = self.clone() / other;
+            }
+        }
+        impl ops::DivAssign<usize> for $radix {
+            /// Performs a `/=` operation ([`usize`] as rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let mut n = Radix::from_radix(444, 5).unwrap();
+            /// let mut n_str = StringRadix::from_radix(444, 5).unwrap();
+            ///
+            /// n /= 27;
+            /// n_str /= 27;
+            ///
+            /// n = n.to_radix(8).unwrap();
+            /// n_str = n_str.to_radix(8).unwrap();
+            ///
+            /// assert_eq!(n, Radix::from_radix(4, 8).unwrap());
+            /// assert_eq!(n_str, StringRadix::from_str_radix("4", 8).unwrap());
+            /// ```
+
+            fn div_assign(&mut self, other: usize) {
                 *self = self.clone() / other;
             }
         }
@@ -425,6 +649,35 @@ macro_rules! impl_traits {
                 }
             }
         }
+        impl ops::Rem<usize> for $radix {
+            type Output = Self;
+
+            /// Performs a `%` operation ([`usize`] as rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let n = Radix::from_radix(444, 5).unwrap();
+            /// let n_str = StringRadix::from_radix(444, 5).unwrap();
+            ///
+            /// let res = (n % 27).to_radix(8).unwrap();
+            /// let res_str = (n_str % 27).to_radix(8).unwrap();
+            ///
+            /// assert_eq!(res, Radix::from_radix(20, 8).unwrap());
+            /// assert_eq!(res_str, StringRadix::from_str_radix("20", 8).unwrap());
+            /// ```
+
+            fn rem(self, other: usize) -> Self::Output {
+                Self {
+                    number: Self::from(dec!(self) % other)
+                        .to_radix(self.base)
+                        .unwrap()
+                        .number,
+                    base: self.base,
+                }
+            }
+        }
         impl ops::RemAssign for $radix {
             /// Performs a `%=` operation.
             /// # Examples
@@ -448,6 +701,30 @@ macro_rules! impl_traits {
             /// ```
 
             fn rem_assign(&mut self, other: Self) {
+                *self = self.clone() % other;
+            }
+        }
+        impl ops::RemAssign<usize> for $radix {
+            /// Performs a `%=` operation ([`usize`] as rhs).
+            /// # Examples
+            ///
+            /// ```
+            /// use ognlib::num::radix::{Radix, StringRadix};
+            ///
+            /// let mut n = Radix::from_radix(444, 5).unwrap();
+            /// let mut n_str = StringRadix::from_radix(444, 5).unwrap();
+            ///
+            /// n %= 27;
+            /// n_str %= 27;
+            ///
+            /// n = n.to_radix(8).unwrap();
+            /// n_str = n_str.to_radix(8).unwrap();
+            ///
+            /// assert_eq!(n, Radix::from_radix(20, 8).unwrap());
+            /// assert_eq!(n_str, StringRadix::from_str_radix("20", 8).unwrap());
+            /// ```
+
+            fn rem_assign(&mut self, other: usize) {
                 *self = self.clone() % other;
             }
         })*
