@@ -25,3 +25,38 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
     }
     None
 }
+
+/// Russian informatics exam has a task that asks you to find the numbers, that matches the "mask"
+/// (for example "123*567?") between lower and upper bounds. Actually, this is not full
+/// implementation, as this also has external condition.
+///
+/// # Example
+///
+/// ```
+/// use ognlib::algorithm::extra::mask_match;
+///
+/// let nums1 = mask_match(100, 200, "1?0");
+/// assert_eq!(
+///     nums1,
+///     vec![100, 110, 120, 130, 140, 150, 160, 170, 180, 190]
+/// );
+///
+/// let nums2 = mask_match(1, 10, "*");
+/// assert_eq!(nums2, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+/// ```
+pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
+    assert!(lower <= upper);
+
+    use regex::Regex;
+
+    let mut vec = Vec::new();
+    let mask = mask.replace('*', ".*");
+    let mask = mask.replace('?', ".?");
+    let re = Regex::new(&("^".to_owned() + &mask + "$")).unwrap();
+    for num in lower..=upper {
+        if re.is_match(&num.to_string()) {
+            vec.push(num)
+        }
+    }
+    vec
+}
