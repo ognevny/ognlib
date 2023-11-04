@@ -10,7 +10,7 @@
 /// ```no_run
 /// use ognlib::read;
 ///
-/// // this creates a variable `x` from the line and parse it into i32
+/// // this creates a variable `x` from the line and parses it into i32
 /// read!(x as i32);
 /// ```
 #[cfg(not(doctest))]
@@ -33,7 +33,7 @@ macro_rules! read {
 /// ```no_run
 /// use ognlib::read_str;
 ///
-/// // this creates a String `x` from the line and trim it
+/// // this creates a String `x` from the line and trims it
 /// read_str!(x);
 /// ```
 #[cfg(not(doctest))]
@@ -57,7 +57,7 @@ macro_rules! read_str {
 /// ```no_run
 /// use ognlib::read_vec;
 ///
-/// // this creates a Vec `x` from the line and parse every number into i32
+/// // this creates a Vec `x` from the line and parses every number into i32
 /// read_vec!(x as i32);
 ///
 /// // this creates a Vec `y` from the line which contains every word
