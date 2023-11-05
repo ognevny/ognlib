@@ -11,7 +11,7 @@ pub trait Num {
     fn count(self) -> u8;
 
     /// Checks, if digit is in number.
-    fn has_digit(self, k: u8) -> bool;
+    fn has_digit(self, k: Self) -> bool;
 
     /// Reverse number.
     fn rev(self) -> Self;
@@ -108,9 +108,9 @@ macro_rules! impl_num {
             /// assert_eq!(444.has_digit(9), false);
             /// ```
 
-            fn has_digit(mut self, k: u8) -> bool {
+            fn has_digit(mut self, k: Self) -> bool {
                 while self.as_bool() {
-                    if self % 10 == k.try_into().unwrap() {
+                    if self % 10 == k {
                         return true;
                     }
                     self /= 10;
@@ -122,8 +122,7 @@ macro_rules! impl_num {
             /// # Examples
             ///
             /// ```
-            /// use num_bigint::BigInt;
-            /// use ognlib::num::methods::Num;
+            /// use {ognlib::num::methods::Num, num_bigint::BigInt};
             ///
             /// let (n1, n2) = (3.factorial(), 5.factorial());
             /// assert_eq!(n1, BigInt::from(6));
@@ -131,14 +130,10 @@ macro_rules! impl_num {
             /// ```
 
             fn factorial(self) -> BigInt {
-                if self <= 0 {
-                    return BigInt::from(1);
+                match self {
+                    0 | 1 => BigInt::from(1),
+                    _ => (2..=self).map(BigInt::from).product(),
                 }
-                let mut res = BigInt::from(1);
-                for i in (1..=self) {
-                    res *= BigInt::from(i);
-                }
-                res
             }
         })*
     }

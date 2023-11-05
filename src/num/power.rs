@@ -1,6 +1,6 @@
 //! Some algorithms with power operations.
 
-use std::ops::{Mul, MulAssign, Rem};
+use std::ops::{Mul, MulAssign, Rem, RemAssign};
 
 /// Algorithm for binary power. Due to fact that returned value has the same type as base, it could
 /// fail with overflowing.
@@ -41,16 +41,18 @@ where
 /// assert_eq!(mod2, 1);
 /// ```
 
-pub fn modpow<N>(b: N, e: usize, m: N) -> N
+pub fn modpow<N>(mut b: N, mut e: usize, m: N) -> N
 where
-    N: Mul<Output = N> + Rem<Output = N> + From<u8> + Copy + Eq,
+    N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq,
 {
-    if m == N::from(1) {
-        return N::from(0);
+    let mut result = N::from(1);
+    b %= m;
+    while e != 0 {
+        if e & 1 == 1 {
+            result = (result * b) % m;
+        }
+        e >>= 1;
+        b = (b * b) % m;
     }
-    let mut c = N::from(1);
-    for _ in 0..e {
-        c = (c * b) % m
-    }
-    c
+    result
 }

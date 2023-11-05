@@ -47,7 +47,7 @@ macro_rules! dec {
 /// [`ParseIntError`] from std.
 ///
 /// [`ParseIntError`]: std::num::ParseIntError
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq)]
 pub enum RadixError {
     #[error("Expected base in range `2..={0}`, found {1}")]
     BaseError(u8, u8),
@@ -828,7 +828,7 @@ impl Radix {
                 use super::methods::Num;
 
                 for i in RADIX.iter().take(10).skip(base.into()) {
-                    if number.has_digit(i.to_string().parse::<u8>()?) {
+                    if number.has_digit(i.to_string().parse()?) {
                         return Err(RadixError::NumberError(*i, base));
                     }
                 }

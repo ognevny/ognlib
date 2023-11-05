@@ -2,19 +2,12 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-use std::{error::Error, fmt};
+use thiserror::Error;
 
 /// If number is less than 2, we can't say that number is either prime or composite.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Error, PartialEq)]
+#[error("This number is neither prime nor composite")]
 pub struct PrimeStatusError;
-
-impl fmt::Display for PrimeStatusError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "This number is neither prime nor composite")
-    }
-}
-
-impl Error for PrimeStatusError {}
 
 #[derive(Debug, PartialEq)]
 pub enum PrimeStatus {
@@ -124,27 +117,28 @@ impl Prime for isize {
 /// ```
 /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
 ///
-/// assert_eq!(sqrtest(1).err(), Some(PrimeStatusError));
+/// assert_eq!(
+///     sqrtest(1).unwrap_err().to_string(),
+///     "This number is neither prime nor composite",
+/// );
 /// assert_eq!(sqrtest(13).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455).ok(), Some(PrimeStatus::Composite));
 /// ```
 
 pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    if n < 2 {
-        return Err(PrimeStatusError);
-    } else if n == 2 {
-        return Ok(PrimeStatus::Prime);
-    } else if n % 2 == 0 {
-        return Ok(PrimeStatus::Composite);
-    } else {
-        let sqrt = (n as f64).sqrt().ceil() as usize;
-        for i in (3..=sqrt).step_by(2) {
-            if n as usize % i == 0 {
-                return Ok(PrimeStatus::Composite);
+    match n {
+        ..=1 => Err(PrimeStatusError),
+        _ if n & 1 == 0 => Ok(PrimeStatus::Composite),
+        _ => {
+            let sqrt = (n as f64).sqrt().ceil() as usize;
+            for i in (3..=sqrt).step_by(2) {
+                if n as usize % i == 0 {
+                    return Ok(PrimeStatus::Composite);
+                }
             }
-        }
+            Ok(PrimeStatus::Prime)
+        },
     }
-    Ok(PrimeStatus::Prime)
 }
 
 /// Wilson's theory. From [Wikipedia](https://en.wikipedia.org/wiki/Wilson%27s_theorem): "Wilson's
@@ -156,18 +150,27 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus, PrimeStatusError};
 ///
-/// assert_eq!(wilson_th(1).err(), Some(PrimeStatusError));
+/// assert_eq!(
+///     wilson_th(1).unwrap_err().to_string(),
+///     "This number is neither prime nor composite",
+/// );
 /// assert_eq!(wilson_th(13).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(wilson_th(444).ok(), Some(PrimeStatus::Composite));
 /// ```
 
 pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    use {crate::num::methods::Num, num_bigint::BigInt};
+    use num_bigint::BigInt;
 
     if n < 2 {
         return Err(PrimeStatusError);
     }
-    if ((n - 1).factorial() % BigInt::from(n)) - BigInt::from(n) == BigInt::from(-1) {
+
+    let mut fact = BigInt::from(1);
+    for i in 2..n {
+        fact = (fact * i) % n;
+    }
+
+    if fact + 1 == BigInt::from(n) {
         Ok(PrimeStatus::Prime)
     } else {
         Ok(PrimeStatus::Composite)
@@ -183,44 +186,46 @@ pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 /// use ognlib::algorithm::prime::{miller_rabin, PrimeStatus, PrimeStatusError};
 ///
-/// assert_eq!(miller_rabin(1).err(), Some(PrimeStatusError));
+/// assert_eq!(
+///     miller_rabin(1).unwrpap_err().to_string(),
+///     "This number is neither prime nor composite",
+/// );
 /// assert_eq!(miller_rabin(13).ok(), Some(PrimeStatus::ProbablyPrime));
 /// assert_eq!(miller_rabin(455).ok(), Some(PrimeStatus::ProbablyPrime));
 /// ```
 
 pub fn miller_rabin(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    if n < 2 {
-        return Err(PrimeStatusError);
-    } else if n == 2 || n == 3 || n == 5 {
-        return Ok(PrimeStatus::Prime);
-    } else if n % 2 == 0 || n % 3 == 0 {
-        return Ok(PrimeStatus::Composite);
-    } else {
-        use {crate::num::power::modpow, rand::Rng};
+    use {crate::num::power::modpow, rand::Rng};
 
-        let k = ((n as f64).log2().ceil() * (n as f64).log2().ceil()) as isize;
-        let (mut t, mut s) = (n - 1, 0);
-        while t % 2 == 0 {
-            t /= 2;
-            s += 1;
-        }
-        for _i in 0..k {
-            let a = rand::thread_rng().gen_range(2..n - 1);
-
-            let mut x = modpow(a, t as usize, n);
-            if x == 1 || x == n - 1 {
-                continue;
+    match n {
+        ..=1 => Err(PrimeStatusError),
+        5 => Ok(PrimeStatus::Prime),
+        _ if n % 2 == 0 || n % 3 == 0 => Ok(PrimeStatus::Composite),
+        _ => {
+            let k = ((n as f64).log2().ceil() * (n as f64).log2().ceil()) as isize;
+            let (mut t, mut s) = (n - 1, 0);
+            while t % 2 == 0 {
+                t /= 2;
+                s += 1;
             }
-            for _j in 0..s - 1 {
-                x = modpow(x, 2, n);
-                if x == 1 {
-                    return Ok(PrimeStatus::Composite);
+            'outer: for _i in 0..k {
+                let a = rand::thread_rng().gen_range(2..n - 1);
+                let mut x = modpow(a, t as usize, n);
+                if x == 1 || x == n - 1 {
+                    continue;
                 }
-                if x == n - 1 {
-                    break;
+                for _j in 0..s - 1 {
+                    x = modpow(x, 2, n);
+                    if x == 1 {
+                        return Ok(PrimeStatus::Composite);
+                    }
+                    if x == n - 1 {
+                        continue 'outer;
+                    }
                 }
+                return Ok(PrimeStatus::Composite);
             }
-        }
+            Ok(PrimeStatus::ProbablyPrime)
+        },
     }
-    Ok(PrimeStatus::ProbablyPrime)
 }

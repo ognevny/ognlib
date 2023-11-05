@@ -69,11 +69,11 @@ macro_rules! read_vec {
     ($out:ident as $type:ty) => {
         let mut inner = String::new();
         std::io::stdin().read_line(&mut inner).unwrap();
-        let $out = inner
+        let $out: <Vec<$type> = inner
             .trim()
             .split_whitespace()
             .map(|s| s.parse::<$type>().unwrap())
-            .collect::<Vec<$type>>();
+            .collect();
     };
     ($out:ident as String) => {
         let mut inner = String::new();
