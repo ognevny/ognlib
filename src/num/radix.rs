@@ -1,6 +1,9 @@
 //! Structs for radix numbers (String nums and int nums). All numbers are unsigned integers.
 
-use std::{cmp::Ordering, error::Error, fmt, ops, str::FromStr};
+use {
+    std::{cmp::Ordering, ops, str::FromStr},
+    thiserror::Error,
+};
 
 /// Reference to slice of chars from '0' to 'Z' (maximum base is 36).
 pub const RADIX: &[char] = &[
@@ -44,24 +47,15 @@ macro_rules! dec {
 /// [`ParseIntError`] from std.
 ///
 /// [`ParseIntError`]: std::num::ParseIntError
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Error)]
 pub enum RadixError {
-    BaseError(&'static str),
-    NumberError(&'static str),
-    ParseError(std::num::ParseIntError),
+    #[error("Expected base in range `2..={0}`, found {1}")]
+    BaseError(u8, u8),
+    #[error("Number contains a digit ({0}) that is more or equal than base ({1})")]
+    NumberError(char, u8),
+    #[error(transparent)]
+    ParseError(#[from] std::num::ParseIntError),
 }
-
-impl fmt::Display for RadixError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            RadixError::BaseError(e) => write!(f, "Base error: {e}"),
-            RadixError::NumberError(e) => write!(f, "Number error: {e}"),
-            RadixError::ParseError(e) => write!(f, "Conversion error: {e}"),
-        }
-    }
-}
-
-impl Error for RadixError {}
 
 /// Radix number, that is usually written as *number*<sub>*base*</sub> (444<sub>8</sub> for
 /// example). Base can be only in range `2..=10`.
@@ -93,9 +87,9 @@ impl FromStr for Radix {
     /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// ```
 
-    fn from_str(n: &str) -> Result<Self, Self::Err> {
+    fn from_str(number: &str) -> Result<Self, Self::Err> {
         Ok(Self {
-            number: n.parse()?,
+            number: number.parse()?,
             base: 10,
         })
     }
@@ -131,9 +125,9 @@ impl FromStr for StringRadix {
     /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// ```
 
-    fn from_str(n: &str) -> Result<Self, Self::Err> {
+    fn from_str(number: &str) -> Result<Self, Self::Err> {
         Ok(Self {
-            number: n.parse::<usize>()?.to_string(),
+            number: number.parse::<usize>()?.to_string(),
             base: 10,
         })
     }
@@ -740,9 +734,9 @@ macro_rules! impl_froms {
             /// assert_eq!(radix.base(), 10);
             /// ```
 
-            fn from(n: $type) -> Self {
+            fn from(number: $type) -> Self {
                 Self {
-                    number: n as usize,
+                    number: number as usize,
                     base: 10,
                 }
             }
@@ -759,9 +753,9 @@ macro_rules! impl_froms {
             /// assert_eq!(radix.number(), "123");
             /// assert_eq!(radix.base(), 10);
 
-            fn from(n: $type) -> Self {
+            fn from(number: $type) -> Self {
                 Self {
-                    number: n.to_string(),
+                    number: number.to_string(),
                     base: 10,
                 }
             }
@@ -790,19 +784,16 @@ impl Radix {
     /// assert_eq!(n.base(), 2);
     ///
     /// let e1 = Radix::new(1).unwrap_err();
-    /// assert_eq!(e1.to_string(), "Base error: base is less than two");
+    /// assert_eq!(e1.to_string(), "Expected base in range `2..=10`, found 1");
     ///
     /// let e2 = Radix::new(33).unwrap_err();
-    /// assert_eq!(e2.to_string(), "Base error: base is more than ten");
+    /// assert_eq!(e2.to_string(), "Expected base in range `2..=10`, found 33");
     /// ```
 
-    pub const fn new(k: u8) -> Result<Self, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 10 {
-            Err(RadixError::BaseError("base is more than ten"))
-        } else {
-            Ok(Self { number: 0, base: k })
+    pub const fn new(base: u8) -> Result<Self, RadixError> {
+        match base {
+            0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+            _ => Ok(Self { number: 0, base }),
         }
     }
 
@@ -826,26 +817,23 @@ impl Radix {
     /// let e = Radix::from_radix(444, 3).unwrap_err();
     /// assert_eq!(
     ///     e.to_string(),
-    ///     "Number error: number contains a digit that is more or equal than base",
+    ///     "Number contains a digit (4) that is more or equal than base (3)",
     /// );
     /// ```
 
-    pub fn from_radix(n: usize, k: u8) -> Result<Self, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 10 {
-            Err(RadixError::BaseError("base is more than ten"))
-        } else {
-            use super::methods::Num;
+    pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
+        match base {
+            0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+            _ => {
+                use super::methods::Num;
 
-            for i in k..10 {
-                if n.has_digit(i) {
-                    return Err(RadixError::NumberError(
-                        "number contains a digit that is more or equal than base",
-                    ));
+                for i in RADIX.iter().take(10).skip(base.into()) {
+                    if number.has_digit(i.to_string().parse::<u8>()?) {
+                        return Err(RadixError::NumberError(*i, base));
+                    }
                 }
-            }
-            Ok(Self { number: n, base: k })
+                Ok(Self { number, base })
+            },
         }
     }
 
@@ -863,7 +851,7 @@ impl Radix {
 
     pub fn number(&self) -> usize { self.number }
 
-    /// Returns a DEC number of [`Radix`]
+    /// Returns a DEC number of [`Radix`]. It's recommended to use [`dec!`] instead.
     ///
     /// # Example
     ///
@@ -932,20 +920,19 @@ impl Radix {
     /// assert_eq!(new2.radix(), (123, 10));
     ///
     /// let e = new2.to_radix(1).unwrap_err();
-    /// assert_eq!(e.to_string(), "Base error: base is less than two");
+    /// assert_eq!(e.to_string(), "Expected base in range `2..=10`, found 1");
     /// ```
 
     pub fn to_radix(self, k: u8) -> Result<Self, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 10 {
-            Err(RadixError::BaseError("base is more than ten"))
-        } else if self.base == 10 {
-            Ok(self.to_radix_from_dec(k)?)
-        } else if k == 10 {
-            Ok(self.to_dec()?)
-        } else {
-            Ok(self.to_dec()?.to_radix_from_dec(k)?)
+        match k {
+            0 | 1 | 11.. => Err(RadixError::BaseError(10, k)),
+            10 => Ok(self.to_dec()?),
+            _ =>
+                if self.base == 10 {
+                    Ok(self.to_radix_from_dec(k)?)
+                } else {
+                    Ok(self.to_dec()?.to_radix_from_dec(k)?)
+                },
         }
     }
 
@@ -995,23 +982,19 @@ impl Radix {
     /// assert_eq!(res.radix(), ("D0", 16));
     ///
     /// let e = n.to_str_radix(42).unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Base error: base is more than thirty six (36)",
-    /// );
+    /// assert_eq!(e.to_string(), "Expected base in range `2..=36`, found 42");
     /// ```
 
     pub fn to_str_radix(self, k: u8) -> Result<StringRadix, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 36 {
-            Err(RadixError::BaseError("base is more than thirty six (36)"))
-        } else if self.base == 10 {
-            Ok(self.to_str_radix_from_dec(k)?)
-        } else if k == 10 {
-            Ok(StringRadix::from(self.to_dec()?.number))
-        } else {
-            Ok(self.to_dec()?.to_str_radix_from_dec(k)?)
+        match k {
+            0 | 1 | 37.. => Err(RadixError::BaseError(36, k)),
+            10 => Ok(StringRadix::from(self.to_dec()?.number)),
+            _ =>
+                if self.base == 10 {
+                    Ok(self.to_str_radix_from_dec(k)?)
+                } else {
+                    Ok(self.to_dec()?.to_str_radix_from_dec(k)?)
+                },
         }
     }
 
@@ -1112,25 +1095,19 @@ impl StringRadix {
     /// assert_eq!(n.base(), 2);
     ///
     /// let e1 = StringRadix::new(1).unwrap_err();
-    /// assert_eq!(e1.to_string(), "Base error: base is less than two");
+    /// assert_eq!(e1.to_string(), "Expected base in range `2..=36`, found 1");
     ///
     /// let e2 = StringRadix::new(255).unwrap_err();
-    /// assert_eq!(
-    ///     e2.to_string(),
-    ///     "Base error: base is more than thirty six (36)",
-    /// );
+    /// assert_eq!(e2.to_string(), "Expected base in range `2..=36`, found 255");
     /// ```
 
-    pub fn new(k: u8) -> Result<Self, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 36 {
-            Err(RadixError::BaseError("base is more than thirty six (36)"))
-        } else {
-            Ok(Self {
+    pub fn new(base: u8) -> Result<Self, RadixError> {
+        match base {
+            0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+            _ => Ok(Self {
                 number: String::from("0"),
-                base: k,
-            })
+                base,
+            }),
         }
     }
 
@@ -1155,27 +1132,24 @@ impl StringRadix {
     /// let e = StringRadix::from_radix("129", 9).unwrap_err();
     /// assert_eq!(
     ///     e.to_string(),
-    ///     "Number error: number contains a digit that is more or equal than base",
+    ///     "Number contains a digit (9) that is more or equal than base (9)",
     /// );
     /// ```
 
-    pub fn from_radix(n: &str, k: u8) -> Result<Self, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 36 {
-            Err(RadixError::BaseError("base is more than thirty six (36)"))
-        } else {
-            for i in RADIX.iter().skip(k.into()) {
-                if n.contains(*i) {
-                    return Err(RadixError::NumberError(
-                        "number contains a digit that is more or equal than base",
-                    ));
+    pub fn from_radix(number: &str, base: u8) -> Result<Self, RadixError> {
+        match base {
+            0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+            _ => {
+                for &i in RADIX.iter().skip(base.into()) {
+                    if number.contains(i) {
+                        return Err(RadixError::NumberError(i, base));
+                    }
                 }
-            }
-            Ok(Self {
-                number: n.to_string(),
-                base: k,
-            })
+                Ok(Self {
+                    number: number.to_string(),
+                    base,
+                })
+            },
         }
     }
 
@@ -1193,7 +1167,7 @@ impl StringRadix {
 
     pub fn number(&self) -> &str { &self.number }
 
-    /// Returns a DEC number of [`StringRadix`]
+    /// Returns a DEC number of [`StringRadix`]. It's recommended to use [`dec!`] instead.
     ///
     /// # Example
     ///
@@ -1257,29 +1231,25 @@ impl StringRadix {
     /// assert_eq!(res.radix(), ("D0", 16));
     ///
     /// let e = res.to_radix(42).unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Base error: base is more than thirty six (36)",
-    /// );
+    /// assert_eq!(e.to_string(), "Expected base in range `2..=36`, found 42");
     /// ```
 
     pub fn to_radix(&mut self, k: u8) -> Result<Self, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 36 {
-            Err(RadixError::BaseError("base is more than thirty six (36)"))
-        } else if k == 10 {
-            Ok(Self::from(self.to_dec()?.number))
-        } else if self.base == 10 {
-            Ok(Self::from_dec(
-                &mut Radix::from(match self.number.parse::<usize>() {
-                    Ok(n) => n,
-                    Err(e) => return Err(RadixError::ParseError(e)),
-                }),
-                k,
-            )?)
-        } else {
-            Ok(Self::from_dec(&mut self.to_dec()?, k)?)
+        match k {
+            0 | 1 | 37.. => Err(RadixError::BaseError(36, k)),
+            10 => Ok(Self::from(self.to_dec()?.number)),
+            _ =>
+                if self.base == 10 {
+                    Ok(Self::from_dec(
+                        &mut Radix::from(match self.number.parse::<usize>() {
+                            Ok(n) => n,
+                            Err(e) => return Err(RadixError::ParseError(e)),
+                        }),
+                        k,
+                    )?)
+                } else {
+                    Ok(Self::from_dec(&mut self.to_dec()?, k)?)
+                },
         }
     }
 
@@ -1323,26 +1293,25 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (110100010100, 2));
     ///
     /// let e = n.to_int_radix(12).unwrap_err();
-    /// assert_eq!(e.to_string(), "Base error: base is more than ten");
+    /// assert_eq!(e.to_string(), "Expected base in range `2..=10`, found 12");
     /// ```
 
     pub fn to_int_radix(&mut self, k: u8) -> Result<Radix, RadixError> {
-        if k < 2 {
-            Err(RadixError::BaseError("base is less than two"))
-        } else if k > 10 {
-            Err(RadixError::BaseError("base is more than ten"))
-        } else if self.base == 10 {
-            Ok(Self::from_dec_to_int(
-                &mut Radix::from(match self.number.parse::<usize>() {
-                    Ok(n) => n,
-                    Err(e) => return Err(RadixError::ParseError(e)),
-                }),
-                k,
-            )?)
-        } else if k == 10 {
-            Ok(self.to_dec()?)
-        } else {
-            Ok(Self::from_dec_to_int(&mut self.to_dec()?, k)?)
+        match k {
+            0 | 1 | 11.. => Err(RadixError::BaseError(10, k)),
+            10 => Ok(self.to_dec()?),
+            _ =>
+                if self.base == 10 {
+                    Ok(Self::from_dec_to_int(
+                        &mut Radix::from(match self.number.parse::<usize>() {
+                            Ok(n) => n,
+                            Err(e) => return Err(RadixError::ParseError(e)),
+                        }),
+                        k,
+                    )?)
+                } else {
+                    Ok(Self::from_dec_to_int(&mut self.to_dec()?, k)?)
+                },
         }
     }
 

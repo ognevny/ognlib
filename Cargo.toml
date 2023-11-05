@@ -13,6 +13,7 @@ rust-version = "1.65.0"
 rayon = "1.8"
 num-bigint = "0.4"
 regex = "1.10"
+thiserror = "1"
 
 [dependencies.rand]
 version = "0.8"
