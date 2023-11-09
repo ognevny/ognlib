@@ -45,8 +45,8 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// assert_eq!(nums2, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 /// ```
 ///
-/// If you wish to apply extra conditions, you can use power of [`Iterator`] for this. And boost the
-/// proccess a bit using [`rayon`]
+/// If you wish to apply extra conditions, you can use power of [`Iterator`] for this. Then boost
+/// the proccess a bit using [`rayon`]
 ///
 /// ```
 /// use {ognlib::algorithm::extra::mask_match, rayon::prelude::*};

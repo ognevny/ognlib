@@ -1,7 +1,7 @@
 //! Functions for operations with number digits. It has already been tested, that Iterators are less
 //! quick, than `while` loops in these cases.
 
-use num_bigint::BigInt;
+use {num_bigint::BigInt, rayon::prelude::*};
 
 pub trait Num {
     /// Represent number as bool like in C.
@@ -132,7 +132,7 @@ macro_rules! impl_num {
             fn factorial(self) -> BigInt {
                 match self {
                     0 | 1 => BigInt::from(1),
-                    _ => (2..=self).map(BigInt::from).product(),
+                    _ => (2..=self).into_par_iter().map(BigInt::from).product(),
                 }
             }
         })*

@@ -2,7 +2,7 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-use thiserror::Error;
+use {rayon::prelude::*, thiserror::Error};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[derive(Debug, Error, PartialEq)]
@@ -128,15 +128,16 @@ impl Prime for isize {
 pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
     match n {
         ..=1 => Err(PrimeStatusError),
-        _ if n & 1 == 0 => Ok(PrimeStatus::Composite),
         _ => {
-            let sqrt = (n as f64).sqrt().ceil() as usize;
-            for i in (3..=sqrt).step_by(2) {
-                if n as usize % i == 0 {
-                    return Ok(PrimeStatus::Composite);
-                }
+            if (3..=(n as f64).sqrt().ceil() as usize)
+                .into_par_iter()
+                .find_any(|&i| n as usize % i == 0)
+                .is_some()
+            {
+                Ok(PrimeStatus::Composite)
+            } else {
+                Ok(PrimeStatus::Prime)
             }
-            Ok(PrimeStatus::Prime)
         },
     }
 }
