@@ -51,8 +51,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// use ognlib::algorithm::extra::mask_match;
 ///
 /// let nums_div_by_169: Vec<usize> = mask_match(1, 1000000000, "123*567?")
-///     .iter()
-///     .cloned()
+///     .into_iter()
 ///     .filter(|&x| x % 169 == 0)
 ///     .collect();
 ///
@@ -68,16 +67,13 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper);
 
-    use regex::Regex;
+    use {rayon::prelude::*, regex::Regex};
 
-    let mut vec = Vec::new();
     let mask = mask.replace('*', ".*");
     let mask = mask.replace('?', ".?");
     let re = Regex::new(&("^".to_owned() + &mask + "$")).unwrap();
-    for num in lower..=upper {
-        if re.is_match(&num.to_string()) {
-            vec.push(num)
-        }
-    }
-    vec
+    (lower..=upper)
+        .into_par_iter()
+        .filter(|num| re.is_match(&num.to_string()))
+        .collect()
 }
