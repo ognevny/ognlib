@@ -44,6 +44,27 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// let nums2 = mask_match(1, 10, "*");
 /// assert_eq!(nums2, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 /// ```
+///
+/// If you wish to apply extra conditions, you can use power of [`Iterator`] for this.
+///
+/// ```
+/// use ognlib::algorithm::extra::mask_match;
+///
+/// let nums_div_by_169: Vec<usize> = mask_match(1, 1000000000, "123*567?")
+///     .iter()
+///     .cloned()
+///     .filter(|&x| x % 169 == 0)
+///     .collect();
+///
+/// assert_eq!(
+///     nums_div_by_169,
+///     vec![
+///         12325677, 12385672, 123157567, 123165679, 123225674, 123326567, 123495567, 123515678,
+///         123575673, 123664567, 123833567, 123865677, 123925672,
+///     ]
+/// )
+/// ```
+
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper);
 

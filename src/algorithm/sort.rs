@@ -15,11 +15,16 @@
 
 pub fn bubble<T: Ord>(arr: &mut [T]) {
     let n = arr.len();
+    let mut swapped = false;
     for i in 0..n {
         for j in 0..n - i - 1 {
             if arr[j] > arr[j + 1] {
-                arr.swap(j + 1, j)
+                arr.swap(j + 1, j);
+                swapped = true;
             }
+        }
+        if !swapped {
+            break;
         }
     }
 }
@@ -184,7 +189,7 @@ pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
 
 pub fn quicksort<T>(arr: &mut [T])
 where
-    T: Ord + Send,
+    T: Ord + Send + Clone,
 {
     if arr.len() <= 1 {
         return;
@@ -197,24 +202,24 @@ where
 
 fn partition<T>(arr: &mut [T]) -> usize
 where
-    T: Ord + Send,
+    T: Ord + Send + Clone,
 {
     let len = arr.len();
-    if len == 0 {
-        return 0;
-    }
     let pivot_index = len / 2;
+    let pivot = arr[pivot_index].clone();
 
-    arr.swap(pivot_index, len - 1);
-
-    let mut store_index = 0;
-    for i in 0..(len - 1) {
-        if arr[i] <= arr[len - 1] {
-            arr.swap(i, store_index);
-            store_index += 1;
+    let mut i = 0;
+    let mut j = len - 1;
+    loop {
+        while arr[i] < pivot {
+            i += 1;
         }
+        while arr[j] > pivot {
+            j -= 1;
+        }
+        if i >= j {
+            return j;
+        }
+        arr.swap(i, j);
     }
-    arr.swap(store_index, len - 1);
-
-    store_index
 }

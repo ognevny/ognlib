@@ -926,24 +926,17 @@ impl Radix {
     pub fn to_radix(self, k: u8) -> Result<Self, RadixError> {
         match k {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, k)),
-            10 => Ok(self.to_dec()?),
+            10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
                     Ok(self.to_radix_from_dec(k)?)
                 } else {
-                    Ok(self.to_dec()?.to_radix_from_dec(k)?)
+                    Ok(self.to_dec().to_radix_from_dec(k)?)
                 },
         }
     }
 
-    fn to_dec(self) -> Result<Self, RadixError> {
-        Ok(Radix::from(
-            match usize::from_str_radix(&self.number.to_string(), self.base.into()) {
-                Ok(n) => n,
-                Err(e) => return Err(RadixError::ParseError(e)),
-            },
-        ))
-    }
+    fn to_dec(self) -> Self { Self::from(dec!(self)) }
 
     fn to_radix_from_dec(mut self, k: u8) -> Result<Self, RadixError> {
         let mut res = String::new();
@@ -951,13 +944,7 @@ impl Radix {
             res.push(RADIX[self.number % (k as usize)]);
             self.number /= k as usize;
         }
-        Radix::from_radix(
-            match res.chars().rev().collect::<String>().parse() {
-                Ok(n) => n,
-                Err(e) => return Err(RadixError::ParseError(e)),
-            },
-            k,
-        )
+        Self::from_radix(res.chars().rev().collect::<String>().parse()?, k)
     }
 
     /// Translate [`Radix`] to another [`StringRadix`].
@@ -988,12 +975,12 @@ impl Radix {
     pub fn to_str_radix(self, k: u8) -> Result<StringRadix, RadixError> {
         match k {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, k)),
-            10 => Ok(StringRadix::from(self.to_dec()?.number)),
+            10 => Ok(StringRadix::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
                     Ok(self.to_str_radix_from_dec(k)?)
                 } else {
-                    Ok(self.to_dec()?.to_str_radix_from_dec(k)?)
+                    Ok(self.to_dec().to_str_radix_from_dec(k)?)
                 },
         }
     }
@@ -1237,30 +1224,20 @@ impl StringRadix {
     pub fn to_radix(&mut self, k: u8) -> Result<Self, RadixError> {
         match k {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, k)),
-            10 => Ok(Self::from(self.to_dec()?.number)),
+            10 => Ok(Self::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
                     Ok(Self::from_dec(
-                        &mut Radix::from(match self.number.parse::<usize>() {
-                            Ok(n) => n,
-                            Err(e) => return Err(RadixError::ParseError(e)),
-                        }),
+                        &mut Radix::from(self.number.parse::<usize>()?),
                         k,
                     )?)
                 } else {
-                    Ok(Self::from_dec(&mut self.to_dec()?, k)?)
+                    Ok(Self::from_dec(&mut self.to_dec(), k)?)
                 },
         }
     }
 
-    fn to_dec(&self) -> Result<Radix, RadixError> {
-        Ok(Radix::from(
-            match usize::from_str_radix(&self.number, self.base.into()) {
-                Ok(n) => n,
-                Err(e) => return Err(RadixError::ParseError(e)),
-            },
-        ))
-    }
+    fn to_dec(&self) -> Radix { Radix::from(dec!(self)) }
 
     fn from_dec(n: &mut Radix, k: u8) -> Result<Self, RadixError> {
         let mut res = String::new();
@@ -1268,7 +1245,7 @@ impl StringRadix {
             res.push(RADIX[n.number % (k as usize)]);
             n.number /= k as usize;
         }
-        StringRadix::from_radix(&res.chars().rev().collect::<String>(), k)
+        Self::from_radix(&res.chars().rev().collect::<String>(), k)
     }
 
     /// Translate [`StringRadix`] to another [`Radix`].
@@ -1299,18 +1276,15 @@ impl StringRadix {
     pub fn to_int_radix(&mut self, k: u8) -> Result<Radix, RadixError> {
         match k {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, k)),
-            10 => Ok(self.to_dec()?),
+            10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
                     Ok(Self::from_dec_to_int(
-                        &mut Radix::from(match self.number.parse::<usize>() {
-                            Ok(n) => n,
-                            Err(e) => return Err(RadixError::ParseError(e)),
-                        }),
+                        &mut Radix::from(self.number.parse::<usize>()?),
                         k,
                     )?)
                 } else {
-                    Ok(Self::from_dec_to_int(&mut self.to_dec()?, k)?)
+                    Ok(Self::from_dec_to_int(&mut self.to_dec(), k)?)
                 },
         }
     }
@@ -1321,13 +1295,7 @@ impl StringRadix {
             res.push(RADIX[n.number % (k as usize)]);
             n.number /= k as usize;
         }
-        Radix::from_radix(
-            match res.chars().rev().collect::<String>().parse() {
-                Ok(n) => n,
-                Err(e) => return Err(RadixError::ParseError(e)),
-            },
-            k,
-        )
+        Radix::from_radix(res.chars().rev().collect::<String>().parse()?, k)
     }
 
     /// Sum 2 [`StringRadix`] to new [`Radix`].

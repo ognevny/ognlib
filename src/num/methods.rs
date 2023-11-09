@@ -19,7 +19,7 @@ pub trait Num {
     /// Calculate sum of number digits.
     fn sum(self) -> Self;
 
-    /// Calculates factorial of number (result is BigInt)
+    /// Calculates factorial of number (result is num_bigint::BigInt).
     fn factorial(self) -> BigInt;
 }
 
@@ -118,7 +118,7 @@ macro_rules! impl_num {
                 false
             }
 
-            /// Factorial of number
+            /// Factorial of number (result is num_bigint::BigInt).
             /// # Examples
             ///
             /// ```
