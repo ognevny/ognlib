@@ -827,12 +827,17 @@ impl Radix {
             _ => {
                 use super::methods::Num;
 
-                for i in RADIX.iter().take(10).skip(base.into()) {
-                    if number.has_digit(i.to_string().parse()?) {
-                        return Err(RadixError::NumberError(*i, base));
+                if let Some(err) = RADIX.iter().take(10).skip(base.into()).find_map(|i| {
+                    if number.has_digit(i.to_string().parse().unwrap()) {
+                        Some(Err(RadixError::NumberError(*i, base)))
+                    } else {
+                        None
                     }
+                }) {
+                    err
+                } else {
+                    Ok(Self { number, base })
                 }
-                Ok(Self { number, base })
             },
         }
     }
@@ -1127,15 +1132,20 @@ impl StringRadix {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             _ => {
-                for &i in RADIX.iter().skip(base.into()) {
+                if let Some(err) = RADIX.iter().skip(base.into()).find_map(|&i| {
                     if number.contains(i) {
-                        return Err(RadixError::NumberError(i, base));
+                        Some(Err(RadixError::NumberError(i, base)))
+                    } else {
+                        None
                     }
+                }) {
+                    err
+                } else {
+                    Ok(Self {
+                        number: number.to_string(),
+                        base,
+                    })
                 }
-                Ok(Self {
-                    number: number.to_string(),
-                    base,
-                })
             },
         }
     }

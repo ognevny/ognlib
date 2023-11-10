@@ -3,7 +3,7 @@
   -->
   <a title="Crate" href="https://crates.io/crates/ognlib"><img src="https://img.shields.io/crates/v/ognlib.svg?style=flat-square"></a><!--
   -->
-  <a title="Docs" href="https://docs.rs/ognlib"><img src="https://docs.rs/ognlib/badge.svg?style=flag-square"></a><!--
+  <a title="Docs" href="https://docs.rs/ognlib"><img src="https://img.shields.io/badge/docs.rs-ognlib-red?style=flat-square"></a><!--
   -->
   <a title="Open in vscode.dev" href="https://open.vscode.dev/ognevnydemon/ognlib"><img src="https://img.shields.io/badge/Open%20in%20Visual%20Studio%20Code-blue?logo=visual-studio-code&logoColor=ffffff&style=flat-square"></a><!--
   -->
