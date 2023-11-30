@@ -48,9 +48,7 @@ jobs:
           update: true
           msystem: ${{ matrix.sys }}
           location: 'D:\M'
-          pacboy: >-
-            rust:p
-            mold:p
+          pacboy: rust:p
       - name: hack rustup
         run: |
           rustup toolchain link msys2 D:\M\msys64\${{ matrix.prefix }}
@@ -66,10 +64,10 @@ jobs:
           msys2 -c 'pacman --noconfirm -Suu'
       - name: build
         shell: msys2 {0}
-        run: mold -run cargo b -v
+        run: cargo b -v
       - name: clippy
         shell: msys2 {0}
-        run: mold -run cargo clippy -- -D warnings
+        run: cargo clippy -- -D warnings
       - name: test
         shell: msys2 {0}
-        run: mold -run cargo t -v
+        run: cargo t -v
