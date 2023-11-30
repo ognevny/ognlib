@@ -759,6 +759,42 @@ macro_rules! impl_froms {
                     base: 10,
                 }
             }
+        }
+        impl From<Radix> for $type {
+            /// Converts a [`Radix`] into primitive int.
+            ///
+            /// # Example
+            ///
+            /// ```
+            /// use ognlib::num::radix::Radix;
+            ///
+            /// let radix = Radix::from_radix(444, 5).unwrap();
+            /// let num: usize = radix.into();
+            ///
+            /// assert_eq!(num, 124);
+            /// ```
+
+            fn from(radix: Radix) -> Self {
+                Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()
+            }
+        }
+        impl From<StringRadix> for $type {
+            /// Converts a [`StringRadix`] into primitive int.
+            ///
+            /// # Example
+            ///
+            /// ```
+            /// use ognlib::num::radix::StringRadix;
+            ///
+            /// let radix = StringRadix::from_radix("444", 5).unwrap();
+            /// let num: usize = radix.into();
+            ///
+            /// assert_eq!(num, 124);
+            /// ```
+
+            fn from(radix: StringRadix) -> Self {
+                Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
+            }
         })*
     };
 }
@@ -1097,7 +1133,7 @@ impl StringRadix {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             _ => Ok(Self {
-                number: String::from("0"),
+                number: "0".to_owned(),
                 base,
             }),
         }
@@ -1142,7 +1178,7 @@ impl StringRadix {
                     err
                 } else {
                     Ok(Self {
-                        number: number.to_string(),
+                        number: number.to_owned(),
                         base,
                     })
                 }
