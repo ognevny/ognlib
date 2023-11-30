@@ -1,6 +1,6 @@
 name: CI
 
-on: 
+on:
   push:
     paths: ['**.rs', '**.toml', '**/rust.yml', '**.lock']
   pull_request:
@@ -19,15 +19,18 @@ jobs:
         toolchain: [stable, beta, nightly]
     steps:
       - uses: actions/checkout@v4
-      - name: switch to ${{ matrix.toolchain }} channel
-        run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }} && rustup component add rustfmt clippy
+      - name: switch to ${{ matrix.toolchain }} channel and download mold
+        run: |
+          rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+          rustup component add rustfmt clippy
+          sudo apt-get update && sudo apt-get install mold
       - name: build
-        run: cargo b -vv
+        run: mold -run cargo b -v
       - name: fmt and clippy check
         if: ${{ matrix.toolchain == 'nightly' }}
-        run: cargo fmt -- --check && cargo clippy -- -D warnings
+        run: cargo fmt -- --check && mold -run cargo clippy -- -D warnings
       - name: test
-        run: cargo t -v
+        run: mold -run cargo t -v
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})
@@ -42,29 +45,31 @@ jobs:
       - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
         with:
-          update: true  
+          update: true
           msystem: ${{ matrix.sys }}
           location: 'D:\M'
-          pacboy: rust:p
+          pacboy: >-
+            rust:p
+            mold:p
       - name: hack rustup
         run: |
           rustup toolchain link msys2 D:\M\msys64\${{ matrix.prefix }}
           rustup default msys2
-      - name: Add staging repo 
-        shell: msys2 {0} 
-        run: | 
-          cp /etc/pacman.conf /etc/pacman.conf.bak 
-          grep -qFx '[staging]' /etc/pacman.conf || sed -i '/^# \[staging\]/,/^$/ s|^# ||g' /etc/pacman.conf 
-      - name: Update using staging 
-        run: | 
-          msys2 -c 'pacman --noconfirm -Suuy' 
+      - name: Add staging repo
+        shell: msys2 {0}
+        run: |
+          cp /etc/pacman.conf /etc/pacman.conf.bak
+          grep -qFx '[staging]' /etc/pacman.conf || sed -i '/^# \[staging\]/,/^$/ s|^# ||g' /etc/pacman.conf
+      - name: Update using staging
+        run: |
+          msys2 -c 'pacman --noconfirm -Suuy'
           msys2 -c 'pacman --noconfirm -Suu'
       - name: build
         shell: msys2 {0}
-        run: cargo b -vv
+        run: mold -run cargo b -v
       - name: clippy
         shell: msys2 {0}
-        run: cargo clippy -- -D warnings
+        run: mold -run cargo clippy -- -D warnings
       - name: test
         shell: msys2 {0}
-        run: cargo t -v
+        run: mold -run cargo t -v
