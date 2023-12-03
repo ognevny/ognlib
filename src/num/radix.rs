@@ -33,7 +33,7 @@ pub const RADIX: &[char] = &[
 #[macro_export]
 macro_rules! dec {
     ($radix:expr) => {
-        usize::from_str_radix(&$radix.number().to_string(), $radix.base().into()).unwrap()
+        Into::<usize>::into($radix)
     };
     ($num:expr, $base:expr) => {
         usize::from_str_radix(&$num.to_string(), $base).unwrap()
@@ -168,7 +168,7 @@ macro_rules! impl_traits {
 
             fn add(self, other: Self) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) + dec!(other))
+                    number: Self::from(dec!(&self) + dec!(&other))
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -197,7 +197,7 @@ macro_rules! impl_traits {
 
             fn add(self, other: usize) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) + other)
+                    number: Self::from(dec!(&self) + other)
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -280,7 +280,7 @@ macro_rules! impl_traits {
             fn sub(self, other: Self) -> Self::Output {
                 if self > other {
                     Self {
-                        number: Self::from(dec!(self) - dec!(other))
+                        number: Self::from(dec!(&self) - dec!(&other))
                             .to_radix(self.base)
                             .unwrap()
                             .number,
@@ -288,7 +288,7 @@ macro_rules! impl_traits {
                     }
                 } else {
                     Self {
-                        number: Self::from(dec!(other) - dec!(self))
+                        number: Self::from(dec!(&other) - dec!(&self))
                             .to_radix(other.base)
                             .unwrap()
                             .number,
@@ -320,7 +320,7 @@ macro_rules! impl_traits {
             fn sub(self, other: usize) -> Self::Output {
                 if self > Self::from(other) {
                     Self {
-                        number: Self::from(dec!(self) - other)
+                        number: Self::from(dec!(&self) - other)
                             .to_radix(self.base)
                             .unwrap()
                             .number,
@@ -410,7 +410,7 @@ macro_rules! impl_traits {
 
             fn mul(self, other: Self) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) * dec!(other))
+                    number: Self::from(dec!(&self) * dec!(&other))
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -439,7 +439,7 @@ macro_rules! impl_traits {
 
             fn mul(self, other: usize) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) * other)
+                    number: Self::from(dec!(&self) * other)
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -520,7 +520,7 @@ macro_rules! impl_traits {
 
             fn div(self, other: Self) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) / dec!(other))
+                    number: Self::from(dec!(&self) / dec!(&other))
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -549,7 +549,7 @@ macro_rules! impl_traits {
 
             fn div(self, other: usize) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) / other)
+                    number: Self::from(dec!(&self) / other)
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -630,7 +630,7 @@ macro_rules! impl_traits {
 
             fn rem(self, other: Self) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) % dec!(other))
+                    number: Self::from(dec!(&self) % dec!(&other))
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -659,7 +659,7 @@ macro_rules! impl_traits {
 
             fn rem(self, other: usize) -> Self::Output {
                 Self {
-                    number: Self::from(dec!(self) % other)
+                    number: Self::from(dec!(&self) % other)
                         .to_radix(self.base)
                         .unwrap()
                         .number,
@@ -793,6 +793,42 @@ macro_rules! impl_froms {
             /// ```
 
             fn from(radix: StringRadix) -> Self {
+                Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
+            }
+        }
+        impl From<&Radix> for $type {
+            /// Converts a [`Radix`] into primitive int.
+            ///
+            /// # Example
+            ///
+            /// ```
+            /// use ognlib::num::radix::Radix;
+            ///
+            /// let radix = Radix::from_radix(444, 5).unwrap();
+            /// let num: usize = radix.into();
+            ///
+            /// assert_eq!(num, 124);
+            /// ```
+
+            fn from(radix: &Radix) -> Self {
+                Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()
+            }
+        }
+        impl From<&StringRadix> for $type {
+            /// Converts a [`StringRadix`] into primitive int.
+            ///
+            /// # Example
+            ///
+            /// ```
+            /// use ognlib::num::radix::StringRadix;
+            ///
+            /// let radix = StringRadix::from_radix("444", 5).unwrap();
+            /// let num: usize = radix.into();
+            ///
+            /// assert_eq!(num, 124);
+            /// ```
+
+            fn from(radix: &StringRadix) -> Self {
                 Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
             }
         })*
@@ -1139,7 +1175,7 @@ impl StringRadix {
         }
     }
 
-    /// Creates a new [`StringRadix`] with given [`usize`] number and base.
+    /// Creates a new [`StringRadix`] with given [`str`] number and base.
     ///
     /// # Error
     /// Returns a [`BaseError`] when base isn't correct or [`NumberError`] when number contains
@@ -1228,7 +1264,7 @@ impl StringRadix {
 
     pub fn base(&self) -> u8 { self.base }
 
-    /// Returns a full [`StringRadix`] as tuple (number, base)
+    /// Returns a full [`StringRadix`] as tuple `(number, base)`.
     ///
     /// # Example
     ///
