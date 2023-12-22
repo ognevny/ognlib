@@ -19,3 +19,11 @@ thiserror = "1"
 version = "0.8"
 default-features = false
 features = ["std", "std_rng"]
+
+[profile.testing]
+inherits = "release"
+debug = true
+debug-assertions = true
+overflow-checks = true
+strip = false
+lto = false
