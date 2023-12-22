@@ -10,9 +10,9 @@ readme = "README.md"
 rust-version = "1.65.0"
 
 [dependencies]
-rayon = "1.8"
-num-bigint = "0.4"
-regex = "1.10"
+rayon = "1"
+num-bigint = "0"
+regex = "1"
 thiserror = "1"
 
 [dependencies.rand]
@@ -22,6 +22,7 @@ features = ["std", "std_rng"]
 
 [profile.testing]
 inherits = "release"
+incremental = false
 debug = true
 debug-assertions = true
 overflow-checks = true
