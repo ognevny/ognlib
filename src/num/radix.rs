@@ -42,9 +42,8 @@ macro_rules! dec {
 
 /// You can have 2 problems with radix numbers: first, base could be incorrect when it's not in
 /// range `2..=10` for [`Radix`] or `2..=36` for [`StringRadix`]; second, number can be incorrect,
-/// this could be caused by fact that number contains digits that are more or equal than base. So
-/// this enum is about these 2 problems. But also there is can be convertsion error, which is just
-/// [`ParseIntError`] from std.
+/// as number contains digits that are more or equal than base. Also there is can be convertsion
+/// error, which is just [`ParseIntError`] from std.
 ///
 /// [`ParseIntError`]: std::num::ParseIntError
 #[derive(Debug, Error, PartialEq)]
@@ -258,8 +257,8 @@ macro_rules! impl_traits {
         impl ops::Sub for $radix {
             type Output = Self;
 
-            /// Performs a `-` operation. Result of the operation is the absolute value. Base of the
-            /// resulting number is the base of the greater number
+            /// Performs a `-` operation. Result of the operation is an absolute value. Base of the
+            /// resulting number is the base of the greater number.
             /// # Examples
             ///
             /// ```
@@ -300,8 +299,8 @@ macro_rules! impl_traits {
         impl ops::Sub<usize> for $radix {
             type Output = Self;
 
-            /// Performs a `-` operation ([`usize`] is rhs). Result of operation is the absolute
-            /// value. Base of resulting number is the base of greater number
+            /// Performs a `-` operation ([`usize`] is rhs). Result of operation is an absolute
+            /// value. Base of resulting number is the base of greater number.
             /// # Examples
             ///
             /// ```
@@ -338,7 +337,10 @@ macro_rules! impl_traits {
             }
         }
         impl ops::SubAssign for $radix {
-            /// Performs a `-=` operation. The same rules are applied.
+            /// Performs a `-=` operation. The same rules as [`Sub`] are applied.
+            ///
+            /// [`Sub`]: Radix::Sub
+            ///
             /// # Examples
             ///
             /// ```
@@ -364,7 +366,10 @@ macro_rules! impl_traits {
             }
         }
         impl ops::SubAssign<usize> for $radix {
-            /// Performs a `-=` operation ([`usize`] as rhs). The same rules are applied.
+            /// Performs a `-=` operation ([`usize`] as rhs). The same rules as [`Sub`] are applied.
+            ///
+            /// [`Sub`]: Radix::Sub
+            ///
             /// # Examples
             ///
             /// ```
@@ -914,7 +919,7 @@ impl Radix {
         }
     }
 
-    /// Returns a number of [`Radix`]
+    /// Returns a number of [`Radix`].
     ///
     /// # Example
     ///
@@ -942,7 +947,7 @@ impl Radix {
 
     pub fn number_dec(&self) -> usize { dec!(self) }
 
-    /// Returns a base of [`Radix`]
+    /// Returns a base of [`Radix`].
     ///
     /// # Example
     ///
@@ -956,7 +961,7 @@ impl Radix {
 
     pub fn base(&self) -> u8 { self.base }
 
-    /// Returns a full [`Radix`] as tuple (number, base)
+    /// Returns a full [`Radix`] as tuple (number, base).
     ///
     /// # Example
     ///
@@ -1222,7 +1227,7 @@ impl StringRadix {
         }
     }
 
-    /// Returns a number of [`StringRadix`]
+    /// Returns a number of [`StringRadix`].
     ///
     /// # Example
     ///
@@ -1250,7 +1255,7 @@ impl StringRadix {
 
     pub fn number_dec(&self) -> String { dec!(self).to_string() }
 
-    /// Returns a base of [`StringRadix`]
+    /// Returns a base of [`StringRadix`].
     ///
     /// # Example
     ///

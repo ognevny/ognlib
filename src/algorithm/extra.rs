@@ -46,7 +46,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// ```
 ///
 /// If you wish to apply extra conditions, you can use power of [`Iterator`] for this. Then boost
-/// the proccess a bit using [`rayon`]
+/// the proccess a bit using [`rayon`].
 ///
 /// ```
 /// use {ognlib::algorithm::extra::mask_match, rayon::prelude::*};

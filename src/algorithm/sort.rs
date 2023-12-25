@@ -2,7 +2,7 @@
 
 // TODO: write a code for more sorts.
 
-/// Bubble sort algorithm
+/// Bubble sort algorithm.
 /// # Examples
 ///
 /// ```
@@ -29,7 +29,7 @@ pub fn bubble<T: Ord>(arr: &mut [T]) {
     }
 }
 
-/// Search sort algorithm
+/// Search sort algorithm.
 /// # Examples
 ///
 /// ```
@@ -55,7 +55,7 @@ pub fn search<T: Ord>(arr: &mut [T]) {
     }
 }
 
-/// Insertion sort algorithm
+/// Insertion sort algorithm.
 /// # Examples
 ///
 /// ```
@@ -78,7 +78,7 @@ pub fn insertion<T: Ord>(arr: &mut [T]) {
     }
 }
 
-/// Merge sort algorithm
+/// Merge sort algorithm.
 /// # Examples
 ///
 /// ```
@@ -137,7 +137,7 @@ where
     slice.as_mut().copy_from_slice(&buffer);
 }
 
-/// Cocktail shaker sort algorithm
+/// Cocktail shaker sort algorithm.
 /// # Examples
 ///
 /// ```
@@ -176,18 +176,18 @@ pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
     }
 }
 
-/// Quick sort algorithm
+/// Quick sort algorithm.
 /// # Examples
 ///
 /// ```
-/// use ognlib::algorithm::sort::quicksort;
+/// use ognlib::algorithm::sort::quick;
 ///
 /// let mut arr = vec![5, 3, 4, 1, 2];
-/// quicksort(&mut arr);
+/// quick(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
 
-pub fn quicksort<T>(arr: &mut [T])
+pub fn quick<T>(arr: &mut [T])
 where
     T: Ord + Send + Clone,
 {
@@ -197,7 +197,7 @@ where
     let pivot = partition(arr);
     let (left, right) = arr.split_at_mut(pivot);
 
-    rayon::join(|| quicksort(left), || quicksort(right));
+    rayon::join(|| quick(left), || quick(right));
 }
 
 fn partition<T>(arr: &mut [T]) -> usize

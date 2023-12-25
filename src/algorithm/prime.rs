@@ -145,7 +145,7 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// Wilson's theory. From [Wikipedia](https://en.wikipedia.org/wiki/Wilson%27s_theorem): "Wilson's
 /// theorem states that a natural number n > 1 is a prime number if and only if the product of all
 /// the positive integers less than n is one less than a multiple of n. That is the factorial
-/// (n - 1)! satisfies (n - 1)! % n == -1."
+/// (n - 1)! satisfies (n - 1)! % n == -1".
 ///
 /// # Examples
 /// ```
