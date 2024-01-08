@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    paths: ['**.rs', '**.toml', '**/rust.yml', '**.lock']
+    paths: ['**.rs', '**.toml', '**/rust.yml']
   pull_request:
-    paths: ['**.rs', '**.toml', '**/rust.yml', '**.lock']
+    paths: ['**.rs', '**.toml', '**/rust.yml']
 
 env:
   CARGO_TERM_COLOR: always
@@ -25,12 +25,12 @@ jobs:
           rustup component add rustfmt clippy
           sudo apt-get update && sudo apt-get install mold
       - name: build
-        run: mold -run cargo b -v --locked --profile testing
+        run: mold -run cargo b -v --profile testing
       - name: fmt and clippy check
         if: ${{ matrix.toolchain == 'nightly' }}
-        run: cargo fmt -- --check && mold -run cargo clippy --locked --profile testing -- -D warnings
+        run: cargo fmt -- --check && mold -run cargo clippy --profile testing -- -D warnings
       - name: test
-        run: mold -run cargo t -v --locked --profile testing
+        run: mold -run cargo t -v --profile testing
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})
@@ -63,8 +63,8 @@ jobs:
           msys2 -c 'pacman --noconfirm -Suuy'
           msys2 -c 'pacman --noconfirm -Suu'
       - name: build
-        run: msys2 -c 'cargo b -v --locked --profile testing'
+        run: msys2 -c 'cargo b -v --profile testing'
       - name: clippy
-        run: msys2 -c 'cargo clippy --locked --profile testing -- -D warnings'
+        run: msys2 -c 'cargo clippy --profile testing -- -D warnings'
       - name: test
-        run: msys2 -c 'cargo t -v --locked --profile testing'
+        run: msys2 -c 'cargo t -v --profile testing'
