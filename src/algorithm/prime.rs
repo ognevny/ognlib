@@ -62,12 +62,13 @@ impl PrimeStatus {
 
 /// Methods to check prime status.
 pub trait Prime {
+    #[cfg(feature = "num-bigint")]
     /// Returns `true` if number is prime.
     fn is_prime(&self) -> bool;
 
     /// Returns `true` if number is either prime or probably prime.
     fn is_probably_prime(&self) -> bool;
-
+    #[cfg(feature = "num-bigint")]
     /// Returns `true` if number is composite.
     fn is_composite(&self) -> bool;
 }
@@ -82,7 +83,7 @@ impl Prime for isize {
     /// assert!(13.is_prime());
     /// assert!(!455.is_prime());
     /// ```
-
+    #[cfg(feature = "num-bigint")]
     fn is_prime(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Prime) }
 
     /// Returns `true` if number is either prime or probably prime.
@@ -106,7 +107,7 @@ impl Prime for isize {
     /// assert!(!13.is_composite());
     /// assert!(455.is_composite());
     /// ```
-
+    #[cfg(feature = "num-bigint")]
     fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
 }
 
@@ -158,7 +159,7 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// assert_eq!(wilson_th(13).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(wilson_th(455).ok(), Some(PrimeStatus::Composite));
 /// ```
-
+#[cfg(feature = "num-bigint")]
 pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
     use num_bigint::BigInt;
 

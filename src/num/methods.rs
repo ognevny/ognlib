@@ -1,8 +1,6 @@
 //! Functions for operations with number digits. It has already been tested, that Iterators are less
 //! quick, than `while` loops in these cases.
 
-use {num_bigint::BigInt, rayon::prelude::*};
-
 pub trait Num {
     /// Represent number as bool like in C.
     fn as_bool(&self) -> bool;
@@ -18,9 +16,9 @@ pub trait Num {
 
     /// Calculate sum of number digits.
     fn sum(self) -> Self;
-
+    #[cfg(feature = "num-bigint")]
     /// Calculates factorial of number (result is [`num_bigint::BigInt`]).
-    fn factorial(self) -> BigInt;
+    fn factorial(self) -> num_bigint::BigInt;
 }
 
 macro_rules! impl_num {
@@ -128,8 +126,9 @@ macro_rules! impl_num {
             /// assert_eq!(n1, BigInt::from(6));
             /// assert_eq!(n2, BigInt::from(120))
             /// ```
-
-            fn factorial(self) -> BigInt {
+            #[cfg(feature = "num-bigint")]
+            fn factorial(self) -> num_bigint::BigInt {
+                use {num_bigint::BigInt, rayon::prelude::*};
                 match self {
                     0 | 1 => BigInt::from(1),
                     _ => (2..=self).into_par_iter().map(BigInt::from).product(),
