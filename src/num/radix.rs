@@ -930,22 +930,8 @@ impl Radix {
     ///
     /// assert_eq!(radix.number(), 444);
     /// ```
-
+    #[inline]
     pub fn number(&self) -> usize { self.number }
-
-    /// Returns a DEC number of [`Radix`]. It's recommended to use [`dec!`] instead.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use ognlib::num::radix::Radix;
-    ///
-    /// let radix = Radix::from_radix(444, 5).unwrap();
-    ///
-    /// assert_eq!(radix.number_dec(), 124);
-    /// ```
-
-    pub fn number_dec(&self) -> usize { dec!(self) }
 
     /// Returns a base of [`Radix`].
     ///
@@ -958,7 +944,7 @@ impl Radix {
     ///
     /// assert_eq!(radix.base(), 5);
     /// ```
-
+    #[inline]
     pub fn base(&self) -> u8 { self.base }
 
     /// Returns a full [`Radix`] as tuple (number, base).
@@ -972,7 +958,7 @@ impl Radix {
     ///
     /// assert_eq!(radix.radix(), (444, 5));
     /// ```
-
+    #[inline]
     pub fn radix(&self) -> (usize, u8) { (self.number, self.base) }
 
     /// Translate [`Radix`] to another [`Radix`].
@@ -1238,22 +1224,8 @@ impl StringRadix {
     ///
     /// assert_eq!(radix.number(), "444");
     /// ```
-
+    #[inline]
     pub fn number(&self) -> &str { &self.number }
-
-    /// Returns a DEC number of [`StringRadix`]. It's recommended to use [`dec!`] instead.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use ognlib::num::radix::StringRadix;
-    ///
-    /// let radix = StringRadix::from_radix("444", 5).unwrap();
-    ///
-    /// assert_eq!(radix.number_dec(), "124");
-    /// ```
-
-    pub fn number_dec(&self) -> String { dec!(self).to_string() }
 
     /// Returns a base of [`StringRadix`].
     ///
@@ -1266,7 +1238,7 @@ impl StringRadix {
     ///
     /// assert_eq!(radix.base(), 5);
     /// ```
-
+    #[inline]
     pub fn base(&self) -> u8 { self.base }
 
     /// Returns a full [`StringRadix`] as tuple `(number, base)`.
@@ -1280,7 +1252,7 @@ impl StringRadix {
     ///
     /// assert_eq!(radix.radix(), ("444", 5));
     /// ```
-
+    #[inline]
     pub fn radix(&self) -> (&str, u8) { (&self.number, self.base) }
 
     /// Translate [`StringRadix`] to another [`StringRadix`].
