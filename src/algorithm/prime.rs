@@ -28,7 +28,7 @@ impl PrimeStatus {
     /// ```
     ///
     /// [`Prime`]: PrimeStatus::Prime
-
+    #[inline]
     pub fn is_prime(self) -> bool { self == PrimeStatus::Prime }
 
     /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
@@ -42,7 +42,7 @@ impl PrimeStatus {
     /// ```
     ///
     /// [`Composite`]: PrimeStatus::Composite
-
+    #[inline]
     pub fn is_probably_prime(self) -> bool { self != PrimeStatus::Composite }
 
     /// Returns `true` if [`PrimeStatus`] is [`Composite`].
@@ -56,7 +56,7 @@ impl PrimeStatus {
     /// ```
     ///
     /// [`Composite`]: PrimeStatus::Composite
-
+    #[inline]
     pub fn is_composite(self) -> bool { self == PrimeStatus::Composite }
 }
 
@@ -84,6 +84,7 @@ impl Prime for isize {
     /// assert!(!455.is_prime());
     /// ```
     #[cfg(feature = "num-bigint")]
+    #[inline]
     fn is_prime(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Prime) }
 
     /// Returns `true` if number is either prime or probably prime.
@@ -95,7 +96,7 @@ impl Prime for isize {
     /// assert!(13.is_probably_prime());
     /// assert!(7.is_probably_prime());
     /// ```
-
+    #[inline]
     fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
 
     /// Returns `true` if number is composite.
@@ -108,6 +109,7 @@ impl Prime for isize {
     /// assert!(455.is_composite());
     /// ```
     #[cfg(feature = "num-bigint")]
+    #[inline]
     fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
 }
 

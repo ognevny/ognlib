@@ -738,7 +738,7 @@ macro_rules! impl_froms {
             /// assert_eq!(radix.number(), 123);
             /// assert_eq!(radix.base(), 10);
             /// ```
-
+            #[inline]
             fn from(number: $type) -> Self {
                 Self {
                     number: number as usize,
@@ -757,7 +757,7 @@ macro_rules! impl_froms {
             /// let radix = StringRadix::from(123);
             /// assert_eq!(radix.number(), "123");
             /// assert_eq!(radix.base(), 10);
-
+            #[inline]
             fn from(number: $type) -> Self {
                 Self {
                     number: number.to_string(),
@@ -778,7 +778,7 @@ macro_rules! impl_froms {
             ///
             /// assert_eq!(num, 124);
             /// ```
-
+            #[inline]
             fn from(radix: Radix) -> Self {
                 Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()
             }
@@ -796,7 +796,7 @@ macro_rules! impl_froms {
             ///
             /// assert_eq!(num, 124);
             /// ```
-
+            #[inline]
             fn from(radix: StringRadix) -> Self {
                 Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
             }
@@ -814,7 +814,7 @@ macro_rules! impl_froms {
             ///
             /// assert_eq!(num, 124);
             /// ```
-
+            #[inline]
             fn from(radix: &Radix) -> Self {
                 Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()
             }
@@ -832,7 +832,7 @@ macro_rules! impl_froms {
             ///
             /// assert_eq!(num, 124);
             /// ```
-
+            #[inline]
             fn from(radix: &StringRadix) -> Self {
                 Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
             }
@@ -1004,6 +1004,7 @@ impl Radix {
         }
     }
 
+    #[inline]
     fn to_dec(self) -> Self { Self::from(dec!(self)) }
 
     fn to_radix_from_dec(mut self, k: u8) -> Result<Self, RadixError> {
@@ -1080,7 +1081,7 @@ impl Radix {
     /// let res = Radix::add_to_str(n1, n2, 16).unwrap();
     /// assert_eq!(res.radix(), ("97", 16));
     /// ```
-
+    #[inline]
     pub fn add_to_str(self, a: Self, k: u8) -> Result<StringRadix, RadixError> {
         (self + a).to_str_radix(k)
     }
@@ -1103,7 +1104,7 @@ impl Radix {
     /// let res = Radix::sub_to_str(n2, n1, 16).unwrap();
     /// assert_eq!(res.radix(), ("61", 16));
     /// ```
-
+    #[inline]
     pub fn sub_to_str(self, a: Self, k: u8) -> Result<StringRadix, RadixError> {
         (self - a).to_str_radix(k)
     }
@@ -1126,7 +1127,7 @@ impl Radix {
     /// let res = Radix::mul_to_str(n1, n2, 16).unwrap();
     /// assert_eq!(res.radix(), ("D14", 16));
     /// ```
-
+    #[inline]
     pub fn mul_to_str(self, a: Self, k: u8) -> Result<StringRadix, RadixError> {
         (self * a).to_str_radix(k)
     }
@@ -1296,6 +1297,7 @@ impl StringRadix {
         }
     }
 
+    #[inline]
     fn to_dec(&self) -> Radix { Radix::from(dec!(self)) }
 
     fn from_dec(n: &mut Radix, k: u8) -> Result<Self, RadixError> {
@@ -1375,7 +1377,7 @@ impl StringRadix {
     /// let res = StringRadix::add_to_int(n1, n2, 8).unwrap();
     /// assert_eq!(res.radix(), (227, 8));
     /// ```
-
+    #[inline]
     pub fn add_to_int(self, a: Self, k: u8) -> Result<Radix, RadixError> {
         (self + a).to_int_radix(k)
     }
@@ -1398,7 +1400,7 @@ impl StringRadix {
     /// let res = StringRadix::sub_to_int(n2, n1, 8).unwrap();
     /// assert_eq!(res.radix(), (141, 8));
     /// ```
-
+    #[inline]
     pub fn sub_to_int(self, a: Self, k: u8) -> Result<Radix, RadixError> {
         (self - a).to_int_radix(k)
     }
@@ -1421,7 +1423,7 @@ impl StringRadix {
     /// let res = StringRadix::mul_to_int(n1, n2, 8).unwrap();
     /// assert_eq!(res.radix(), (6424, 8));
     /// ```
-
+    #[inline]
     pub fn mul_to_int(self, a: Self, k: u8) -> Result<Radix, RadixError> {
         (self * a).to_int_radix(k)
     }

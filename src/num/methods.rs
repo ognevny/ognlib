@@ -36,12 +36,12 @@ macro_rules! impl_num {
             /// assert!(123.as_bool());
             /// assert!(!0.as_bool());
             /// ```
-
+            #[inline]
             fn as_bool(&self) -> bool {
                 *self != 0
             }
 
-            /// Calculate sum of number digits.
+            /// Calculate sum of number digits and consumes the number.
             /// # Examples
             ///
             /// ```
@@ -69,14 +69,9 @@ macro_rules! impl_num {
             /// assert_eq!(123.count(), 3);
             /// assert_eq!(1337228.count(), 7);
             /// ```
-
-            fn count(mut self) -> u8 {
-                let mut count = 0;
-                while self.as_bool() {
-                    self /= 10;
-                    count += 1;
-                }
-                count
+            #[inline]
+            fn count(self) -> u8 {
+                ((self as f64).log10() + 1.0) as u8
             }
 
             /// Reverse number.
@@ -99,7 +94,7 @@ macro_rules! impl_num {
                 rev
             }
 
-            /// Checks, if digit is in number.
+            /// Checks, if digit is in number and consumes the number.
             /// # Examples
             ///
             /// ```
