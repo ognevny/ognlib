@@ -72,7 +72,7 @@ macro_rules! impl_num {
             /// ```
             #[inline]
             fn count(self) -> u8 {
-                ((self as f64).log10() + 1.0) as u8
+                (self.ilog10() + 1) as u8
             }
 
             /// Reverse number.
