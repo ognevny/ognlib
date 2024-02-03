@@ -14,9 +14,7 @@ use std::ops::{Mul, MulAssign, Rem, RemAssign};
 /// ```
 
 pub fn bin_pow<N>(mut b: N, mut e: u8) -> N
-where
-    N: MulAssign + From<u8> + Copy,
-{
+where N: MulAssign + From<u8> + Copy {
     let mut v = N::from(1);
     while e != 0 {
         if (e & 1) != 0 {
@@ -42,9 +40,7 @@ where
 /// ```
 
 pub fn modpow<N>(mut b: N, mut e: usize, m: N) -> N
-where
-    N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq,
-{
+where N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq {
     let mut result = N::from(1);
     b %= m;
     while e != 0 {

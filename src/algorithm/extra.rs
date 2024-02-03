@@ -36,10 +36,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// use ognlib::algorithm::extra::mask_match;
 ///
 /// let nums1 = mask_match(100, 200, "1?0");
-/// assert_eq!(
-///     nums1,
-///     vec![100, 110, 120, 130, 140, 150, 160, 170, 180, 190]
-/// );
+/// assert_eq!(nums1, vec![100, 110, 120, 130, 140, 150, 160, 170, 180, 190]);
 ///
 /// let nums2 = mask_match(1, 10, "*");
 /// assert_eq!(nums2, vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -51,18 +48,13 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// ```
 /// use {ognlib::algorithm::extra::mask_match, rayon::prelude::*};
 ///
-/// let nums_div_by_169: Vec<usize> = mask_match(1, 1000000000, "123*567?")
-///     .into_par_iter()
-///     .filter(|&x| x % 169 == 0)
-///     .collect();
+/// let nums_div_by_169: Vec<usize> =
+///     mask_match(1, 1000000000, "123*567?").into_par_iter().filter(|&x| x % 169 == 0).collect();
 ///
-/// assert_eq!(
-///     nums_div_by_169,
-///     vec![
-///         12325677, 12385672, 123157567, 123165679, 123225674, 123326567, 123495567, 123515678,
-///         123575673, 123664567, 123833567, 123865677, 123925672,
-///     ]
-/// )
+/// assert_eq!(nums_div_by_169, vec![
+///     12325677, 12385672, 123157567, 123165679, 123225674, 123326567, 123495567, 123515678,
+///     123575673, 123664567, 123833567, 123865677, 123925672,
+/// ])
 /// ```
 
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
@@ -73,8 +65,5 @@ pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     let mask = mask.replace('*', ".*");
     let mask = mask.replace('?', ".?");
     let re = Regex::new(&("^".to_owned() + &mask + "$")).unwrap();
-    (lower..=upper)
-        .into_par_iter()
-        .filter(|num| re.is_match(&num.to_string()))
-        .collect()
+    (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
 }
