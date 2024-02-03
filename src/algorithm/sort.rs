@@ -90,7 +90,9 @@ pub fn insertion<T: Ord>(arr: &mut [T]) {
 /// ```
 
 pub fn merge<T>(slice: &mut [T])
-where T: Ord + Clone + Copy + Send + Sync {
+where
+    T: Ord + Clone + Copy + Send + Sync,
+{
     let len = slice.len();
     if len < 2 {
         return;
@@ -186,7 +188,9 @@ pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
 /// ```
 
 pub fn quick<T>(arr: &mut [T])
-where T: Ord + Send + Clone {
+where
+    T: Ord + Send + Clone,
+{
     if arr.len() <= 1 {
         return;
     }
@@ -197,7 +201,9 @@ where T: Ord + Send + Clone {
 }
 
 fn partition<T>(arr: &mut [T]) -> usize
-where T: Ord + Send + Clone {
+where
+    T: Ord + Send + Clone,
+{
     let len = arr.len();
     let pivot_index = len / 2;
     let pivot = arr[pivot_index].clone();

@@ -1,7 +1,8 @@
 //! Functions for operations with number digits. It has already been tested, that Iterators are less
 //! quick, than `while` loops in these cases.
 
-#[cfg(feature = "num-bigint")] use {num_bigint::BigInt, rayon::prelude::*};
+#[cfg(feature = "num-bigint")]
+use {num_bigint::BigInt, rayon::prelude::*};
 
 pub trait Num {
     /// Represent number as bool like in C.

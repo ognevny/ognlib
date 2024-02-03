@@ -120,7 +120,10 @@ impl Prime for isize {
 /// ```
 /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
 ///
-/// assert_eq!(sqrtest(1).unwrap_err().to_string(), "This number is neither prime nor composite",);
+/// assert_eq!(
+///     sqrtest(1).unwrap_err().to_string(),
+///     "This number is neither prime nor composite",
+/// );
 /// assert_eq!(sqrtest(13).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455).ok(), Some(PrimeStatus::Composite));
 /// ```
@@ -171,7 +174,11 @@ pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
         fact = (fact * i) % n;
     }
 
-    if fact + 1 == BigInt::from(n) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+    if fact + 1 == BigInt::from(n) {
+        Ok(PrimeStatus::Prime)
+    } else {
+        Ok(PrimeStatus::Composite)
+    }
 }
 
 /// Miller-Rabin's prime test. From
