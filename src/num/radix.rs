@@ -87,10 +87,7 @@ impl FromStr for Radix {
     /// ```
 
     fn from_str(number: &str) -> Result<Self, Self::Err> {
-        Ok(Self {
-            number: number.parse()?,
-            base: 10,
-        })
+        Ok(Self { number: number.parse()?, base: 10 })
     }
 }
 
@@ -125,10 +122,7 @@ impl FromStr for StringRadix {
     /// ```
 
     fn from_str(number: &str) -> Result<Self, Self::Err> {
-        Ok(Self {
-            number: number.parse::<usize>()?.to_string(),
-            base: 10,
-        })
+        Ok(Self { number: number.parse::<usize>()?.to_string(), base: 10 })
     }
 }
 
@@ -892,10 +886,7 @@ impl Radix {
     /// assert_eq!(n.base(), 2);
     ///
     /// let e = Radix::from_radix(444, 3).unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Number contains a digit (4) that is more or equal than base (3)",
-    /// );
+    /// assert_eq!(e.to_string(), "Number contains a digit (4) that is more or equal than base (3)",);
     /// ```
 
     pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
@@ -1160,10 +1151,7 @@ impl StringRadix {
     pub fn new(base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
-            _ => Ok(Self {
-                number: "0".to_owned(),
-                base,
-            }),
+            _ => Ok(Self { number: "0".to_owned(), base }),
         }
     }
 
@@ -1186,10 +1174,7 @@ impl StringRadix {
     /// assert_eq!(n.base(), 2);
     ///
     /// let e = StringRadix::from_radix("129", 9).unwrap_err();
-    /// assert_eq!(
-    ///     e.to_string(),
-    ///     "Number contains a digit (9) that is more or equal than base (9)",
-    /// );
+    /// assert_eq!(e.to_string(), "Number contains a digit (9) that is more or equal than base (9)",);
     /// ```
 
     pub fn from_radix(number: &str, base: u8) -> Result<Self, RadixError> {
@@ -1205,10 +1190,7 @@ impl StringRadix {
                 }) {
                     err
                 } else {
-                    Ok(Self {
-                        number: number.to_owned(),
-                        base,
-                    })
+                    Ok(Self { number: number.to_owned(), base })
                 }
             },
         }
@@ -1287,10 +1269,7 @@ impl StringRadix {
             10 => Ok(Self::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
-                    Ok(Self::from_dec(
-                        &mut Radix::from(self.number.parse::<usize>()?),
-                        k,
-                    )?)
+                    Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), k)?)
                 } else {
                     Ok(Self::from_dec(&mut self.to_dec(), k)?)
                 },
@@ -1340,10 +1319,7 @@ impl StringRadix {
             10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
-                    Ok(Self::from_dec_to_int(
-                        &mut Radix::from(self.number.parse::<usize>()?),
-                        k,
-                    )?)
+                    Ok(Self::from_dec_to_int(&mut Radix::from(self.number.parse::<usize>()?), k)?)
                 } else {
                     Ok(Self::from_dec_to_int(&mut self.to_dec(), k)?)
                 },
