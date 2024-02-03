@@ -41,7 +41,7 @@ macro_rules! impl_num {
                 *self != 0
             }
 
-            /// Calculate sum of number digits and consumes the number.
+            /// Calculate sum of number digits.
             /// # Examples
             ///
             /// ```
@@ -51,11 +51,12 @@ macro_rules! impl_num {
             /// assert_eq!(444.sum(), 12);
             /// ```
 
-            fn sum(mut self) -> Self {
+            fn sum(self) -> Self {
+                let mut n = self;
                 let mut sum = 0;
-                while self.as_bool() {
-                    sum += self % 10;
-                    self /= 10;
+                while n.as_bool() {
+                    sum += n % 10;
+                    n /= 10;
                 }
                 sum
             }
@@ -84,17 +85,18 @@ macro_rules! impl_num {
             /// assert_eq!(444.rev(), 444);
             /// ```
 
-            fn rev(mut self) -> Self {
+            fn rev(self) -> Self {
+                let mut n = self;
                 let mut rev = 0;
-                while self.as_bool() {
+                while n.as_bool() {
                     rev *= 10;
-                    rev += self % 10;
-                    self /= 10;
+                    rev += n % 10;
+                    n /= 10;
                 }
                 rev
             }
 
-            /// Checks, if digit is in number and consumes the number.
+            /// Checks, if digit is in number.
             /// # Examples
             ///
             /// ```
@@ -104,12 +106,13 @@ macro_rules! impl_num {
             /// assert_eq!(444.has_digit(9), false);
             /// ```
 
-            fn has_digit(mut self, k: Self) -> bool {
-                while self.as_bool() {
-                    if self % 10 == k {
+            fn has_digit(self, k: Self) -> bool {
+                let mut n = self;
+                while n.as_bool() {
+                    if n % 10 == k {
                         return true;
                     }
-                    self /= 10;
+                    n /= 10;
                 }
                 false
             }
