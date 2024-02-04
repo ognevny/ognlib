@@ -28,9 +28,28 @@ jobs:
         run: mold -run cargo b -v --profile testing
       - name: fmt and clippy check
         if: ${{ matrix.toolchain == 'nightly' }}
-        run: cargo fmt -- --check && mold -run cargo clippy --profile testing -- -D warnings
+        run: cargo fmt -- --check; mold -run cargo clippy --profile testing -- -D warnings
       - name: test
         run: mold -run cargo t -v --profile testing
+
+  macos:
+    name: full check on macos (${{ matrix.toolchain }} channel)
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [stable, beta, nightly]
+    steps:
+      - uses: actions/checkout@v4
+      - name: switch to ${{ matrix.toolchain }} channel
+        run: |
+          rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+          rustup component add rustfmt clippy
+      - name: build
+        run: cargo b -v --profile testing
+      - name: fmt and clippy check
+        if: ${{ matrix.toolchain == 'nightly' }}
+        run: cargo fmt -- --check; cargo clippy --profile testing -- -D warnings
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})
