@@ -887,11 +887,9 @@ impl Radix {
                     .take(10)
                     .skip(base.into())
                     .find_map(|i| {
-                        if number.has_digit(i.to_string().parse().unwrap()) {
-                            Some(Err(RadixError::NumberError(*i, base)))
-                        } else {
-                            None
-                        }
+                        number
+                            .has_digit(i.to_string().parse().unwrap())
+                            .then_some(Err(RadixError::NumberError(*i, base)))
                     })
                     .map_or(Ok(Self { number, base }), |err| err)
             },
@@ -1173,7 +1171,7 @@ impl StringRadix {
             _ => RADIX
                 .iter()
                 .skip(base.into())
-                .find_map(|&i| number.contains(i).then(|| Err(RadixError::NumberError(i, base))))
+                .find_map(|&i| number.contains(i).then_some(Err(RadixError::NumberError(i, base))))
                 .map_or(Ok(Self { number: number.to_owned(), base }), |err| err),
         }
     }
