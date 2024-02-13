@@ -12,12 +12,11 @@
 /// bubble(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-
 pub fn bubble<T: Ord>(arr: &mut [T]) {
-    let n = arr.len();
+    let len = arr.len();
     let mut swapped = false;
-    for i in 0..n {
-        for j in 0..n - i - 1 {
+    for i in 0..len {
+        for j in 0..len - i - 1 {
             if arr[j] > arr[j + 1] {
                 arr.swap(j + 1, j);
                 swapped = true;
@@ -39,18 +38,17 @@ pub fn bubble<T: Ord>(arr: &mut [T]) {
 /// search(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-
 pub fn search<T: Ord>(arr: &mut [T]) {
-    let n = arr.len();
-    for i in 0..n - 1 {
+    let len = arr.len();
+    for i in 0..len - 1 {
         let mut i_min = i;
-        for j in i + 1..n {
+        for j in i + 1..len {
             if arr[j] < arr[i_min] {
-                i_min = j
+                i_min = j;
             }
         }
         if i_min != i {
-            arr.swap(i, i_min)
+            arr.swap(i, i_min);
         }
     }
 }
@@ -65,7 +63,6 @@ pub fn search<T: Ord>(arr: &mut [T]) {
 /// insertion(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-
 pub fn insertion<T: Ord>(arr: &mut [T]) {
     for i in 1..arr.len() {
         let key = &arr[i];
@@ -88,7 +85,6 @@ pub fn insertion<T: Ord>(arr: &mut [T]) {
 /// merge(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-
 pub fn merge<T>(slice: &mut [T])
 where T: Ord + Clone + Copy + Send + Sync {
     let len = slice.len();
@@ -103,6 +99,7 @@ where T: Ord + Clone + Copy + Send + Sync {
     merging(slice);
 }
 
+/// merge slice
 fn merging<S, T>(slice: &mut S)
 where
     S: AsMut<[T]> + AsRef<[T]> + Sync + Send + ?Sized,
@@ -145,7 +142,6 @@ where
 /// cocktail_shaker(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-
 pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
     let (mut swapped, mut left, mut right) = (true, 0, arr.len() - 1);
 
@@ -184,7 +180,6 @@ pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
 /// quick(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-
 pub fn quick<T>(arr: &mut [T])
 where T: Ord + Send + Clone {
     if arr.len() <= 1 {
@@ -196,6 +191,7 @@ where T: Ord + Send + Clone {
     rayon::join(|| quick(left), || quick(right));
 }
 
+/// make pivot for partition
 fn partition<T>(arr: &mut [T]) -> usize
 where T: Ord + Send + Clone {
     let len = arr.len();

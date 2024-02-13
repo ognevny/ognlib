@@ -1,0 +1,4453 @@
+    Checking ognlib v0.5.13 (C:\msys64\home\maksa\ognlib)
+error: `clippy::restriction` is not meant to be enabled as a group
+  |
+  = note: because of the command line `--warn clippy::restriction`
+  = help: enable the restriction lints you need individually
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#blanket_clippy_restriction_lints
+  = note: `-D clippy::blanket-clippy-restriction-lints` implied by `-D warnings`
+  = help: to override `-D warnings` add `#[allow(clippy::blanket_clippy_restriction_lints)]`
+
+error: missing `return` statement
+   --> src\num\methods.rs:44:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+44  | |                 *self != 0
+    | |                 ^^^^^^^^^^ help: add `return` as shown: `return *self != 0`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+    = note: `-D clippy::implicit-return` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::implicit_return)]`
+
+error: missing `#[inline]` for a method
+   --> src\num\methods.rs:57:13
+    |
+30  | /  macro_rules! impl_num {
+31  | |      ($($type:ty)*) => {
+32  | |          $(impl Num for $type {
+33  | |              /// Represent number as bool like in C.
+...   |
+57  | |/             fn sum(self) -> Self {
+58  | ||                 let mut num = self;
+59  | ||                 let mut sum = 0;
+60  | ||                 while num.as_bool() {
+...   ||
+64  | ||                 sum
+65  | ||             }
+    | ||_____________^
+...   |
+140 | |      }
+141 | |  }
+    | |__- in this expansion of `impl_num!`
+142 |
+143 |    impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |    -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+    = note: `-D clippy::missing-inline-in-public-items` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::missing_inline_in_public_items)]`
+
+error: missing `return` statement
+   --> src\num\methods.rs:64:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+64  | |                 sum
+    | |                 ^^^ help: add `return` as shown: `return sum`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\methods.rs:61:21
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+61  | |                     sum += num % 10;
+    | |                     ^^^^^^^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+    = note: `-D clippy::arithmetic-side-effects` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::arithmetic_side_effects)]`
+
+error: you are using modulo operator on types that might have different signs
+   --> src\num\methods.rs:61:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+61  | |                     sum += num % 10;
+    | |                            ^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = note: double check for expected result especially when interoperating with different languages
+    = note: or consider using `rem_euclid` or similar function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#modulo_arithmetic
+    = note: `-D clippy::modulo-arithmetic` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::modulo_arithmetic)]`
+
+error: missing `return` statement
+   --> src\num\methods.rs:78:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+78  | |                 (self.ilog10() + 1) as u8
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self.ilog10() + 1) as u8`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\num\methods.rs:78:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+78  | |                 (self.ilog10() + 1) as u8
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+    = note: `-D clippy::as-conversions` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::as_conversions)]`
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\methods.rs:78:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+78  | |                 (self.ilog10() + 1) as u8
+    | |                 ^^^^^^^^^^^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\methods.rs:91:13
+    |
+30  | /  macro_rules! impl_num {
+31  | |      ($($type:ty)*) => {
+32  | |          $(impl Num for $type {
+33  | |              /// Represent number as bool like in C.
+...   |
+91  | |/             fn rev(self) -> Self {
+92  | ||                 let mut num = self;
+93  | ||                 let mut rev = 0;
+94  | ||                 while num.as_bool() {
+...   ||
+99  | ||                 rev
+100 | ||             }
+    | ||_____________^
+...   |
+140 | |      }
+141 | |  }
+    | |__- in this expansion of `impl_num!`
+142 |
+143 |    impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |    -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\methods.rs:99:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+99  | |                 rev
+    | |                 ^^^ help: add `return` as shown: `return rev`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\methods.rs:95:21
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+95  | |                     rev *= 10;
+    | |                     ^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\methods.rs:96:21
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+96  | |                     rev += num % 10;
+    | |                     ^^^^^^^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: you are using modulo operator on types that might have different signs
+   --> src\num\methods.rs:96:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+96  | |                     rev += num % 10;
+    | |                            ^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = note: double check for expected result especially when interoperating with different languages
+    = note: or consider using `rem_euclid` or similar function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#modulo_arithmetic
+
+error: missing `#[inline]` for a method
+   --> src\num\methods.rs:111:13
+    |
+30  | /  macro_rules! impl_num {
+31  | |      ($($type:ty)*) => {
+32  | |          $(impl Num for $type {
+33  | |              /// Represent number as bool like in C.
+...   |
+111 | |/             fn has_digit(self, digit: Self) -> bool {
+112 | ||                 let mut num = self;
+113 | ||                 while num.as_bool() {
+114 | ||                     if num % 10 == digit {
+...   ||
+119 | ||                 false
+120 | ||             }
+    | ||_____________^
+...   |
+140 | |      }
+141 | |  }
+    | |__- in this expansion of `impl_num!`
+142 |
+143 |    impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |    -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\methods.rs:119:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+119 | |                 false
+    | |                 ^^^^^ help: add `return` as shown: `return false`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: you are using modulo operator on types that might have different signs
+   --> src\num\methods.rs:114:24
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+114 | |                     if num % 10 == digit {
+    | |                        ^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = note: double check for expected result especially when interoperating with different languages
+    = note: or consider using `rem_euclid` or similar function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#modulo_arithmetic
+
+error: missing `#[inline]` for a method
+   --> src\num\methods.rs:133:13
+    |
+30  | /  macro_rules! impl_num {
+31  | |      ($($type:ty)*) => {
+32  | |          $(impl Num for $type {
+33  | |              /// Represent number as bool like in C.
+...   |
+133 | |/             fn factorial(self) -> BigInt {
+134 | ||                 match self {
+135 | ||                     0 | 1 => BigInt::from(1),
+136 | ||                     _ => (2..=self).into_par_iter().map(BigInt::from).product(),
+137 | ||                 }
+138 | ||             }
+    | ||_____________^
+139 | |          })*
+140 | |      }
+141 | |  }
+    | |__- in this expansion of `impl_num!`
+142 |
+143 |    impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |    -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\methods.rs:135:30
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+135 | |                     0 | 1 => BigInt::from(1),
+    | |                              ^^^^^^^^^^^^^^^ help: add `return` as shown: `return BigInt::from(1)`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\methods.rs:136:26
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+136 | |                     _ => (2..=self).into_par_iter().map(BigInt::from).product(),
+    | |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (2..=self).into_par_iter().map(BigInt::from).product()`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\methods.rs:44:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+44  | |                 *self != 0
+    | |                 ^^^^^^^^^^ help: add `return` as shown: `return *self != 0`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a method
+   --> src\num\methods.rs:57:13
+    |
+30  | /  macro_rules! impl_num {
+31  | |      ($($type:ty)*) => {
+32  | |          $(impl Num for $type {
+33  | |              /// Represent number as bool like in C.
+...   |
+57  | |/             fn sum(self) -> Self {
+58  | ||                 let mut num = self;
+59  | ||                 let mut sum = 0;
+60  | ||                 while num.as_bool() {
+...   ||
+64  | ||                 sum
+65  | ||             }
+    | ||_____________^
+...   |
+140 | |      }
+141 | |  }
+    | |__- in this expansion of `impl_num!`
+142 |
+143 |    impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |    -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\methods.rs:61:21
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+61  | |                     sum += num % 10;
+    | |                     ^^^^^^^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: you are using modulo operator on types that might have different signs
+   --> src\num\methods.rs:61:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+61  | |                     sum += num % 10;
+    | |                            ^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = note: double check for expected result especially when interoperating with different languages
+    = note: or consider using `rem_euclid` or similar function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#modulo_arithmetic
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\num\methods.rs:78:17
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+78  | |                 (self.ilog10() + 1) as u8
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:59:31
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+59  | |                 let mut sum = 0;
+    | |                               ^ help: consider adding suffix: `0_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+    = note: `-D clippy::default-numeric-fallback` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::default_numeric_fallback)]`
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:61:34
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+61  | |                     sum += num % 10;
+    | |                                  ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:62:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+62  | |                     num /= 10;
+    | |                            ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:93:31
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+93  | |                 let mut rev = 0;
+    | |                               ^ help: consider adding suffix: `0_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:95:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+95  | |                     rev *= 10;
+    | |                            ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:96:34
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+96  | |                     rev += num % 10;
+    | |                                  ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:97:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+97  | |                     num /= 10;
+    | |                            ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:114:30
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+114 | |                     if num % 10 == digit {
+    | |                              ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: default numeric fallback might occur
+   --> src\num\methods.rs:117:28
+    |
+30  | / macro_rules! impl_num {
+31  | |     ($($type:ty)*) => {
+32  | |         $(impl Num for $type {
+33  | |             /// Represent number as bool like in C.
+...   |
+117 | |                     num /= 10;
+    | |                            ^^ help: consider adding suffix: `10_i32`
+...   |
+140 | |     }
+141 | | }
+    | |_- in this expansion of `impl_num!`
+142 |
+143 |   impl_num!(i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize);
+    |   -------------------------------------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: used import from `std` instead of `core`
+ --> src\num\power.rs:3:5
+  |
+3 | use std::ops::{Mul, MulAssign, Rem, RemAssign};
+  |     ^^^ help: consider importing the item from `core`: `core`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#std_instead_of_core
+  = note: `-D clippy::std-instead-of-core` implied by `-D warnings`
+  = help: to override `-D warnings` add `#[allow(clippy::std_instead_of_core)]`
+
+error: used import from `std` instead of `core`
+ --> src\num\power.rs:3:5
+  |
+3 | use std::ops::{Mul, MulAssign, Rem, RemAssign};
+  |     ^^^ help: consider importing the item from `core`: `core`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#std_instead_of_core
+
+error: missing `#[inline]` for a function
+  --> src\num\power.rs:15:1
+   |
+15 | / pub fn bin_pow<N>(mut base: N, mut exp: u8) -> N
+16 | | where N: MulAssign + From<u8> + Copy {
+17 | |     let mut vi = N::from(1);
+18 | |     while exp != 0 {
+...  |
+25 | |     vi
+26 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+  --> src\num\power.rs:25:5
+   |
+25 |     vi
+   |     ^^ help: add `return` as shown: `return vi`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: default numeric fallback might occur
+  --> src\num\power.rs:23:17
+   |
+23 |         exp >>= 1;
+   |                 ^ help: consider adding suffix: `1_i32`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\num\power.rs:20:13
+   |
+20 |             vi *= base;
+   |             ^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\num\power.rs:22:9
+   |
+22 |         base *= base;
+   |         ^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+  --> src\num\power.rs:40:1
+   |
+40 | / pub fn modpow<N>(mut base: N, mut exp: usize, modulo: N) -> N
+41 | | where N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq {
+42 | |     let mut res = N::from(1);
+43 | |     base %= modulo;
+...  |
+51 | |     res
+52 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+  --> src\num\power.rs:51:5
+   |
+51 |     res
+   |     ^^^ help: add `return` as shown: `return res`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: default numeric fallback might occur
+  --> src\num\power.rs:48:17
+   |
+48 |         exp >>= 1;
+   |                 ^ help: consider adding suffix: `1_i32`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\num\power.rs:43:5
+   |
+43 |     base %= modulo;
+   |     ^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\num\power.rs:46:19
+   |
+46 |             res = (res * base) % modulo;
+   |                   ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\num\power.rs:49:16
+   |
+49 |         base = (base * base) % modulo;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: used import from `std` instead of `core`
+ --> src\num\radix.rs:4:5
+  |
+4 |     std::{cmp::Ordering, num::ParseIntError, ops, str::FromStr},
+  |     ^^^ help: consider importing the item from `core`: `core`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#std_instead_of_core
+
+error: item name starts with its containing module's name
+  --> src\num\radix.rs:51:10
+   |
+51 | pub enum RadixError {
+   |          ^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#module_name_repetitions
+   = note: `-D clippy::module-name-repetitions` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::module_name_repetitions)]`
+
+error: missing `return` statement
+  --> src\num\radix.rs:94:9
+   |
+94 |         Ok(Self { number: number.parse()?, base: 10 })
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self { number: number.parse()?, base: 10 })`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: question mark operator was used
+  --> src\num\radix.rs:94:27
+   |
+94 |         Ok(Self { number: number.parse()?, base: 10 })
+   |                           ^^^^^^^^^^^^^^^
+   |
+   = help: consider using a custom macro or match expression
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+   = note: `-D clippy::question-mark-used` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::question_mark_used)]`
+
+error: item name ends with its containing module's name
+   --> src\num\radix.rs:101:12
+    |
+101 | pub struct StringRadix {
+    |            ^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#module_name_repetitions
+
+error: missing `return` statement
+   --> src\num\radix.rs:132:9
+    |
+132 |         Ok(Self { number: number.parse::<usize>()?.to_string(), base: 10 })
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self { number: number.parse::<usize>()?.to_string(), base: 10 })`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: question mark operator was used
+   --> src\num\radix.rs:132:27
+    |
+132 |         Ok(Self { number: number.parse::<usize>()?.to_string(), base: 10 })
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a custom macro or match expression
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing trait method provided by default: `le`
+   --> src\num\radix.rs:139:11
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+    | |           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:1188:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+    = note: `-D clippy::missing-trait-methods` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::missing_trait_methods)]`
+
+error: missing trait method provided by default: `lt`
+   --> src\num\radix.rs:139:11
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+    | |           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:1171:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: missing trait method provided by default: `gt`
+   --> src\num\radix.rs:139:11
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+    | |           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:1204:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: missing trait method provided by default: `ge`
+   --> src\num\radix.rs:139:11
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+    | |           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:1221:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:140:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |/             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+141 | ||                 Some(self.cmp(other))
+142 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:141:17
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+141 | |                 Some(self.cmp(other))
+    | |                 ^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Some(self.cmp(other))`
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing trait method provided by default: `min`
+   --> src\num\radix.rs:144:9
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+144 | |         impl Ord for $radix {
+    | |         ^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:871:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: missing trait method provided by default: `clamp`
+   --> src\num\radix.rs:144:9
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+144 | |         impl Ord for $radix {
+    | |         ^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:896:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: missing trait method provided by default: `max`
+   --> src\num\radix.rs:144:9
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+144 | |         impl Ord for $radix {
+    | |         ^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:851:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:145:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+145 | |/             fn cmp(&self, other: &Self) -> Ordering {
+146 | ||                 dec!(self).cmp(&dec!(other))
+147 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:146:17
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+146 | |                 dec!(self).cmp(&dec!(other))
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return dec!(self).cmp(&dec!(other))`
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:169:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+169 | |/             fn add(self, other: Self) -> Self::Output {
+170 | ||                 Self {
+171 | ||                     number: Self::from(dec!(&self) + dec!(&other))
+172 | ||                         .to_radix(self.base)
+...   ||
+176 | ||                 }
+177 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:170:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+170 | |/                 Self {
+171 | ||                     number: Self::from(dec!(&self) + dec!(&other))
+172 | ||                         .to_radix(self.base)
+173 | ||                         .unwrap()
+174 | ||                         .number,
+175 | ||                     base: self.base,
+176 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+170 ~                 return Self {
+171 +                     number: Self::from(dec!(&self) + dec!(&other))
+172 +                         .to_radix(self.base)
+173 +                         .unwrap()
+174 +                         .number,
+175 +                     base: self.base,
+176 +                 }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:197:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+197 | |/             fn add(self, other: usize) -> Self::Output {
+198 | ||                 Self {
+199 | ||                     number: Self::from(dec!(&self) + other)
+200 | ||                         .to_radix(self.base)
+...   ||
+204 | ||                 }
+205 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:198:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+198 | |/                 Self {
+199 | ||                     number: Self::from(dec!(&self) + other)
+200 | ||                         .to_radix(self.base)
+201 | ||                         .unwrap()
+202 | ||                         .number,
+203 | ||                     base: self.base,
+204 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+198 ~                 return Self {
+199 +                     number: Self::from(dec!(&self) + other)
+200 +                         .to_radix(self.base)
+201 +                         .unwrap()
+202 +                         .number,
+203 +                     base: self.base,
+204 +                 }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:228:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+228 | |/             fn add_assign(&mut self, other: Self) {
+229 | ||                 *self = self.clone() + other
+230 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:229:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+229 | |                 *self = self.clone() + other
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:251:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+251 | |/             fn add_assign(&mut self, other: usize) {
+252 | ||                 *self = self.clone() + Self::from(other)
+253 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:252:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+252 | |                 *self = self.clone() + Self::from(other)
+    | |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:276:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+276 | |/             fn sub(self, other: Self) -> Self::Output {
+277 | ||                 if self > other {
+278 | ||                     Self {
+279 | ||                         number: Self::from(dec!(&self) - dec!(&other))
+...   ||
+293 | ||                 }
+294 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:278:21
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+278 | |/                     Self {
+279 | ||                         number: Self::from(dec!(&self) - dec!(&other))
+280 | ||                             .to_radix(self.base)
+281 | ||                             .unwrap()
+282 | ||                             .number,
+283 | ||                         base: self.base,
+284 | ||                     }
+    | ||_____________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+278 ~                     return Self {
+279 +                         number: Self::from(dec!(&self) - dec!(&other))
+280 +                             .to_radix(self.base)
+281 +                             .unwrap()
+282 +                             .number,
+283 +                         base: self.base,
+284 +                     }
+    |
+
+error: missing `return` statement
+   --> src\num\radix.rs:286:21
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+286 | |/                     Self {
+287 | ||                         number: Self::from(dec!(&other) - dec!(&self))
+288 | ||                             .to_radix(other.base)
+289 | ||                             .unwrap()
+290 | ||                             .number,
+291 | ||                         base: other.base,
+292 | ||                     }
+    | ||_____________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+286 ~                     return Self {
+287 +                         number: Self::from(dec!(&other) - dec!(&self))
+288 +                             .to_radix(other.base)
+289 +                             .unwrap()
+290 +                             .number,
+291 +                         base: other.base,
+292 +                     }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:315:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+315 | |/             fn sub(self, other: usize) -> Self::Output {
+316 | ||                 if self > Self::from(other) {
+317 | ||                     Self {
+318 | ||                         number: Self::from(dec!(&self) - other)
+...   ||
+332 | ||                 }
+333 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:317:21
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+317 | |/                     Self {
+318 | ||                         number: Self::from(dec!(&self) - other)
+319 | ||                             .to_radix(self.base)
+320 | ||                             .unwrap()
+321 | ||                             .number,
+322 | ||                         base: self.base,
+323 | ||                     }
+    | ||_____________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+317 ~                     return Self {
+318 +                         number: Self::from(dec!(&self) - other)
+319 +                             .to_radix(self.base)
+320 +                             .unwrap()
+321 +                             .number,
+322 +                         base: self.base,
+323 +                     }
+    |
+
+error: missing `return` statement
+   --> src\num\radix.rs:325:21
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+325 | |/                     Self {
+326 | ||                         number: Self::from(other - dec!(self))
+327 | ||                             .to_radix(10)
+328 | ||                             .unwrap()
+329 | ||                             .number,
+330 | ||                         base: 10,
+331 | ||                     }
+    | ||_____________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+325 ~                     return Self {
+326 +                         number: Self::from(other - dec!(self))
+327 +                             .to_radix(10)
+328 +                             .unwrap()
+329 +                             .number,
+330 +                         base: 10,
+331 +                     }
+    |
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:326:44
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+326 | |                         number: Self::from(other - dec!(self))
+    | |                                            ^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:359:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+359 | |/             fn sub_assign(&mut self, other: Self) {
+360 | ||                 *self = self.clone() - other;
+361 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:360:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+360 | |                 *self = self.clone() - other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:385:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+385 | |/             fn sub_assign(&mut self, other: usize) {
+386 | ||                 *self = self.clone() - other;
+387 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:386:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+386 | |                 *self = self.clone() - other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:409:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+409 | |/             fn mul(self, other: Self) -> Self::Output {
+410 | ||                 Self {
+411 | ||                     number: Self::from(dec!(&self) * dec!(&other))
+412 | ||                         .to_radix(self.base)
+...   ||
+416 | ||                 }
+417 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:410:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+410 | |/                 Self {
+411 | ||                     number: Self::from(dec!(&self) * dec!(&other))
+412 | ||                         .to_radix(self.base)
+413 | ||                         .unwrap()
+414 | ||                         .number,
+415 | ||                     base: self.base,
+416 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+410 ~                 return Self {
+411 +                     number: Self::from(dec!(&self) * dec!(&other))
+412 +                         .to_radix(self.base)
+413 +                         .unwrap()
+414 +                         .number,
+415 +                     base: self.base,
+416 +                 }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:437:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+437 | |/             fn mul(self, other: usize) -> Self::Output {
+438 | ||                 Self {
+439 | ||                     number: Self::from(dec!(&self) * other)
+440 | ||                         .to_radix(self.base)
+...   ||
+444 | ||                 }
+445 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:438:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+438 | |/                 Self {
+439 | ||                     number: Self::from(dec!(&self) * other)
+440 | ||                         .to_radix(self.base)
+441 | ||                         .unwrap()
+442 | ||                         .number,
+443 | ||                     base: self.base,
+444 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+438 ~                 return Self {
+439 +                     number: Self::from(dec!(&self) * other)
+440 +                         .to_radix(self.base)
+441 +                         .unwrap()
+442 +                         .number,
+443 +                     base: self.base,
+444 +                 }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:468:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+468 | |/             fn mul_assign(&mut self, other: Self) {
+469 | ||                 *self = self.clone() * other;
+470 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:469:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+469 | |                 *self = self.clone() * other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:491:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+491 | |/             fn mul_assign(&mut self, other: usize) {
+492 | ||                 *self = self.clone() * other;
+493 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:492:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+492 | |                 *self = self.clone() * other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:515:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+515 | |/             fn div(self, other: Self) -> Self::Output {
+516 | ||                 Self {
+517 | ||                     number: Self::from(dec!(&self) / dec!(&other))
+518 | ||                         .to_radix(self.base)
+...   ||
+522 | ||                 }
+523 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:516:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+516 | |/                 Self {
+517 | ||                     number: Self::from(dec!(&self) / dec!(&other))
+518 | ||                         .to_radix(self.base)
+519 | ||                         .unwrap()
+520 | ||                         .number,
+521 | ||                     base: self.base,
+522 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+516 ~                 return Self {
+517 +                     number: Self::from(dec!(&self) / dec!(&other))
+518 +                         .to_radix(self.base)
+519 +                         .unwrap()
+520 +                         .number,
+521 +                     base: self.base,
+522 +                 }
+    |
+
+error: integer division
+   --> src\num\radix.rs:517:40
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+517 | |                     number: Self::from(dec!(&self) / dec!(&other))
+    | |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: division of integers may cause loss of precision. consider using floats
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+    = note: `-D clippy::integer-division` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::integer_division)]`
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:543:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+543 | |/             fn div(self, other: usize) -> Self::Output {
+544 | ||                 Self {
+545 | ||                     number: Self::from(dec!(&self) / other)
+546 | ||                         .to_radix(self.base)
+...   ||
+550 | ||                 }
+551 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:544:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+544 | |/                 Self {
+545 | ||                     number: Self::from(dec!(&self) / other)
+546 | ||                         .to_radix(self.base)
+547 | ||                         .unwrap()
+548 | ||                         .number,
+549 | ||                     base: self.base,
+550 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+544 ~                 return Self {
+545 +                     number: Self::from(dec!(&self) / other)
+546 +                         .to_radix(self.base)
+547 +                         .unwrap()
+548 +                         .number,
+549 +                     base: self.base,
+550 +                 }
+    |
+
+error: integer division
+   --> src\num\radix.rs:545:40
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+545 | |                     number: Self::from(dec!(&self) / other)
+    | |                                        ^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: division of integers may cause loss of precision. consider using floats
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:574:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+574 | |/             fn div_assign(&mut self, other: Self) {
+575 | ||                 *self = self.clone() / other;
+576 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:575:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+575 | |                 *self = self.clone() / other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:597:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+597 | |/             fn div_assign(&mut self, other: usize) {
+598 | ||                 *self = self.clone() / other;
+599 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:598:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+598 | |                 *self = self.clone() / other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:621:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+621 | |/             fn rem(self, other: Self) -> Self::Output {
+622 | ||                 Self {
+623 | ||                     number: Self::from(dec!(&self) % dec!(&other))
+624 | ||                         .to_radix(self.base)
+...   ||
+628 | ||                 }
+629 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:622:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+622 | |/                 Self {
+623 | ||                     number: Self::from(dec!(&self) % dec!(&other))
+624 | ||                         .to_radix(self.base)
+625 | ||                         .unwrap()
+626 | ||                         .number,
+627 | ||                     base: self.base,
+628 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+622 ~                 return Self {
+623 +                     number: Self::from(dec!(&self) % dec!(&other))
+624 +                         .to_radix(self.base)
+625 +                         .unwrap()
+626 +                         .number,
+627 +                     base: self.base,
+628 +                 }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:649:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+649 | |/             fn rem(self, other: usize) -> Self::Output {
+650 | ||                 Self {
+651 | ||                     number: Self::from(dec!(&self) % other)
+652 | ||                         .to_radix(self.base)
+...   ||
+656 | ||                 }
+657 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:650:17
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+650 | |/                 Self {
+651 | ||                     number: Self::from(dec!(&self) % other)
+652 | ||                         .to_radix(self.base)
+653 | ||                         .unwrap()
+654 | ||                         .number,
+655 | ||                     base: self.base,
+656 | ||                 }
+    | ||_________________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+650 ~                 return Self {
+651 +                     number: Self::from(dec!(&self) % other)
+652 +                         .to_radix(self.base)
+653 +                         .unwrap()
+654 +                         .number,
+655 +                     base: self.base,
+656 +                 }
+    |
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:680:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+680 | |/             fn rem_assign(&mut self, other: Self) {
+681 | ||                 *self = self.clone() % other;
+682 | ||             }
+    | ||_____________^
+...   |
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:681:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+681 | |                 *self = self.clone() % other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:703:13
+    |
+137 | /  macro_rules! impl_traits {
+138 | |      ($($radix:ident)*) => {
+139 | |          $(impl PartialOrd for $radix {
+140 | |              fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+703 | |/             fn rem_assign(&mut self, other: usize) {
+704 | ||                 *self = self.clone() % other;
+705 | ||             }
+    | ||_____________^
+706 | |          })*
+707 | |      };
+708 | |  }
+    | |__- in this expansion of `impl_traits!`
+...
+826 |    impl_traits!(Radix StringRadix);
+    |    ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:704:25
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+704 | |                 *self = self.clone() % other;
+    | |                         ^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing trait method provided by default: `le`
+   --> src\num\radix.rs:139:11
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+    | |           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+help: implement the method
+   --> /rustc/6cc4843512d613f51ec81aba689180c31b0b28b6\library\core\src\cmp.rs:1188:5
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_trait_methods
+
+error: integer division
+   --> src\num\radix.rs:517:40
+    |
+137 | / macro_rules! impl_traits {
+138 | |     ($($radix:ident)*) => {
+139 | |         $(impl PartialOrd for $radix {
+140 | |             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+...   |
+517 | |                     number: Self::from(dec!(&self) / dec!(&other))
+    | |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...   |
+707 | |     };
+708 | | }
+    | |_- in this expansion of `impl_traits!`
+...
+826 |   impl_traits!(Radix StringRadix);
+    |   ------------------------------- in this macro invocation
+    |
+    = help: division of integers may cause loss of precision. consider using floats
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+
+error: missing `return` statement
+   --> src\num\radix.rs:726:17
+    |
+711 | /  macro_rules! impl_froms {
+712 | |      ($($type:ty)*) => {
+713 | |          $(impl From<$type> for Radix {
+714 | |              /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+726 | |/                 Self {
+727 | ||                     number: number as usize,
+728 | ||                     base: 10,
+729 | ||                 }
+    | ||_________________^
+...   |
+823 | |      };
+824 | |  }
+    | |__- in this expansion of `impl_froms!`
+...
+827 |    impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |    ------------------------------------------------------ in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+726 ~                 return Self {
+727 +                     number: number as usize,
+728 +                     base: 10,
+729 +                 }
+    |
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\num\radix.rs:727:29
+    |
+711 | / macro_rules! impl_froms {
+712 | |     ($($type:ty)*) => {
+713 | |         $(impl From<$type> for Radix {
+714 | |             /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+727 | |                     number: number as usize,
+    | |                             ^^^^^^^^^^^^^^^
+...   |
+823 | |     };
+824 | | }
+    | |_- in this expansion of `impl_froms!`
+...
+827 |   impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |   ------------------------------------------------------ in this macro invocation
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: missing `return` statement
+   --> src\num\radix.rs:745:17
+    |
+711 | /  macro_rules! impl_froms {
+712 | |      ($($type:ty)*) => {
+713 | |          $(impl From<$type> for Radix {
+714 | |              /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+745 | |/                 Self {
+746 | ||                     number: number.to_string(),
+747 | ||                     base: 10,
+748 | ||                 }
+    | ||_________________^
+...   |
+823 | |      };
+824 | |  }
+    | |__- in this expansion of `impl_froms!`
+...
+827 |    impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |    ------------------------------------------------------ in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+745 ~                 return Self {
+746 +                     number: number.to_string(),
+747 +                     base: 10,
+748 +                 }
+    |
+
+error: missing `return` statement
+   --> src\num\radix.rs:766:17
+    |
+711 | / macro_rules! impl_froms {
+712 | |     ($($type:ty)*) => {
+713 | |         $(impl From<$type> for Radix {
+714 | |             /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+766 | |                 Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()`
+...   |
+823 | |     };
+824 | | }
+    | |_- in this expansion of `impl_froms!`
+...
+827 |   impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |   ------------------------------------------------------ in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:784:17
+    |
+711 | / macro_rules! impl_froms {
+712 | |     ($($type:ty)*) => {
+713 | |         $(impl From<$type> for Radix {
+714 | |             /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+784 | |                 Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from_str_radix(&radix.number, radix.base.into()).unwrap()`
+...   |
+823 | |     };
+824 | | }
+    | |_- in this expansion of `impl_froms!`
+...
+827 |   impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |   ------------------------------------------------------ in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:802:17
+    |
+711 | / macro_rules! impl_froms {
+712 | |     ($($type:ty)*) => {
+713 | |         $(impl From<$type> for Radix {
+714 | |             /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+802 | |                 Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from_str_radix(&radix.number.to_string(), radix.base.into()).unwrap()`
+...   |
+823 | |     };
+824 | | }
+    | |_- in this expansion of `impl_froms!`
+...
+827 |   impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |   ------------------------------------------------------ in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:820:17
+    |
+711 | / macro_rules! impl_froms {
+712 | |     ($($type:ty)*) => {
+713 | |         $(impl From<$type> for Radix {
+714 | |             /// Creates a new [`Radix`] with base 10 and given integer number.
+...   |
+820 | |                 Self::from_str_radix(&radix.number, radix.base.into()).unwrap()
+    | |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from_str_radix(&radix.number, radix.base.into()).unwrap()`
+...   |
+823 | |     };
+824 | | }
+    | |_- in this expansion of `impl_froms!`
+...
+827 |   impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
+    |   ------------------------------------------------------ in this macro invocation
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:852:5
+    |
+852 | /     pub const fn new(base: u8) -> Result<Self, RadixError> {
+853 | |         match base {
+854 | |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+855 | |             _ => Ok(Self { number: 0, base }),
+856 | |         }
+857 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:854:29
+    |
+854 |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(10, base))`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:855:18
+    |
+855 |             _ => Ok(Self { number: 0, base }),
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self { number: 0, base })`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: docs for function which may panic missing `# Panics` section
+   --> src\num\radix.rs:879:5
+    |
+879 |     pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: first possible panic found here
+   --> src\num\radix.rs:890:45
+    |
+890 |                         if number.has_digit(i.to_string().parse().unwrap()) {
+    |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_panics_doc
+    = note: `-D clippy::missing-panics-doc` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::missing_panics_doc)]`
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:879:5
+    |
+879 | /     pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
+880 | |         match base {
+881 | |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+882 | |             _ => {
+...   |
+898 | |         }
+899 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:881:29
+    |
+881 |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(10, base))`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:885:17
+    |
+885 | /                 RADIX
+886 | |                     .iter()
+887 | |                     .take(10)
+888 | |                     .skip(base.into())
+...   |
+895 | |                     })
+896 | |                     .map_or(Ok(Self { number, base }), |err| err)
+    | |_________________________________________________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+    |
+885 ~                 return RADIX
+886 +                     .iter()
+887 +                     .take(10)
+888 +                     .skip(base.into())
+889 +                     .find_map(|i| {
+890 +                         if number.has_digit(i.to_string().parse().unwrap()) {
+891 +                             Some(Err(RadixError::NumberError(*i, base)))
+892 +                         } else {
+893 +                             None
+894 +                         }
+895 +                     })
+896 +                     .map_or(Ok(Self { number, base }), |err| err)
+    |
+
+error: missing `return` statement
+   --> src\num\radix.rs:891:29
+    |
+891 | ...                   Some(Err(RadixError::NumberError(*i, base)))
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Some(Err(RadixError::NumberError(*i, base)))`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:893:29
+    |
+893 | ...                   None
+    |                       ^^^^ help: add `return` as shown: `return None`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: this could be simplified with `bool::then`
+   --> src\num\radix.rs:890:25
+    |
+890 | /                         if number.has_digit(i.to_string().parse().unwrap()) {
+891 | |                             Some(Err(RadixError::NumberError(*i, base)))
+892 | |                         } else {
+893 | |                             None
+894 | |                         }
+    | |_________________________^
+    |
+    = help: consider using `bool::then` like: `number.has_digit(i.to_string().parse().unwrap()).then(|| Err(RadixError::NumberError(*i, base)))`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#if_then_some_else_none
+    = note: `-D clippy::if-then-some-else-none` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::if_then_some_else_none)]`
+
+error: used `unwrap()` on a `Result` value
+   --> src\num\radix.rs:890:45
+    |
+890 |                         if number.has_digit(i.to_string().parse().unwrap()) {
+    |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unwrap_used
+    = note: `-D clippy::unwrap-used` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::unwrap_used)]`
+
+error: missing `return` statement
+   --> src\num\radix.rs:896:62
+    |
+896 |                     .map_or(Ok(Self { number, base }), |err| err)
+    |                                                              ^^^ help: add `return` as shown: `return err`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:914:43
+    |
+914 |     pub const fn number(&self) -> usize { self.number }
+    |                                           ^^^^^^^^^^^ help: add `return` as shown: `return self.number`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:929:38
+    |
+929 |     pub const fn base(&self) -> u8 { self.base }
+    |                                      ^^^^^^^^^ help: add `return` as shown: `return self.base`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:944:48
+    |
+944 |     pub const fn radix(&self) -> (usize, u8) { (self.number, self.base) }
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self.number, self.base)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a method
+   --> src\num\radix.rs:975:5
+    |
+975 | /     pub fn to_radix(self, base: u8) -> Result<Self, RadixError> {
+976 | |         match base {
+977 | |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+978 | |             10 => Ok(self.to_dec()),
+...   |
+985 | |         }
+986 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\num\radix.rs:977:29
+    |
+977 |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(10, base))`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:978:19
+    |
+978 |             10 => Ok(self.to_dec()),
+    |                   ^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(self.to_dec())`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:981:21
+    |
+981 |                     Ok(self.to_radix_from_dec(base)?)
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(self.to_radix_from_dec(base)?)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:983:21
+    |
+983 |                     Ok(self.to_dec().to_radix_from_dec(base)?)
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(self.to_dec().to_radix_from_dec(base)?)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: question mark operator was used
+   --> src\num\radix.rs:981:24
+    |
+981 |                     Ok(self.to_radix_from_dec(base)?)
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a custom macro or match expression
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: question mark operator was used
+   --> src\num\radix.rs:983:24
+    |
+983 |                     Ok(self.to_dec().to_radix_from_dec(base)?)
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a custom macro or match expression
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing `return` statement
+   --> src\num\radix.rs:990:31
+    |
+990 |     fn to_dec(self) -> Self { Self::from(dec!(self)) }
+    |                               ^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from(dec!(self))`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\num\radix.rs:999:9
+    |
+999 |         Self::from_radix(res.chars().rev().collect::<String>().parse()?, base)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from_radix(res.chars().rev().collect::<String>().parse()?, base)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: indexing may panic
+   --> src\num\radix.rs:996:22
+    |
+996 |             res.push(RADIX[self.number % (base as usize)]);
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+    = note: `-D clippy::indexing-slicing` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::indexing_slicing)]`
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:996:28
+    |
+996 |             res.push(RADIX[self.number % (base as usize)]);
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\num\radix.rs:996:42
+    |
+996 |             res.push(RADIX[self.number % (base as usize)]);
+    |                                          ^^^^^^^^^^^^^^^
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\num\radix.rs:997:13
+    |
+997 |             self.number /= base as usize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\num\radix.rs:997:28
+    |
+997 |             self.number /= base as usize;
+    |                            ^^^^^^^^^^^^^
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: question mark operator was used
+   --> src\num\radix.rs:999:26
+    |
+999 |         Self::from_radix(res.chars().rev().collect::<String>().parse()?, base)
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a custom macro or match expression
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing `#[inline]` for a method
+    --> src\num\radix.rs:1026:5
+     |
+1026 | /     pub fn to_str_radix(self, base: u8) -> Result<StringRadix, RadixError> {
+1027 | |         match base {
+1028 | |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+1029 | |             10 => Ok(StringRadix::from(self.to_dec().number)),
+...    |
+1036 | |         }
+1037 | |     }
+     | |_____^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+    --> src\num\radix.rs:1028:29
+     |
+1028 |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+     |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(36, base))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1029:19
+     |
+1029 |             10 => Ok(StringRadix::from(self.to_dec().number)),
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(StringRadix::from(self.to_dec().number))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1032:21
+     |
+1032 |                     Ok(self.to_str_radix_from_dec(base)?)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(self.to_str_radix_from_dec(base)?)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1034:21
+     |
+1034 |                     Ok(self.to_dec().to_str_radix_from_dec(base)?)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(self.to_dec().to_str_radix_from_dec(base)?)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: question mark operator was used
+    --> src\num\radix.rs:1032:24
+     |
+1032 |                     Ok(self.to_str_radix_from_dec(base)?)
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: question mark operator was used
+    --> src\num\radix.rs:1034:24
+     |
+1034 |                     Ok(self.to_dec().to_str_radix_from_dec(base)?)
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing `return` statement
+    --> src\num\radix.rs:1046:9
+     |
+1046 |         StringRadix::from_radix(&res.chars().rev().collect::<String>(), base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return StringRadix::from_radix(&res.chars().rev().collect::<String>(), base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: indexing may panic
+    --> src\num\radix.rs:1043:22
+     |
+1043 |             res.push(RADIX[self.number % (base as usize)]);
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using `.get(n)` or `.get_mut(n)` instead
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1043:28
+     |
+1043 |             res.push(RADIX[self.number % (base as usize)]);
+     |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+    --> src\num\radix.rs:1043:42
+     |
+1043 |             res.push(RADIX[self.number % (base as usize)]);
+     |                                          ^^^^^^^^^^^^^^^
+     |
+     = help: consider using a safe wrapper for this conversion
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1044:13
+     |
+1044 |             self.number /= base as usize;
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+    --> src\num\radix.rs:1044:28
+     |
+1044 |             self.number /= base as usize;
+     |                            ^^^^^^^^^^^^^
+     |
+     = help: consider using a safe wrapper for this conversion
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: missing `return` statement
+    --> src\num\radix.rs:1069:9
+     |
+1069 |         (self + other).to_str_radix(base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self + other).to_str_radix(base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1069:9
+     |
+1069 |         (self + other).to_str_radix(base)
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `return` statement
+    --> src\num\radix.rs:1092:9
+     |
+1092 |         (self - other).to_str_radix(base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self - other).to_str_radix(base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1092:9
+     |
+1092 |         (self - other).to_str_radix(base)
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `return` statement
+    --> src\num\radix.rs:1115:9
+     |
+1115 |         (self * other).to_str_radix(base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self * other).to_str_radix(base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1115:9
+     |
+1115 |         (self * other).to_str_radix(base)
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a method
+    --> src\num\radix.rs:1142:5
+     |
+1142 | /     pub fn new(base: u8) -> Result<Self, RadixError> {
+1143 | |         match base {
+1144 | |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+1145 | |             _ => Ok(Self { number: "0".to_owned(), base }),
+1146 | |         }
+1147 | |     }
+     | |_____^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+    --> src\num\radix.rs:1144:29
+     |
+1144 |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+     |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(36, base))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1145:18
+     |
+1145 |             _ => Ok(Self { number: "0".to_owned(), base }),
+     |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self { number: "0".to_owned(), base })`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a method
+    --> src\num\radix.rs:1170:5
+     |
+1170 | /     pub fn from_radix(number: &str, base: u8) -> Result<Self, RadixError> {
+1171 | |         match base {
+1172 | |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+1173 | |             _ => {
+...    |
+1178 | |         }
+1179 | |     }
+     | |_____^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+    --> src\num\radix.rs:1172:29
+     |
+1172 |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+     |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(36, base))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1174:17
+     |
+1174 | /                 RADIX.iter().skip(base.into()).find_map(|&i|
+1175 | |                     number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
+1176 | |                 ).map_or(Ok(Self { number: number.to_owned(), base }), |err| err)
+     | |_________________________________________________________________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+     |
+1174 ~                 return RADIX.iter().skip(base.into()).find_map(|&i|
+1175 +                     number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
+1176 +                 ).map_or(Ok(Self { number: number.to_owned(), base }), |err| err)
+     |
+
+error: use of `map_or` followed by a function call
+    --> src\num\radix.rs:1176:19
+     |
+1176 |                 ).map_or(Ok(Self { number: number.to_owned(), base }), |err| err)
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `map_or_else(|| Ok(Self { number: number.to_owned(), base }), |err| err)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#or_fun_call
+     = note: `-D clippy::or-fun-call` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::or_fun_call)]`
+
+error: missing `return` statement
+    --> src\num\radix.rs:1175:21
+     |
+1175 |                     number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return number.contains(i).then(|| Err(RadixError::NumberError(i, base)))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: unnecessary closure used with `bool::then`
+    --> src\num\radix.rs:1175:21
+     |
+1175 |                     number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
+     |                     ^^^^^^^^^^^^^^^^^^^----------------------------------------------
+     |                                        |
+     |                                        help: use `then_some(..)` instead: `then_some(Err(RadixError::NumberError(i, base)))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_lazy_evaluations
+     = note: `-D clippy::unnecessary-lazy-evaluations` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::unnecessary_lazy_evaluations)]`
+
+error: missing `return` statement
+    --> src\num\radix.rs:1175:48
+     |
+1175 |                     number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
+     |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::NumberError(i, base))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1176:78
+     |
+1176 |                 ).map_or(Ok(Self { number: number.to_owned(), base }), |err| err)
+     |                                                                              ^^^ help: add `return` as shown: `return err`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1194:36
+     |
+1194 |     pub fn number(&self) -> &str { &self.number }
+     |                                    ^^^^^^^^^^^^ help: add `return` as shown: `return &self.number`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1209:38
+     |
+1209 |     pub const fn base(&self) -> u8 { self.base }
+     |                                      ^^^^^^^^^ help: add `return` as shown: `return self.base`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1224:41
+     |
+1224 |     pub fn radix(&self) -> (&str, u8) { (&self.number, self.base) }
+     |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (&self.number, self.base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a method
+    --> src\num\radix.rs:1250:5
+     |
+1250 | /     pub fn to_radix(&mut self, base: u8) -> Result<Self, RadixError> {
+1251 | |         match base {
+1252 | |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+1253 | |             10 => Ok(Self::from(self.to_dec().number)),
+...    |
+1260 | |         }
+1261 | |     }
+     | |_____^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+    --> src\num\radix.rs:1252:29
+     |
+1252 |             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
+     |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(36, base))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1253:19
+     |
+1253 |             10 => Ok(Self::from(self.to_dec().number)),
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self::from(self.to_dec().number))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1256:21
+     |
+1256 |                     Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), base)?)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), base)?)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1258:21
+     |
+1258 |                     Ok(Self::from_dec(&mut self.to_dec(), base)?)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self::from_dec(&mut self.to_dec(), base)?)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: question mark operator was used
+    --> src\num\radix.rs:1256:24
+     |
+1256 |                     Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), base)?)
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: question mark operator was used
+    --> src\num\radix.rs:1256:56
+     |
+1256 |                     Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), base)?)
+     |                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: question mark operator was used
+    --> src\num\radix.rs:1258:24
+     |
+1258 |                     Ok(Self::from_dec(&mut self.to_dec(), base)?)
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing `return` statement
+    --> src\num\radix.rs:1265:33
+     |
+1265 |     fn to_dec(&self) -> Radix { Radix::from(dec!(self)) }
+     |                                 ^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Radix::from(dec!(self))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1274:9
+     |
+1274 |         Self::from_radix(&res.chars().rev().collect::<String>(), base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Self::from_radix(&res.chars().rev().collect::<String>(), base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: indexing may panic
+    --> src\num\radix.rs:1271:22
+     |
+1271 |             res.push(RADIX[radix.number % (base as usize)]);
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using `.get(n)` or `.get_mut(n)` instead
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1271:28
+     |
+1271 |             res.push(RADIX[radix.number % (base as usize)]);
+     |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+    --> src\num\radix.rs:1271:43
+     |
+1271 |             res.push(RADIX[radix.number % (base as usize)]);
+     |                                           ^^^^^^^^^^^^^^^
+     |
+     = help: consider using a safe wrapper for this conversion
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1272:13
+     |
+1272 |             radix.number /= base as usize;
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+    --> src\num\radix.rs:1272:29
+     |
+1272 |             radix.number /= base as usize;
+     |                             ^^^^^^^^^^^^^
+     |
+     = help: consider using a safe wrapper for this conversion
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: missing `#[inline]` for a method
+    --> src\num\radix.rs:1301:5
+     |
+1301 | /     pub fn to_int_radix(&mut self, base: u8) -> Result<Radix, RadixError> {
+1302 | |         match base {
+1303 | |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+1304 | |             10 => Ok(self.to_dec()),
+...    |
+1314 | |         }
+1315 | |     }
+     | |_____^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+    --> src\num\radix.rs:1303:29
+     |
+1303 |             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
+     |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(RadixError::BaseError(10, base))`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1304:19
+     |
+1304 |             10 => Ok(self.to_dec()),
+     |                   ^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(self.to_dec())`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+    --> src\num\radix.rs:1307:21
+     |
+1307 | /                     Ok(Self::from_dec_to_int(
+1308 | |                         &mut Radix::from(self.number.parse::<usize>()?),
+1309 | |                         base,
+1310 | |                     )?)
+     | |_______________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+help: add `return` as shown
+     |
+1307 ~                     return Ok(Self::from_dec_to_int(
+1308 +                         &mut Radix::from(self.number.parse::<usize>()?),
+1309 +                         base,
+1310 +                     )?)
+     |
+
+error: missing `return` statement
+    --> src\num\radix.rs:1312:21
+     |
+1312 |                     Ok(Self::from_dec_to_int(&mut self.to_dec(), base)?)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(Self::from_dec_to_int(&mut self.to_dec(), base)?)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: question mark operator was used
+    --> src\num\radix.rs:1307:24
+     |
+1307 |                       Ok(Self::from_dec_to_int(
+     |  ________________________^
+1308 | |                         &mut Radix::from(self.number.parse::<usize>()?),
+1309 | |                         base,
+1310 | |                     )?)
+     | |______________________^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: question mark operator was used
+    --> src\num\radix.rs:1308:42
+     |
+1308 |                         &mut Radix::from(self.number.parse::<usize>()?),
+     |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: question mark operator was used
+    --> src\num\radix.rs:1312:24
+     |
+1312 |                     Ok(Self::from_dec_to_int(&mut self.to_dec(), base)?)
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing `return` statement
+    --> src\num\radix.rs:1324:9
+     |
+1324 |         Radix::from_radix(res.chars().rev().collect::<String>().parse()?, base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Radix::from_radix(res.chars().rev().collect::<String>().parse()?, base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: indexing may panic
+    --> src\num\radix.rs:1321:22
+     |
+1321 |             res.push(RADIX[radix.number % (base as usize)]);
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using `.get(n)` or `.get_mut(n)` instead
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1321:28
+     |
+1321 |             res.push(RADIX[radix.number % (base as usize)]);
+     |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+    --> src\num\radix.rs:1321:43
+     |
+1321 |             res.push(RADIX[radix.number % (base as usize)]);
+     |                                           ^^^^^^^^^^^^^^^
+     |
+     = help: consider using a safe wrapper for this conversion
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1322:13
+     |
+1322 |             radix.number /= base as usize;
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: using a potentially dangerous silent `as` conversion
+    --> src\num\radix.rs:1322:29
+     |
+1322 |             radix.number /= base as usize;
+     |                             ^^^^^^^^^^^^^
+     |
+     = help: consider using a safe wrapper for this conversion
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: question mark operator was used
+    --> src\num\radix.rs:1324:27
+     |
+1324 |         Radix::from_radix(res.chars().rev().collect::<String>().parse()?, base)
+     |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider using a custom macro or match expression
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: missing `return` statement
+    --> src\num\radix.rs:1347:9
+     |
+1347 |         (self + other).to_int_radix(base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self + other).to_int_radix(base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1347:9
+     |
+1347 |         (self + other).to_int_radix(base)
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `return` statement
+    --> src\num\radix.rs:1370:9
+     |
+1370 |         (self - other).to_int_radix(base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self - other).to_int_radix(base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1370:9
+     |
+1370 |         (self - other).to_int_radix(base)
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `return` statement
+    --> src\num\radix.rs:1393:9
+     |
+1393 |         (self * other).to_int_radix(base)
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (self * other).to_int_radix(base)`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+    --> src\num\radix.rs:1393:9
+     |
+1393 |         (self * other).to_int_radix(base)
+     |         ^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+  --> src\algorithm\extra.rs:15:1
+   |
+15 | / pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
+16 | |     use std::cmp::Ordering;
+17 | |
+18 | |     let (mut left, mut right) = (0, arr.len() - 1);
+...  |
+27 | |     None
+28 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+  --> src\algorithm\extra.rs:27:5
+   |
+27 |     None
+   |     ^^^^ help: add `return` as shown: `return None`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: used import from `std` instead of `core`
+  --> src\algorithm\extra.rs:16:9
+   |
+16 |     use std::cmp::Ordering;
+   |         ^^^ help: consider importing the item from `core`: `core`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#std_instead_of_core
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\extra.rs:18:37
+   |
+18 |     let (mut left, mut right) = (0, arr.len() - 1);
+   |                                     ^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: integer division
+  --> src\algorithm\extra.rs:20:19
+   |
+20 |         let mid = (right + left) / 2;
+   |                   ^^^^^^^^^^^^^^^^^^
+   |
+   = help: division of integers may cause loss of precision. consider using floats
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\extra.rs:20:19
+   |
+20 |         let mid = (right + left) / 2;
+   |                   ^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: question mark operator was used
+  --> src\algorithm\extra.rs:21:15
+   |
+21 |         match arr.get(mid)?.cmp(targ) {
+   |               ^^^^^^^^^^^^^
+   |
+   = help: consider using a custom macro or match expression
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\extra.rs:23:42
+   |
+23 |             Ordering::Greater => right = mid - 1,
+   |                                          ^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\extra.rs:24:38
+   |
+24 |             Ordering::Less => left = mid + 1,
+   |                                      ^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+  --> src\algorithm\extra.rs:64:1
+   |
+64 | / pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
+65 | |     assert!(lower <= upper, "lower bound can't be greater than upper bound");
+66 | |
+67 | |     let mask = mask.replace('*', ".*");
+...  |
+73 | |     (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
+74 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+  --> src\algorithm\extra.rs:73:5
+   |
+73 |     (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: `mask` is shadowed
+  --> src\algorithm\extra.rs:67:9
+   |
+67 |     let mask = mask.replace('*', ".*");
+   |         ^^^^
+   |
+note: previous binding is here
+  --> src\algorithm\extra.rs:64:47
+   |
+64 | pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
+   |                                               ^^^^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#shadow_reuse
+   = note: `-D clippy::shadow-reuse` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::shadow_reuse)]`
+
+error: `mask` is shadowed
+  --> src\algorithm\extra.rs:68:9
+   |
+68 |     let mask = mask.replace('?', ".?");
+   |         ^^^^
+   |
+note: previous binding is here
+  --> src\algorithm\extra.rs:67:9
+   |
+67 |     let mask = mask.replace('*', ".*");
+   |         ^^^^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#shadow_reuse
+
+error: used `unwrap()` on a `Result` value
+  --> src\algorithm\extra.rs:72:14
+   |
+72 |     let re = Regex::new(&re).unwrap();
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it will panic
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unwrap_used
+
+error: `re` is shadowed
+  --> src\algorithm\extra.rs:72:9
+   |
+72 |     let re = Regex::new(&re).unwrap();
+   |         ^^
+   |
+note: previous binding is here
+  --> src\algorithm\extra.rs:69:9
+   |
+69 |     let mut re = "^".to_owned();
+   |         ^^^^^^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#shadow_reuse
+
+error: missing `return` statement
+  --> src\algorithm\extra.rs:73:50
+   |
+73 |     (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
+   |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return re.is_match(&num.to_string())`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: item name starts with its containing module's name
+  --> src\algorithm\prime.rs:12:12
+   |
+12 | pub struct PrimeStatusError;
+   |            ^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#module_name_repetitions
+
+error: item name starts with its containing module's name
+  --> src\algorithm\prime.rs:16:10
+   |
+16 | pub enum PrimeStatus {
+   |          ^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#module_name_repetitions
+
+error: missing `return` statement
+  --> src\algorithm\prime.rs:36:37
+   |
+36 |     pub fn is_prime(self) -> bool { self == Self::Prime }
+   |                                     ^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return self == Self::Prime`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+  --> src\algorithm\prime.rs:51:46
+   |
+51 |     pub fn is_probably_prime(self) -> bool { self != Self::Composite }
+   |                                              ^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return self != Self::Composite`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+  --> src\algorithm\prime.rs:66:41
+   |
+66 |     pub fn is_composite(self) -> bool { self == Self::Composite }
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return self == Self::Composite`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+  --> src\algorithm\prime.rs:95:34
+   |
+95 |     fn is_prime(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Prime) }
+   |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return wilson_th(*self) == Ok(PrimeStatus::Prime)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:107:43
+    |
+107 |     fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return miller_rabin(*self) != Ok(PrimeStatus::Composite)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:120:38
+    |
+120 |     fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return wilson_th(*self) == Ok(PrimeStatus::Composite)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `#[inline]` for a function
+   --> src\algorithm\prime.rs:137:1
+    |
+137 | / pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+138 | |     match num {
+139 | |         ..=1 => Err(PrimeStatusError),
+140 | |         _ => {
+...   |
+151 | |     }
+152 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:139:17
+    |
+139 |         ..=1 => Err(PrimeStatusError),
+    |                 ^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(PrimeStatusError)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:146:17
+    |
+146 |                 Ok(PrimeStatus::Composite)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::Composite)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:148:17
+    |
+148 |                 Ok(PrimeStatus::Prime)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::Prime)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: casting `f64` to `usize` may truncate the value
+   --> src\algorithm\prime.rs:141:21
+    |
+141 |             if (3..=(num as f64).sqrt().ceil() as usize)
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: if this is intentional allow the lint with `#[allow(clippy::cast_possible_truncation)]` ...
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#cast_possible_truncation
+    = note: `-D clippy::cast-possible-truncation` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::cast_possible_truncation)]`
+
+error: casting `f64` to `usize` may lose the sign of the value
+   --> src\algorithm\prime.rs:141:21
+    |
+141 |             if (3..=(num as f64).sqrt().ceil() as usize)
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#cast_sign_loss
+    = note: `-D clippy::cast-sign-loss` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::cast_sign_loss)]`
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\algorithm\prime.rs:141:21
+    |
+141 |             if (3..=(num as f64).sqrt().ceil() as usize)
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: casting `isize` to `f64` causes a loss of precision on targets with 64-bit wide pointers (`isize` is 64 bits wide, but `f64`'s mantissa is only 52 bits wide)
+   --> src\algorithm\prime.rs:141:21
+    |
+141 |             if (3..=(num as f64).sqrt().ceil() as usize)
+    |                     ^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#cast_precision_loss
+    = note: `-D clippy::cast-precision-loss` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::cast_precision_loss)]`
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\algorithm\prime.rs:141:21
+    |
+141 |             if (3..=(num as f64).sqrt().ceil() as usize)
+    |                     ^^^^^^^^^^^^
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:143:32
+    |
+143 |                 .find_any(|&i| num as usize % i == 0)
+    |                                ^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return num as usize % i == 0`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:143:32
+    |
+143 |                 .find_any(|&i| num as usize % i == 0)
+    |                                ^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: casting `isize` to `usize` may lose the sign of the value
+   --> src\algorithm\prime.rs:143:32
+    |
+143 |                 .find_any(|&i| num as usize % i == 0)
+    |                                ^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#cast_sign_loss
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\algorithm\prime.rs:143:32
+    |
+143 |                 .find_any(|&i| num as usize % i == 0)
+    |                                ^^^^^^^^^^^^
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: missing `#[inline]` for a function
+   --> src\algorithm\prime.rs:174:1
+    |
+174 | / pub fn wilson_th(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+175 | |     if num < 2 {
+176 | |         return Err(PrimeStatusError);
+177 | |     }
+...   |
+184 | |     if fact + 1 == BigInt::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+185 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:184:40
+    |
+184 |     if fact + 1 == BigInt::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+    |                                        ^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::Prime)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:184:72
+    |
+184 |     if fact + 1 == BigInt::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+    |                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::Composite)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: default numeric fallback might occur
+   --> src\algorithm\prime.rs:179:33
+    |
+179 |     let mut fact = BigInt::from(1);
+    |                                 ^ help: consider adding suffix: `1_i32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#default_numeric_fallback
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:181:16
+    |
+181 |         fact = (fact * i) % num;
+    |                ^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:184:8
+    |
+184 |     if fact + 1 == BigInt::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+    |        ^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+   --> src\algorithm\prime.rs:206:1
+    |
+206 | / pub fn miller_rabin(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+207 | |     match num {
+208 | |         ..=1 => Err(PrimeStatusError),
+209 | |         5 => Ok(PrimeStatus::Prime),
+...   |
+237 | |     }
+238 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:208:17
+    |
+208 |         ..=1 => Err(PrimeStatusError),
+    |                 ^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Err(PrimeStatusError)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:209:14
+    |
+209 |         5 => Ok(PrimeStatus::Prime),
+    |              ^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::Prime)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:210:46
+    |
+210 |         _ if num % 2 == 0 || num % 3 == 0 => Ok(PrimeStatus::Composite),
+    |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::Composite)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: missing `return` statement
+   --> src\algorithm\prime.rs:235:13
+    |
+235 |             Ok(PrimeStatus::ProbablyPrime)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: add `return` as shown: `return Ok(PrimeStatus::ProbablyPrime)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:212:27
+    |
+212 |             let log_sqr = num.ilog2() * num.ilog2();
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:213:39
+    |
+213 |             let (mut temp, mut su) = (num - 1, 0);
+    |                                       ^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:216:17
+    |
+216 |                 su += 1;
+    |                 ^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:219:64
+    |
+219 |                 let rand_num = rand::thread_rng().gen_range(2..num - 1);
+    |                                                                ^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: casting `isize` to `usize` may lose the sign of the value
+   --> src\algorithm\prime.rs:220:50
+    |
+220 |                 let mut x_num = modpow(rand_num, temp as usize, num);
+    |                                                  ^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#cast_sign_loss
+
+error: using a potentially dangerous silent `as` conversion
+   --> src\algorithm\prime.rs:220:50
+    |
+220 |                 let mut x_num = modpow(rand_num, temp as usize, num);
+    |                                                  ^^^^^^^^^^^^^
+    |
+    = help: consider using a safe wrapper for this conversion
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#as_conversions
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:221:43
+    |
+221 |                 if x_num == 1 || x_num == num - 1 {
+    |                                           ^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:224:30
+    |
+224 |                 for _j in 0..su - 1 {
+    |                              ^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\prime.rs:229:33
+    |
+229 |                     if x_num == num - 1 {
+    |                                 ^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+  --> src\algorithm\sort.rs:15:1
+   |
+15 | / pub fn bubble<T: Ord>(arr: &mut [T]) {
+16 | |     let len = arr.len();
+17 | |     let mut swapped = false;
+18 | |     for i in 0..len {
+...  |
+28 | |     }
+29 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:19:21
+   |
+19 |         for j in 0..len - i - 1 {
+   |                     ^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+  --> src\algorithm\sort.rs:20:16
+   |
+20 |             if arr[j] > arr[j + 1] {
+   |                ^^^^^^
+   |
+   = help: consider using `.get(n)` or `.get_mut(n)` instead
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: indexing may panic
+  --> src\algorithm\sort.rs:20:25
+   |
+20 |             if arr[j] > arr[j + 1] {
+   |                         ^^^^^^^^^^
+   |
+   = help: consider using `.get(n)` or `.get_mut(n)` instead
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:20:29
+   |
+20 |             if arr[j] > arr[j + 1] {
+   |                             ^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:21:26
+   |
+21 |                 arr.swap(j + 1, j);
+   |                          ^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+  --> src\algorithm\sort.rs:41:1
+   |
+41 | / pub fn search<T: Ord>(arr: &mut [T]) {
+42 | |     let len = arr.len();
+43 | |     for i in 0..len - 1 {
+44 | |         let mut i_min = i;
+...  |
+53 | |     }
+54 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:43:17
+   |
+43 |     for i in 0..len - 1 {
+   |                 ^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:45:18
+   |
+45 |         for j in i + 1..len {
+   |                  ^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+  --> src\algorithm\sort.rs:46:16
+   |
+46 |             if arr[j] < arr[i_min] {
+   |                ^^^^^^
+   |
+   = help: consider using `.get(n)` or `.get_mut(n)` instead
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: indexing may panic
+  --> src\algorithm\sort.rs:46:25
+   |
+46 |             if arr[j] < arr[i_min] {
+   |                         ^^^^^^^^^^
+   |
+   = help: consider using `.get(n)` or `.get_mut(n)` instead
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: missing `#[inline]` for a function
+  --> src\algorithm\sort.rs:66:1
+   |
+66 | / pub fn insertion<T: Ord>(arr: &mut [T]) {
+67 | |     for i in 1..arr.len() {
+68 | |         let key = &arr[i];
+69 | |         let mut j = i;
+...  |
+75 | |     }
+76 | | }
+   | |_^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: indexing may panic
+  --> src\algorithm\sort.rs:68:20
+   |
+68 |         let key = &arr[i];
+   |                    ^^^^^^
+   |
+   = help: consider using `.get(n)` or `.get_mut(n)` instead
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: slicing may panic
+  --> src\algorithm\sort.rs:70:19
+   |
+70 |         let pos = arr[..i].binary_search(key).unwrap_or_else(|pos| pos);
+   |                   ^^^^^^^^
+   |
+   = help: consider using `.get(..n)`or `.get_mut(..n)` instead
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: missing `return` statement
+  --> src\algorithm\sort.rs:70:68
+   |
+70 |         let pos = arr[..i].binary_search(key).unwrap_or_else(|pos| pos);
+   |                                                                    ^^^ help: add `return` as shown: `return pos`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:72:22
+   |
+72 |             arr.swap(j - 1, j);
+   |                      ^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+  --> src\algorithm\sort.rs:73:13
+   |
+73 |             j -= 1;
+   |             ^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+   --> src\algorithm\sort.rs:88:1
+    |
+88  | / pub fn merge<T>(slice: &mut [T])
+89  | | where T: Ord + Clone + Copy + Send + Sync {
+90  | |     let len = slice.len();
+91  | |     if len < 2 {
+...   |
+99  | |     merging(slice);
+100 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: integer division
+  --> src\algorithm\sort.rs:94:15
+   |
+94 |     let mid = len / 2;
+   |               ^^^^^^^
+   |
+   = help: division of integers may cause loss of precision. consider using floats
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+
+error: integer division
+   --> src\algorithm\sort.rs:112:15
+    |
+112 |     let mid = len / 2;
+    |               ^^^^^^^
+    |
+    = help: division of integers may cause loss of precision. consider using floats
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:117:26
+    |
+117 |     while i < mid && j < len - mid {
+    |                          ^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:118:12
+    |
+118 |         if left[i] < right[j] {
+    |            ^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:118:22
+    |
+118 |         if left[i] < right[j] {
+    |                      ^^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:119:25
+    |
+119 |             buffer.push(left[i]);
+    |                         ^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:120:13
+    |
+120 |             i += 1;
+    |             ^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:122:25
+    |
+122 |             buffer.push(right[j]);
+    |                         ^^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:123:13
+    |
+123 |             j += 1;
+    |             ^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: slicing may panic
+   --> src\algorithm\sort.rs:127:35
+    |
+127 |         buffer.extend_from_slice(&left[i..]);
+    |                                   ^^^^^^^^^
+    |
+    = help: consider using `.get(n..)` or .get_mut(n..)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:129:12
+    |
+129 |     if j < len - mid {
+    |            ^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: slicing may panic
+   --> src\algorithm\sort.rs:130:35
+    |
+130 |         buffer.extend_from_slice(&right[j..]);
+    |                                   ^^^^^^^^^^
+    |
+    = help: consider using `.get(n..)` or .get_mut(n..)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: missing `#[inline]` for a function
+   --> src\algorithm\sort.rs:145:1
+    |
+145 | / pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
+146 | |     let (mut swapped, mut left, mut right) = (true, 0, arr.len() - 1);
+147 | |
+148 | |     while swapped {
+...   |
+170 | |     }
+171 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:146:56
+    |
+146 |     let (mut swapped, mut left, mut right) = (true, 0, arr.len() - 1);
+    |                                                        ^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:152:16
+    |
+152 |             if arr[i] > arr[i + 1] {
+    |                ^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:152:25
+    |
+152 |             if arr[i] > arr[i + 1] {
+    |                         ^^^^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:152:29
+    |
+152 |             if arr[i] > arr[i + 1] {
+    |                             ^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:153:29
+    |
+153 |                 arr.swap(i, i + 1);
+    |                             ^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:162:9
+    |
+162 |         right -= 1;
+    |         ^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:164:16
+    |
+164 |             if arr[i] > arr[i + 1] {
+    |                ^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:164:25
+    |
+164 |             if arr[i] > arr[i + 1] {
+    |                         ^^^^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:164:29
+    |
+164 |             if arr[i] > arr[i + 1] {
+    |                             ^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:165:29
+    |
+165 |                 arr.swap(i, i + 1);
+    |                             ^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:169:9
+    |
+169 |         left += 1;
+    |         ^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: missing `#[inline]` for a function
+   --> src\algorithm\sort.rs:183:1
+    |
+183 | / pub fn quick<T>(arr: &mut [T])
+184 | | where T: Ord + Send + Clone {
+185 | |     if arr.len() <= 1 {
+186 | |         return;
+...   |
+191 | |     rayon::join(|| quick(left), || quick(right));
+192 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_inline_in_public_items
+
+error: integer division
+   --> src\algorithm\sort.rs:198:23
+    |
+198 |     let pivot_index = len / 2;
+    |                       ^^^^^^^
+    |
+    = help: division of integers may cause loss of precision. consider using floats
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#integer_division
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:199:17
+    |
+199 |     let pivot = arr[pivot_index].clone();
+    |                 ^^^^^^^^^^^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:202:17
+    |
+202 |     let mut j = len - 1;
+    |                 ^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:204:15
+    |
+204 |         while arr[i] < pivot {
+    |               ^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:205:13
+    |
+205 |             i += 1;
+    |             ^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: indexing may panic
+   --> src\algorithm\sort.rs:207:15
+    |
+207 |         while arr[j] > pivot {
+    |               ^^^^^^
+    |
+    = help: consider using `.get(n)` or `.get_mut(n)` instead
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#indexing_slicing
+
+error: arithmetic operation that can potentially result in unexpected side-effects
+   --> src\algorithm\sort.rs:208:13
+    |
+208 |             j -= 1;
+    |             ^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#arithmetic_side_effects
+
+error: this function is only used once
+   --> src\algorithm\sort.rs:195:1
+    |
+195 | / fn partition<T>(arr: &mut [T]) -> usize
+196 | | where T: Ord + Send + Clone {
+197 | |     let len = arr.len();
+198 | |     let pivot_index = len / 2;
+...   |
+214 | |     }
+215 | | }
+    | |_^
+    |
+help: used here
+   --> src\algorithm\sort.rs:188:17
+    |
+188 |     let pivot = partition(arr);
+    |                 ^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#single_call_fn
+    = note: `-D clippy::single-call-fn` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::single_call_fn)]`
+
+error: this function is only used once
+   --> src\algorithm\sort.rs:103:1
+    |
+103 | / fn merging<S, T>(slice: &mut S)
+104 | | where
+105 | |     S: AsMut<[T]> + AsRef<[T]> + Sync + Send + ?Sized,
+106 | |     T: Ord + Clone + Send + Copy,
+...   |
+132 | |     slice.as_mut().copy_from_slice(&buffer);
+133 | | }
+    | |_^
+    |
+help: used here
+   --> src\algorithm\sort.rs:99:5
+    |
+99  |     merging(slice);
+    |     ^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#single_call_fn
+
+error: could not compile `ognlib` (lib) due to 635 previous errors

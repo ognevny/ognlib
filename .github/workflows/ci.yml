@@ -52,6 +52,15 @@ jobs:
         run: cargo fmt -- --check; cargo clippy --profile testing -- -D warnings
       - name: test
         run: cargo t -v --profile testing
+      - name: very pedantic clippy
+        if: ${{ matrix.toolchain == 'nightly' }}
+        run: |
+          RUSTFLAGS="-Zmacro-backtrace" \
+          rustup run nightly cargo clippy --profile testing --all -- \
+          -W clippy::all \
+          -W clippy::pedantic \
+          -W clippy::restriction \
+          -W clippy::nursery || true
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})

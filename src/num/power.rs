@@ -12,18 +12,17 @@ use std::ops::{Mul, MulAssign, Rem, RemAssign};
 /// assert_eq!(bin_pow(123, 3), 1860867);
 /// assert_eq!(bin_pow(0.5, 4), 0.0625);
 /// ```
-
-pub fn bin_pow<N>(mut b: N, mut e: u8) -> N
+pub fn bin_pow<N>(mut base: N, mut exp: u8) -> N
 where N: MulAssign + From<u8> + Copy {
-    let mut v = N::from(1);
-    while e != 0 {
-        if (e & 1) != 0 {
-            v *= b
+    let mut vi = N::from(1);
+    while exp != 0 {
+        if (exp & 1) != 0 {
+            vi *= base;
         }
-        b *= b;
-        e >>= 1;
+        base *= base;
+        exp >>= 1;
     }
-    v
+    vi
 }
 
 /// Modular exponentation.
@@ -38,17 +37,16 @@ where N: MulAssign + From<u8> + Copy {
 /// assert_eq!(mod1, 3);
 /// assert_eq!(mod2, 1);
 /// ```
-
-pub fn modpow<N>(mut b: N, mut e: usize, m: N) -> N
+pub fn modpow<N>(mut base: N, mut exp: usize, modulo: N) -> N
 where N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq {
-    let mut result = N::from(1);
-    b %= m;
-    while e != 0 {
-        if e & 1 == 1 {
-            result = (result * b) % m;
+    let mut res = N::from(1);
+    base %= modulo;
+    while exp != 0 {
+        if exp & 1 == 1 {
+            res = (res * base) % modulo;
         }
-        e >>= 1;
-        b = (b * b) % m;
+        exp >>= 1;
+        base = (base * base) % modulo;
     }
-    result
+    res
 }

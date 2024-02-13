@@ -14,15 +14,19 @@ pub trait Num {
     fn has_digit(self, k: Self) -> bool;
 
     /// Reverse number.
+    #[must_use]
     fn rev(self) -> Self;
 
     /// Calculate sum of number digits.
+    #[must_use]
     fn sum(self) -> Self;
+
     #[cfg(feature = "num-bigint")]
     /// Calculates factorial of number (result is [`num_bigint::BigInt`]).
     fn factorial(self) -> num_bigint::BigInt;
 }
 
+/// impl Num trait's methods
 macro_rules! impl_num {
     ($($type:ty)*) => {
         $(impl Num for $type {
@@ -49,13 +53,13 @@ macro_rules! impl_num {
             /// assert_eq!(123.sum(), 6);
             /// assert_eq!(444.sum(), 12);
             /// ```
-
+            #[must_use]
             fn sum(self) -> Self {
-                let mut n = self;
+                let mut num = self;
                 let mut sum = 0;
-                while n.as_bool() {
-                    sum += n % 10;
-                    n /= 10;
+                while num.as_bool() {
+                    sum += num % 10;
+                    num /= 10;
                 }
                 sum
             }
@@ -83,14 +87,14 @@ macro_rules! impl_num {
             /// assert_eq!(123.rev(), 321);
             /// assert_eq!(444.rev(), 444);
             /// ```
-
+            #[must_use]
             fn rev(self) -> Self {
-                let mut n = self;
+                let mut num = self;
                 let mut rev = 0;
-                while n.as_bool() {
+                while num.as_bool() {
                     rev *= 10;
-                    rev += n % 10;
-                    n /= 10;
+                    rev += num % 10;
+                    num /= 10;
                 }
                 rev
             }
@@ -104,14 +108,13 @@ macro_rules! impl_num {
             /// assert_eq!(123.has_digit(2), true);
             /// assert_eq!(444.has_digit(9), false);
             /// ```
-
-            fn has_digit(self, k: Self) -> bool {
-                let mut n = self;
-                while n.as_bool() {
-                    if n % 10 == k {
+            fn has_digit(self, digit: Self) -> bool {
+                let mut num = self;
+                while num.as_bool() {
+                    if num % 10 == digit {
                         return true;
                     }
-                    n /= 10;
+                    num /= 10;
                 }
                 false
             }

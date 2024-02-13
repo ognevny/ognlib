@@ -2,14 +2,17 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-use {rayon::prelude::*, thiserror::Error};
+#[cfg(feature = "num-bigint")] use num_bigint::BigInt;
+use {crate::num::power::modpow, rand::Rng, rayon::prelude::*, thiserror::Error};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
-#[derive(Debug, Error, PartialEq)]
+#[non_exhaustive]
+#[derive(Debug, Error, PartialEq, Eq)]
 #[error("This number is neither prime nor composite")]
 pub struct PrimeStatusError;
 
-#[derive(Debug, PartialEq)]
+#[non_exhaustive]
+#[derive(Debug, PartialEq, Eq)]
 pub enum PrimeStatus {
     Prime,
     Composite,
@@ -29,7 +32,8 @@ impl PrimeStatus {
     ///
     /// [`Prime`]: PrimeStatus::Prime
     #[inline]
-    pub fn is_prime(self) -> bool { self == PrimeStatus::Prime }
+    #[must_use]
+    pub fn is_prime(self) -> bool { self == Self::Prime }
 
     /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
     /// # Examples
@@ -43,7 +47,8 @@ impl PrimeStatus {
     ///
     /// [`Composite`]: PrimeStatus::Composite
     #[inline]
-    pub fn is_probably_prime(self) -> bool { self != PrimeStatus::Composite }
+    #[must_use]
+    pub fn is_probably_prime(self) -> bool { self != Self::Composite }
 
     /// Returns `true` if [`PrimeStatus`] is [`Composite`].
     /// # Examples
@@ -57,19 +62,21 @@ impl PrimeStatus {
     ///
     /// [`Composite`]: PrimeStatus::Composite
     #[inline]
-    pub fn is_composite(self) -> bool { self == PrimeStatus::Composite }
+    #[must_use]
+    pub fn is_composite(self) -> bool { self == Self::Composite }
 }
 
 /// Methods to check prime status.
 pub trait Prime {
-    #[cfg(feature = "num-bigint")]
     /// Returns `true` if number is prime.
+    #[cfg(feature = "num-bigint")]
     fn is_prime(&self) -> bool;
 
     /// Returns `true` if number is either prime or probably prime.
     fn is_probably_prime(&self) -> bool;
-    #[cfg(feature = "num-bigint")]
+
     /// Returns `true` if number is composite.
+    #[cfg(feature = "num-bigint")]
     fn is_composite(&self) -> bool;
 }
 
@@ -116,6 +123,9 @@ impl Prime for isize {
 /// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3
 /// to ceil with step 2.
 ///
+/// # Errors
+/// Returns a [`PrimeStatusError`] if number <= 1
+///
 /// # Examples
 /// ```
 /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
@@ -124,14 +134,13 @@ impl Prime for isize {
 /// assert_eq!(sqrtest(13).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455).ok(), Some(PrimeStatus::Composite));
 /// ```
-
-pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    match n {
+pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+    match num {
         ..=1 => Err(PrimeStatusError),
         _ => {
-            if (3..=(n as f64).sqrt().ceil() as usize)
+            if (3..=(num as f64).sqrt().ceil() as usize)
                 .into_par_iter()
-                .find_any(|&i| n as usize % i == 0)
+                .find_any(|&i| num as usize % i == 0)
                 .is_some()
             {
                 Ok(PrimeStatus::Composite)
@@ -147,6 +156,9 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// the positive integers less than n is one less than a multiple of n. That is the factorial
 /// (n - 1)! satisfies (n - 1)! % n == -1".
 ///
+/// # Errors
+/// Returns a [`PrimeStatusError`] if number <= 1
+///
 /// # Examples
 /// ```
 /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus, PrimeStatusError};
@@ -159,25 +171,26 @@ pub fn sqrtest(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// assert_eq!(wilson_th(455).ok(), Some(PrimeStatus::Composite));
 /// ```
 #[cfg(feature = "num-bigint")]
-pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    use num_bigint::BigInt;
-
-    if n < 2 {
+pub fn wilson_th(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+    if num < 2 {
         return Err(PrimeStatusError);
     }
 
     let mut fact = BigInt::from(1);
-    for i in 2..n {
-        fact = (fact * i) % n;
+    for i in 2..num {
+        fact = (fact * i) % num;
     }
 
-    if fact + 1 == BigInt::from(n) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+    if fact + 1 == BigInt::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
 }
 
 /// Miller-Rabin's prime test. From
 /// [Wikipedia](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test): the Miller–Rabin
 /// primality test or Rabin–Miller primality test is a probabilistic primality test: an algorithm
 /// which determines whether a given number is likely to be prime.
+///
+/// # Errors
+/// Returns a [`PrimeStatusError`] if number <= 1
 ///
 /// # Examples
 /// ```
@@ -190,33 +203,30 @@ pub fn wilson_th(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// assert_eq!(miller_rabin(13).ok(), Some(PrimeStatus::ProbablyPrime));
 /// assert_eq!(miller_rabin(455).ok(), Some(PrimeStatus::Composite));
 /// ```
-
-pub fn miller_rabin(n: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    use {crate::num::power::modpow, rand::Rng};
-
-    match n {
+pub fn miller_rabin(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+    match num {
         ..=1 => Err(PrimeStatusError),
         5 => Ok(PrimeStatus::Prime),
-        _ if n % 2 == 0 || n % 3 == 0 => Ok(PrimeStatus::Composite),
+        _ if num % 2 == 0 || num % 3 == 0 => Ok(PrimeStatus::Composite),
         _ => {
-            let k = ((n as f64).log2().ceil() * (n as f64).log2().ceil()) as isize;
-            let (mut t, mut s) = (n - 1, 0);
-            while t % 2 == 0 {
-                t /= 2;
-                s += 1;
+            let log_sqr = num.ilog2() * num.ilog2();
+            let (mut temp, mut su) = (num - 1, 0);
+            while temp % 2 == 0 {
+                temp /= 2;
+                su += 1;
             }
-            'outer: for _i in 0..k {
-                let a = rand::thread_rng().gen_range(2..n - 1);
-                let mut x = modpow(a, t as usize, n);
-                if x == 1 || x == n - 1 {
+            'outer: for _i in 0..log_sqr {
+                let rand_num = rand::thread_rng().gen_range(2..num - 1);
+                let mut x_num = modpow(rand_num, temp as usize, num);
+                if x_num == 1 || x_num == num - 1 {
                     continue;
                 }
-                for _j in 0..s - 1 {
-                    x = modpow(x, 2, n);
-                    if x == 1 {
+                for _j in 0..su - 1 {
+                    x_num = modpow(x_num, 2, num);
+                    if x_num == 1 {
                         return Ok(PrimeStatus::Composite);
                     }
-                    if x == n - 1 {
+                    if x_num == num - 1 {
                         continue 'outer;
                     }
                 }

@@ -1,5 +1,7 @@
 //! A list of algorithms that is not categorized currently.
 
+use {rayon::prelude::*, regex::Regex};
+
 /// A binary search algorithm (sorted array is requiered).
 /// # Examples
 ///
@@ -7,17 +9,16 @@
 /// use ognlib::algorithm::extra::bin_search;
 ///
 /// let arr = vec![1, 2, 3, 4, 5];
-/// assert_eq!(bin_search(&arr, 2), Some(1));
-/// assert_eq!(bin_search(&arr, 6), None);
+/// assert_eq!(bin_search(&arr, &2), Some(1));
+/// assert_eq!(bin_search(&arr, &6), None);
 /// ```
-
-pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
+pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
     use std::cmp::Ordering;
 
     let (mut left, mut right) = (0, arr.len() - 1);
     while left <= right {
         let mid = (right + left) / 2;
-        match arr[mid].cmp(&targ) {
+        match arr.get(mid)?.cmp(targ) {
             Ordering::Equal => return Some(mid),
             Ordering::Greater => right = mid - 1,
             Ordering::Less => left = mid + 1,
@@ -29,6 +30,9 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 /// Russian informatics exam has a task that asks you to find the numbers, that matches the "mask"
 /// (for example "123*567?") between lower and upper bounds. Actually, this is not full
 /// implementation, as this also has external condition.
+///
+/// # Panics
+/// panics if lower bound is greater than lower bound
 ///
 /// # Example
 ///
@@ -56,14 +60,15 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: T) -> Option<usize> {
 ///     123575673, 123664567, 123833567, 123865677, 123925672,
 /// ])
 /// ```
-
+#[must_use]
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
-    assert!(lower <= upper);
-
-    use {rayon::prelude::*, regex::Regex};
+    assert!(lower <= upper, "lower bound can't be greater than upper bound");
 
     let mask = mask.replace('*', ".*");
     let mask = mask.replace('?', ".?");
-    let re = Regex::new(&("^".to_owned() + &mask + "$")).unwrap();
+    let mut re = "^".to_owned();
+    re.push_str(&mask);
+    re.push('$');
+    let re = Regex::new(&re).unwrap();
     (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
 }

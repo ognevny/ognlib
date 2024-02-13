@@ -1,7 +1,7 @@
 //! Structs for radix numbers (String nums and int nums). All numbers are unsigned integers.
 
 use {
-    std::{cmp::Ordering, ops, str::FromStr},
+    std::{cmp::Ordering, num::ParseIntError, ops, str::FromStr},
     thiserror::Error,
 };
 
@@ -46,30 +46,34 @@ macro_rules! dec {
 /// error, which is just [`ParseIntError`] from std.
 ///
 /// [`ParseIntError`]: std::num::ParseIntError
-#[derive(Debug, Error, PartialEq)]
+#[non_exhaustive]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum RadixError {
     #[error("Expected base in range `2..={0}`, found {1}")]
     BaseError(u8, u8),
     #[error("Number contains a digit ({0}) that is more or equal than base ({1})")]
     NumberError(char, u8),
     #[error(transparent)]
-    ParseError(#[from] std::num::ParseIntError),
+    ParseError(#[from] ParseIntError),
 }
 
 /// Radix number, that is usually written as *number*<sub>*base*</sub> (444<sub>8</sub> for
 /// example). Base can be only in range `2..=10`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Radix {
+    /// a number of radix number
     number: usize,
+
+    /// a base of radix number
     base: u8,
 }
 
 impl FromStr for Radix {
-    type Err = std::num::ParseIntError;
+    type Err = ParseIntError;
 
     /// Creates a new [`Radix`] with base 10 and given [`str`] number.
     ///
-    /// # Error
+    /// # Errors
     /// Returns [`ParseIntError`] if number contains invalid digits.
     ///
     /// [`ParseIntError`]: std::num::ParseIntError
@@ -85,7 +89,7 @@ impl FromStr for Radix {
     /// let e = Radix::from_str("12A").unwrap_err();
     /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// ```
-
+    #[inline]
     fn from_str(number: &str) -> Result<Self, Self::Err> {
         Ok(Self { number: number.parse()?, base: 10 })
     }
@@ -95,16 +99,19 @@ impl FromStr for Radix {
 /// example), but number is represented as [`String`] so base could be from range `2..=36`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StringRadix {
+    /// a number of radix represented as [`String`]
     number: String,
+
+    /// a base of radix number
     base: u8,
 }
 
 impl FromStr for StringRadix {
-    type Err = std::num::ParseIntError;
+    type Err = ParseIntError;
 
     /// Creates a new [`StringRadix`] with base 10 and given [`str`] number.
     ///
-    /// # Error
+    /// # Errors
     /// Returns [`ParseIntError`] if number contains invalid digit.
     ///
     /// [`ParseIntError`]: std::num::ParseIntError
@@ -120,12 +127,13 @@ impl FromStr for StringRadix {
     /// let e = StringRadix::from_str("12A").unwrap_err();
     /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// ```
-
+    #[inline]
     fn from_str(number: &str) -> Result<Self, Self::Err> {
         Ok(Self { number: number.parse::<usize>()?.to_string(), base: 10 })
     }
 }
 
+/// impl common traits for radix structs
 macro_rules! impl_traits {
     ($($radix:ident)*) => {
         $(impl PartialOrd for $radix {
@@ -158,7 +166,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (227, 8));
             /// assert_eq!(res_str.radix(), ("227", 8));
             /// ```
-
             fn add(self, other: Self) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) + dec!(&other))
@@ -187,7 +194,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (227, 8));
             /// assert_eq!(res_str.radix(), ("227", 8));
             /// ```
-
             fn add(self, other: usize) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) + other)
@@ -219,7 +225,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n1.radix(), (227, 8));
             /// assert_eq!(n_str1.radix(), ("227", 8));
             /// ```
-
             fn add_assign(&mut self, other: Self) {
                 *self = self.clone() + other
             }
@@ -243,7 +248,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n.radix(), (227, 8));
             /// assert_eq!(n_str.radix(), ("227", 8));
             /// ```
-
             fn add_assign(&mut self, other: usize) {
                 *self = self.clone() + Self::from(other)
             }
@@ -269,7 +273,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (141, 8));
             /// assert_eq!(res_str.radix(), ("141", 8));
             /// ```
-
             fn sub(self, other: Self) -> Self::Output {
                 if self > other {
                     Self {
@@ -309,7 +312,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (141, 8));
             /// assert_eq!(res_str.radix(), ("141", 8));
             /// ```
-
             fn sub(self, other: usize) -> Self::Output {
                 if self > Self::from(other) {
                     Self {
@@ -354,7 +356,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n1.radix(), (141, 8));
             /// assert_eq!(n_str1.radix(), ("141", 8));
             /// ```
-
             fn sub_assign(&mut self, other: Self) {
                 *self = self.clone() - other;
             }
@@ -381,7 +382,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n.radix(), (141, 8));
             /// assert_eq!(n_str.radix(), ("141", 8));
             /// ```
-
             fn sub_assign(&mut self, other: usize) {
                 *self = self.clone() - other;
             }
@@ -406,7 +406,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (6424, 8));
             /// assert_eq!(res_str.radix(), ("6424", 8));
             /// ```
-
             fn mul(self, other: Self) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) * dec!(&other))
@@ -435,7 +434,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (6424, 8));
             /// assert_eq!(res_str.radix(), ("6424", 8));
             /// ```
-
             fn mul(self, other: usize) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) * other)
@@ -467,7 +465,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n1.radix(), (6424, 8));
             /// assert_eq!(n_str1.radix(), ("6424", 8));
             /// ```
-
             fn mul_assign(&mut self, other: Self) {
                 *self = self.clone() * other;
             }
@@ -491,7 +488,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n.radix(), (6424, 8));
             /// assert_eq!(n_str.radix(), ("6424", 8));
             /// ```
-
             fn mul_assign(&mut self, other: usize) {
                 *self = self.clone() * other;
             }
@@ -516,7 +512,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (4, 8));
             /// assert_eq!(res_str.radix(), ("4", 8));
             /// ```
-
             fn div(self, other: Self) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) / dec!(&other))
@@ -545,7 +540,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (4, 8));
             /// assert_eq!(res_str.radix(), ("4", 8));
             /// ```
-
             fn div(self, other: usize) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) / other)
@@ -577,7 +571,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n2.radix(), (4, 8));
             /// assert_eq!(n_str2.radix(), ("4", 8));
             /// ```
-
             fn div_assign(&mut self, other: Self) {
                 *self = self.clone() / other;
             }
@@ -601,7 +594,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n.radix(), (4, 8));
             /// assert_eq!(n_str.radix(), ("4", 8));
             /// ```
-
             fn div_assign(&mut self, other: usize) {
                 *self = self.clone() / other;
             }
@@ -626,7 +618,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (20, 8));
             /// assert_eq!(res_str.radix(), ("20", 8));
             /// ```
-
             fn rem(self, other: Self) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) % dec!(&other))
@@ -655,7 +646,6 @@ macro_rules! impl_traits {
             /// assert_eq!(res.radix(), (20, 8));
             /// assert_eq!(res_str.radix(), ("20", 8));
             /// ```
-
             fn rem(self, other: usize) -> Self::Output {
                 Self {
                     number: Self::from(dec!(&self) % other)
@@ -687,7 +677,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n2.radix(), (20, 8));
             /// assert_eq!(n_str2.radix(), ("20", 8));
             /// ```
-
             fn rem_assign(&mut self, other: Self) {
                 *self = self.clone() % other;
             }
@@ -711,7 +700,6 @@ macro_rules! impl_traits {
             /// assert_eq!(n.radix(), (20, 8));
             /// assert_eq!(n_str.radix(), ("20", 8));
             /// ```
-
             fn rem_assign(&mut self, other: usize) {
                 *self = self.clone() % other;
             }
@@ -719,6 +707,7 @@ macro_rules! impl_traits {
     };
 }
 
+/// impl some common From traits for radix
 macro_rules! impl_froms {
     ($($type:ty)*) => {
         $(impl From<$type> for Radix {
@@ -840,7 +829,7 @@ impl_froms!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
 impl Radix {
     /// Creates a new [`Radix`].
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct.
     ///
     /// [`BaseError`]: RadixError::BaseError
@@ -860,7 +849,6 @@ impl Radix {
     /// let e2 = Radix::new(33).unwrap_err();
     /// assert_eq!(e2.to_string(), "Expected base in range `2..=10`, found 33");
     /// ```
-
     pub const fn new(base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
@@ -870,7 +858,7 @@ impl Radix {
 
     /// Creates a new [`Radix`] with given number and base.
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] if base isn't correct; [`NumberError`] if number isn't correct.
     ///
     /// [`BaseError`]: RadixError::BaseError
@@ -888,24 +876,24 @@ impl Radix {
     /// let e = Radix::from_radix(444, 3).unwrap_err();
     /// assert_eq!(e.to_string(), "Number contains a digit (4) that is more or equal than base (3)",);
     /// ```
-
     pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
             _ => {
                 use super::methods::Num;
 
-                if let Some(err) = RADIX.iter().take(10).skip(base.into()).find_map(|i| {
-                    if number.has_digit(i.to_string().parse().unwrap()) {
-                        Some(Err(RadixError::NumberError(*i, base)))
-                    } else {
-                        None
-                    }
-                }) {
-                    err
-                } else {
-                    Ok(Self { number, base })
-                }
+                RADIX
+                    .iter()
+                    .take(10)
+                    .skip(base.into())
+                    .find_map(|i| {
+                        if number.has_digit(i.to_string().parse().unwrap()) {
+                            Some(Err(RadixError::NumberError(*i, base)))
+                        } else {
+                            None
+                        }
+                    })
+                    .map_or(Ok(Self { number, base }), |err| err)
             },
         }
     }
@@ -922,7 +910,8 @@ impl Radix {
     /// assert_eq!(radix.number(), 444);
     /// ```
     #[inline]
-    pub fn number(&self) -> usize { self.number }
+    #[must_use]
+    pub const fn number(&self) -> usize { self.number }
 
     /// Returns a base of [`Radix`].
     ///
@@ -936,7 +925,8 @@ impl Radix {
     /// assert_eq!(radix.base(), 5);
     /// ```
     #[inline]
-    pub fn base(&self) -> u8 { self.base }
+    #[must_use]
+    pub const fn base(&self) -> u8 { self.base }
 
     /// Returns a full [`Radix`] as tuple (number, base).
     ///
@@ -950,14 +940,15 @@ impl Radix {
     /// assert_eq!(radix.radix(), (444, 5));
     /// ```
     #[inline]
-    pub fn radix(&self) -> (usize, u8) { (self.number, self.base) }
+    #[must_use]
+    pub const fn radix(&self) -> (usize, u8) { (self.number, self.base) }
 
     /// Translate [`Radix`] to another [`Radix`].
     ///
     /// # Panics
     /// Panics if k is less than 2 or k more than 36.
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct; [`ParseError`] if there was error with
     /// parse functions.
     ///
@@ -981,30 +972,31 @@ impl Radix {
     /// let e = new2.to_radix(1).unwrap_err();
     /// assert_eq!(e.to_string(), "Expected base in range `2..=10`, found 1");
     /// ```
-
-    pub fn to_radix(self, k: u8) -> Result<Self, RadixError> {
-        match k {
-            0 | 1 | 11.. => Err(RadixError::BaseError(10, k)),
+    pub fn to_radix(self, base: u8) -> Result<Self, RadixError> {
+        match base {
+            0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
             10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
-                    Ok(self.to_radix_from_dec(k)?)
+                    Ok(self.to_radix_from_dec(base)?)
                 } else {
-                    Ok(self.to_dec().to_radix_from_dec(k)?)
+                    Ok(self.to_dec().to_radix_from_dec(base)?)
                 },
         }
     }
 
+    /// convert a [`Radix`] into [`Radix`] with base 10
     #[inline]
     fn to_dec(self) -> Self { Self::from(dec!(self)) }
 
-    fn to_radix_from_dec(mut self, k: u8) -> Result<Self, RadixError> {
+    /// convert a [`Radix`] with base 10 to a [`Radix`] with new base
+    fn to_radix_from_dec(mut self, base: u8) -> Result<Self, RadixError> {
         let mut res = String::new();
         while self.number != 0 {
-            res.push(RADIX[self.number % (k as usize)]);
-            self.number /= k as usize;
+            res.push(RADIX[self.number % (base as usize)]);
+            self.number /= base as usize;
         }
-        Self::from_radix(res.chars().rev().collect::<String>().parse()?, k)
+        Self::from_radix(res.chars().rev().collect::<String>().parse()?, base)
     }
 
     /// Translate [`Radix`] to another [`StringRadix`].
@@ -1012,7 +1004,7 @@ impl Radix {
     /// # Panics
     /// Panics if k is less than 2 or k more than 36.
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct; [`ParseError`] if there was error with
     /// parse functions.
     ///
@@ -1031,32 +1023,32 @@ impl Radix {
     /// let e = n.to_str_radix(42).unwrap_err();
     /// assert_eq!(e.to_string(), "Expected base in range `2..=36`, found 42");
     /// ```
-
-    pub fn to_str_radix(self, k: u8) -> Result<StringRadix, RadixError> {
-        match k {
-            0 | 1 | 37.. => Err(RadixError::BaseError(36, k)),
+    pub fn to_str_radix(self, base: u8) -> Result<StringRadix, RadixError> {
+        match base {
+            0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             10 => Ok(StringRadix::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
-                    Ok(self.to_str_radix_from_dec(k)?)
+                    Ok(self.to_str_radix_from_dec(base)?)
                 } else {
-                    Ok(self.to_dec().to_str_radix_from_dec(k)?)
+                    Ok(self.to_dec().to_str_radix_from_dec(base)?)
                 },
         }
     }
 
-    fn to_str_radix_from_dec(mut self, k: u8) -> Result<StringRadix, RadixError> {
+    /// convert a [`Radix`] with base 10 number into a [`StringRadix`] number with another base
+    fn to_str_radix_from_dec(mut self, base: u8) -> Result<StringRadix, RadixError> {
         let mut res = String::new();
         while self.number != 0 {
-            res.push(RADIX[self.number % (k as usize)]);
-            self.number /= k as usize;
+            res.push(RADIX[self.number % (base as usize)]);
+            self.number /= base as usize;
         }
-        StringRadix::from_radix(&res.chars().rev().collect::<String>(), k)
+        StringRadix::from_radix(&res.chars().rev().collect::<String>(), base)
     }
 
     /// Sum 2 [`Radix`] to new [`StringRadix`].
     ///
-    /// # Error
+    /// # Errors
     /// Same as [`to_str_radix`].
     ///
     /// [`to_str_radix`]: Radix::to_str_radix
@@ -1073,13 +1065,13 @@ impl Radix {
     /// assert_eq!(res.radix(), ("97", 16));
     /// ```
     #[inline]
-    pub fn add_to_str(self, a: Self, k: u8) -> Result<StringRadix, RadixError> {
-        (self + a).to_str_radix(k)
+    pub fn add_to_str(self, other: Self, base: u8) -> Result<StringRadix, RadixError> {
+        (self + other).to_str_radix(base)
     }
 
     /// Sub 2 [`Radix`] to new [`StringRadix`].
     ///
-    /// # Error
+    /// # Errors
     /// Same as [`to_str_radix`].
     ///
     /// [`to_str_radix`]: Radix::to_str_radix
@@ -1096,13 +1088,13 @@ impl Radix {
     /// assert_eq!(res.radix(), ("61", 16));
     /// ```
     #[inline]
-    pub fn sub_to_str(self, a: Self, k: u8) -> Result<StringRadix, RadixError> {
-        (self - a).to_str_radix(k)
+    pub fn sub_to_str(self, other: Self, base: u8) -> Result<StringRadix, RadixError> {
+        (self - other).to_str_radix(base)
     }
 
     /// Mul 2 [`Radix`] to new [`StringRadix`].
     ///
-    /// # Error
+    /// # Errors
     /// Same as [`to_str_radix`].
     ///
     /// [`to_str_radix`]: Radix::to_str_radix
@@ -1119,15 +1111,15 @@ impl Radix {
     /// assert_eq!(res.radix(), ("D14", 16));
     /// ```
     #[inline]
-    pub fn mul_to_str(self, a: Self, k: u8) -> Result<StringRadix, RadixError> {
-        (self * a).to_str_radix(k)
+    pub fn mul_to_str(self, other: Self, base: u8) -> Result<StringRadix, RadixError> {
+        (self * other).to_str_radix(base)
     }
 }
 
 impl StringRadix {
     /// Creates a new [`StringRadix`].
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct.
     ///
     /// [`BaseError`]: RadixError::BaseError
@@ -1147,7 +1139,6 @@ impl StringRadix {
     /// let e2 = StringRadix::new(255).unwrap_err();
     /// assert_eq!(e2.to_string(), "Expected base in range `2..=36`, found 255");
     /// ```
-
     pub fn new(base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
@@ -1157,7 +1148,7 @@ impl StringRadix {
 
     /// Creates a new [`StringRadix`] with given [`str`] number and base.
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct or [`NumberError`] when number contains
     /// digit that are more or equal than base.
     ///
@@ -1176,22 +1167,13 @@ impl StringRadix {
     /// let e = StringRadix::from_radix("129", 9).unwrap_err();
     /// assert_eq!(e.to_string(), "Number contains a digit (9) that is more or equal than base (9)",);
     /// ```
-
     pub fn from_radix(number: &str, base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             _ => {
-                if let Some(err) = RADIX.iter().skip(base.into()).find_map(|&i| {
-                    if number.contains(i) {
-                        Some(Err(RadixError::NumberError(i, base)))
-                    } else {
-                        None
-                    }
-                }) {
-                    err
-                } else {
-                    Ok(Self { number: number.to_owned(), base })
-                }
+                RADIX.iter().skip(base.into()).find_map(|&i|
+                    number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
+                ).map_or(Ok(Self { number: number.to_owned(), base }), |err| err)
             },
         }
     }
@@ -1208,6 +1190,7 @@ impl StringRadix {
     /// assert_eq!(radix.number(), "444");
     /// ```
     #[inline]
+    #[must_use]
     pub fn number(&self) -> &str { &self.number }
 
     /// Returns a base of [`StringRadix`].
@@ -1222,7 +1205,8 @@ impl StringRadix {
     /// assert_eq!(radix.base(), 5);
     /// ```
     #[inline]
-    pub fn base(&self) -> u8 { self.base }
+    #[must_use]
+    pub const fn base(&self) -> u8 { self.base }
 
     /// Returns a full [`StringRadix`] as tuple `(number, base)`.
     ///
@@ -1236,6 +1220,7 @@ impl StringRadix {
     /// assert_eq!(radix.radix(), ("444", 5));
     /// ```
     #[inline]
+    #[must_use]
     pub fn radix(&self) -> (&str, u8) { (&self.number, self.base) }
 
     /// Translate [`StringRadix`] to another [`StringRadix`].
@@ -1243,7 +1228,7 @@ impl StringRadix {
     /// # Panics
     /// Panics if k is less than 2 or k more than 36.
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct; [`ParseError`] if there was error with
     /// parse functions.
     ///
@@ -1262,30 +1247,31 @@ impl StringRadix {
     /// let e = res.to_radix(42).unwrap_err();
     /// assert_eq!(e.to_string(), "Expected base in range `2..=36`, found 42");
     /// ```
-
-    pub fn to_radix(&mut self, k: u8) -> Result<Self, RadixError> {
-        match k {
-            0 | 1 | 37.. => Err(RadixError::BaseError(36, k)),
+    pub fn to_radix(&mut self, base: u8) -> Result<Self, RadixError> {
+        match base {
+            0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             10 => Ok(Self::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
-                    Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), k)?)
+                    Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), base)?)
                 } else {
-                    Ok(Self::from_dec(&mut self.to_dec(), k)?)
+                    Ok(Self::from_dec(&mut self.to_dec(), base)?)
                 },
         }
     }
 
+    /// convert [`StringRadix`] to a [`Radix`] number with base 10
     #[inline]
     fn to_dec(&self) -> Radix { Radix::from(dec!(self)) }
 
-    fn from_dec(n: &mut Radix, k: u8) -> Result<Self, RadixError> {
+    /// convert a [`Radix`] number with base 10 to a new [`StringRadix`] number with another base
+    fn from_dec(radix: &mut Radix, base: u8) -> Result<Self, RadixError> {
         let mut res = String::new();
-        while n.number != 0 {
-            res.push(RADIX[n.number % (k as usize)]);
-            n.number /= k as usize;
+        while radix.number != 0 {
+            res.push(RADIX[radix.number % (base as usize)]);
+            radix.number /= base as usize;
         }
-        Self::from_radix(&res.chars().rev().collect::<String>(), k)
+        Self::from_radix(&res.chars().rev().collect::<String>(), base)
     }
 
     /// Translate [`StringRadix`] to another [`Radix`].
@@ -1293,7 +1279,7 @@ impl StringRadix {
     /// # Panics
     /// Panics if k is less than 2 or k more than 36.
     ///
-    /// # Error
+    /// # Errors
     /// Returns a [`BaseError`] when base isn't correct; [`ParseError`] if there was error with
     /// parse functions.
     ///
@@ -1312,32 +1298,35 @@ impl StringRadix {
     /// let e = n.to_int_radix(12).unwrap_err();
     /// assert_eq!(e.to_string(), "Expected base in range `2..=10`, found 12");
     /// ```
-
-    pub fn to_int_radix(&mut self, k: u8) -> Result<Radix, RadixError> {
-        match k {
-            0 | 1 | 11.. => Err(RadixError::BaseError(10, k)),
+    pub fn to_int_radix(&mut self, base: u8) -> Result<Radix, RadixError> {
+        match base {
+            0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
             10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
-                    Ok(Self::from_dec_to_int(&mut Radix::from(self.number.parse::<usize>()?), k)?)
+                    Ok(Self::from_dec_to_int(
+                        &mut Radix::from(self.number.parse::<usize>()?),
+                        base,
+                    )?)
                 } else {
-                    Ok(Self::from_dec_to_int(&mut self.to_dec(), k)?)
+                    Ok(Self::from_dec_to_int(&mut self.to_dec(), base)?)
                 },
         }
     }
 
-    fn from_dec_to_int(n: &mut Radix, k: u8) -> Result<Radix, RadixError> {
+    /// convert a [`Radix`] number with base 10 to a [`Radix`] with new base
+    fn from_dec_to_int(radix: &mut Radix, base: u8) -> Result<Radix, RadixError> {
         let mut res = String::new();
-        while n.number != 0 {
-            res.push(RADIX[n.number % (k as usize)]);
-            n.number /= k as usize;
+        while radix.number != 0 {
+            res.push(RADIX[radix.number % (base as usize)]);
+            radix.number /= base as usize;
         }
-        Radix::from_radix(res.chars().rev().collect::<String>().parse()?, k)
+        Radix::from_radix(res.chars().rev().collect::<String>().parse()?, base)
     }
 
     /// Sum 2 [`StringRadix`] to new [`Radix`].
     ///
-    /// # Error
+    /// # Errors
     /// Same as [`to_int_radix`].
     ///
     /// [`to_int_radix`]: StringRadix::to_int_radix
@@ -1354,13 +1343,13 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (227, 8));
     /// ```
     #[inline]
-    pub fn add_to_int(self, a: Self, k: u8) -> Result<Radix, RadixError> {
-        (self + a).to_int_radix(k)
+    pub fn add_to_int(self, other: Self, base: u8) -> Result<Radix, RadixError> {
+        (self + other).to_int_radix(base)
     }
 
     /// Sub 2 [`StringRadix`] to new [`Radix`].
     ///
-    /// # Error
+    /// # Errors
     /// Same as [`to_int_radix`].
     ///
     /// [`to_int_radix`]: StringRadix::to_int_radix
@@ -1377,13 +1366,13 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (141, 8));
     /// ```
     #[inline]
-    pub fn sub_to_int(self, a: Self, k: u8) -> Result<Radix, RadixError> {
-        (self - a).to_int_radix(k)
+    pub fn sub_to_int(self, other: Self, base: u8) -> Result<Radix, RadixError> {
+        (self - other).to_int_radix(base)
     }
 
     /// Mul 2 [`StringRadix`] to new [`Radix`].
     ///
-    /// # Error
+    /// # Errors
     /// Same as [`to_int_radix`].
     ///
     /// [`to_int_radix`]: StringRadix::to_int_radix
@@ -1400,7 +1389,7 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (6424, 8));
     /// ```
     #[inline]
-    pub fn mul_to_int(self, a: Self, k: u8) -> Result<Radix, RadixError> {
-        (self * a).to_int_radix(k)
+    pub fn mul_to_int(self, other: Self, base: u8) -> Result<Radix, RadixError> {
+        (self * other).to_int_radix(base)
     }
 }
