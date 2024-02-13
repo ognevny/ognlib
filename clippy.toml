@@ -1,6 +1,4 @@
-allow = [
-    "clippy::implicit_return",
-    "clippy::missing_inline_in_public_items",
-    "clippy::arithmetic_side_effects",
-    "clippy::modulo_arithmetic",
-]
+implicit_return = "allow"
+missing_inline_in_public_items = "allow"
+arithmetic_side_effects = "allow"
+modulo_arithmetic = "allow"
