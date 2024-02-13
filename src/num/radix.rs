@@ -1170,11 +1170,11 @@ impl StringRadix {
     pub fn from_radix(number: &str, base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
-            _ => {
-                RADIX.iter().skip(base.into()).find_map(|&i|
-                    number.contains(i).then(|| Err(RadixError::NumberError(i, base)))
-                ).map_or(Ok(Self { number: number.to_owned(), base }), |err| err)
-            },
+            _ => RADIX
+                .iter()
+                .skip(base.into())
+                .find_map(|&i| number.contains(i).then(|| Err(RadixError::NumberError(i, base))))
+                .map_or(Ok(Self { number: number.to_owned(), base }), |err| err),
         }
     }
 
