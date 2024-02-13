@@ -1,4 +1,0 @@
-implicit-return = "allow"
-missing-inline-in-public-items = "allow"
-arithmetic-side-effects = "allow"
-modulo-arithmetic = "allow"
