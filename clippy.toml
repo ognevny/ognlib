@@ -1,4 +1,4 @@
-implicit_return = "allow"
-missing_inline_in_public_items = "allow"
-arithmetic_side_effects = "allow"
-modulo_arithmetic = "allow"
+implicit-return = "allow"
+missing-inline-in-public-items = "allow"
+arithmetic-side-effects = "allow"
+modulo-arithmetic = "allow"
