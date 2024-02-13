@@ -858,6 +858,9 @@ impl Radix {
 
     /// Creates a new [`Radix`] with given number and base.
     ///
+    /// # Panics
+    /// Panics if a char from [`RADIX`] is somehow not parsed
+    ///
     /// # Errors
     /// Returns a [`BaseError`] if base isn't correct; [`NumberError`] if number isn't correct.
     ///
