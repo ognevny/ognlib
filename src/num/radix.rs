@@ -140,10 +140,52 @@ macro_rules! impl_traits {
             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
                 Some(self.cmp(other))
             }
+
+            fn gt(&self, other: &Self) -> bool {
+                dec!(self) > dec!(other)
+            }
+
+            fn lt(&self, other: &Self) -> bool {
+                dec!(self) < dec!(other)
+            }
+
+            fn le(&self, other: &Self) -> bool {
+                dec!(self) <= dec!(other)
+            }
+
+            fn ge(&self, other: &Self) -> bool {
+                dec!(self) >= dec!(other)
+            }
         }
         impl Ord for $radix {
             fn cmp(&self, other: &Self) -> Ordering {
                 dec!(self).cmp(&dec!(other))
+            }
+
+            fn max(self, other: Self) -> Self {
+                if self.gt(&other) {
+                    self.clone()
+                } else {
+                    other.clone()
+                }
+            }
+
+            fn min(self, other: Self) -> Self {
+                if self.lt(&other) {
+                    self.clone()
+                } else {
+                    other.clone()
+                }
+            }
+
+            fn clamp(self, min: Self, max: Self) -> Self {
+                if self.lt(&min) {
+                    min.clone()
+                } else if self.gt(&max) {
+                    max.clone()
+                } else {
+                    self.clone()
+                }
             }
         }
         impl ops::Add for $radix {
@@ -724,7 +766,7 @@ macro_rules! impl_froms {
             #[inline]
             fn from(number: $type) -> Self {
                 Self {
-                    number: number as usize,
+                    number: number.try_into().unwrap(),
                     base: 10,
                 }
             }
@@ -994,8 +1036,8 @@ impl Radix {
     fn to_radix_from_dec(mut self, base: u8) -> Result<Self, RadixError> {
         let mut res = String::new();
         while self.number != 0 {
-            res.push(RADIX[self.number % (base as usize)]);
-            self.number /= base as usize;
+            res.push(RADIX[self.number % Into::<usize>::into(base)]);
+            self.number /= Into::<usize>::into(base);
         }
         Self::from_radix(res.chars().rev().collect::<String>().parse()?, base)
     }
@@ -1041,8 +1083,8 @@ impl Radix {
     fn to_str_radix_from_dec(mut self, base: u8) -> Result<StringRadix, RadixError> {
         let mut res = String::new();
         while self.number != 0 {
-            res.push(RADIX[self.number % (base as usize)]);
-            self.number /= base as usize;
+            res.push(RADIX[self.number % Into::<usize>::into(base)]);
+            self.number /= Into::<usize>::into(base);
         }
         StringRadix::from_radix(&res.chars().rev().collect::<String>(), base)
     }
@@ -1175,7 +1217,7 @@ impl StringRadix {
                 .iter()
                 .skip(base.into())
                 .find_map(|&i| number.contains(i).then_some(Err(RadixError::NumberError(i, base))))
-                .map_or(Ok(Self { number: number.to_owned(), base }), |err| err),
+                .map_or_else(|| Ok(Self { number: number.to_owned(), base }), |err| err),
         }
     }
 
@@ -1269,8 +1311,8 @@ impl StringRadix {
     fn from_dec(radix: &mut Radix, base: u8) -> Result<Self, RadixError> {
         let mut res = String::new();
         while radix.number != 0 {
-            res.push(RADIX[radix.number % (base as usize)]);
-            radix.number /= base as usize;
+            res.push(RADIX[radix.number % Into::<usize>::into(base)]);
+            radix.number /= Into::<usize>::into(base);
         }
         Self::from_radix(&res.chars().rev().collect::<String>(), base)
     }
@@ -1319,8 +1361,8 @@ impl StringRadix {
     fn from_dec_to_int(radix: &mut Radix, base: u8) -> Result<Radix, RadixError> {
         let mut res = String::new();
         while radix.number != 0 {
-            res.push(RADIX[radix.number % (base as usize)]);
-            radix.number /= base as usize;
+            res.push(RADIX[radix.number % Into::<usize>::into(base)]);
+            radix.number /= Into::<usize>::into(base);
         }
         Radix::from_radix(res.chars().rev().collect::<String>().parse()?, base)
     }

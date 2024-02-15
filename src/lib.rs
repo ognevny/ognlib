@@ -13,6 +13,8 @@
 #![allow(clippy::module_name_repetitions)]
 #![allow(clippy::question_mark_used)]
 #![allow(clippy::integer_division)]
+#![allow(clippy::shadow_reuse)]
+#![allow(clippy::single_call_fn)]
 
 pub mod num {
     pub mod methods;

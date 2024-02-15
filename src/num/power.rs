@@ -1,6 +1,6 @@
 //! Some algorithms with power operations.
 
-use std::ops::{Mul, MulAssign, Rem, RemAssign};
+use std::ops::{BitAnd, Mul, MulAssign, Rem, RemAssign, ShrAssign};
 
 /// Algorithm for binary power. Due to fact that returned value has the same type as base, it could
 /// fail with overflowing.
@@ -37,12 +37,19 @@ where N: MulAssign + From<u8> + Copy {
 /// assert_eq!(mod1, 3);
 /// assert_eq!(mod2, 1);
 /// ```
-pub fn modpow<N>(mut base: N, mut exp: usize, modulo: N) -> N
-where N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq {
-    let mut res = N::from(1);
+pub fn modpow<N>(mut base: N, mut exp: N, modulo: N) -> N
+where N: Mul<Output = N>
+        + Rem<Output = N>
+        + RemAssign
+        + From<u8>
+        + Copy
+        + Eq
+        + BitAnd<Output = N>
+        + ShrAssign<i32> {
+    let mut res = 1.into();
     base %= modulo;
-    while exp != 0 {
-        if exp & 1 == 1 {
+    while exp != 0.into() {
+        if exp & 1.into() == 1.into() {
             res = (res * base) % modulo;
         }
         exp >>= 1;

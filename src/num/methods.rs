@@ -8,7 +8,7 @@ pub trait Num {
     fn as_bool(&self) -> bool;
 
     /// Calculate size of number (how many digits it contains).
-    fn count(self) -> u8;
+    fn count(self) -> u32;
 
     /// Checks, if digit is in number.
     fn has_digit(self, k: Self) -> bool;
@@ -74,8 +74,8 @@ macro_rules! impl_num {
             /// assert_eq!(1337228.count(), 7);
             /// ```
             #[inline]
-            fn count(self) -> u8 {
-                (self.ilog10() + 1) as u8
+            fn count(self) -> u32 {
+                (self.ilog10() + 1)
             }
 
             /// Reverse number.

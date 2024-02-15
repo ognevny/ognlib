@@ -217,7 +217,7 @@ pub fn miller_rabin(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
             }
             'outer: for _i in 0..log_sqr {
                 let rand_num = rand::thread_rng().gen_range(2..num - 1);
-                let mut x_num = modpow(rand_num, temp as usize, num);
+                let mut x_num = modpow(rand_num, temp, num);
                 if x_num == 1 || x_num == num - 1 {
                     continue;
                 }
