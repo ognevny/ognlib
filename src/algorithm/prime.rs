@@ -140,7 +140,7 @@ pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
         _ => {
             if (3..=(num as f64).sqrt().ceil() as usize)
                 .into_par_iter()
-                .find_any(|&i| num as usize % i == 0)
+                .find_any(|&i| num.unsigned_abs() % i == 0)
                 .is_some()
             {
                 Ok(PrimeStatus::Composite)
