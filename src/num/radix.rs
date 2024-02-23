@@ -760,8 +760,8 @@ macro_rules! impl_froms {
             /// ```
             /// use ognlib::num::radix::Radix;
             ///
-            /// let radix = Radix::from(123);
-            /// assert_eq!(radix.number(), 123);
+            #[doc = concat!("let radix = Radix::from(123", stringify!($type), ");")]
+            /// assert_eq!(radix.number(), 123usize);
             /// assert_eq!(radix.base(), 10);
             /// ```
             #[inline]
@@ -780,7 +780,7 @@ macro_rules! impl_froms {
             /// ```
             /// use ognlib::num::radix::StringRadix;
             ///
-            /// let radix = StringRadix::from(123);
+            #[doc = concat!("let radix = StringRadix::from(123", stringify!($type), ");")]
             /// assert_eq!(radix.number(), "123");
             /// assert_eq!(radix.base(), 10);
             #[inline]
@@ -800,9 +800,9 @@ macro_rules! impl_froms {
             /// use ognlib::num::radix::Radix;
             ///
             /// let radix = Radix::from_radix(444, 5).unwrap();
-            /// let num: usize = radix.into();
+            #[doc = concat!("let num: ", stringify!($type), " = radix.into();")]
             ///
-            /// assert_eq!(num, 124);
+            #[doc = concat!("assert_eq!(num, 124", stringify!($type), ");")]
             /// ```
             #[inline]
             fn from(radix: Radix) -> Self {
@@ -836,9 +836,9 @@ macro_rules! impl_froms {
             /// use ognlib::num::radix::Radix;
             ///
             /// let radix = Radix::from_radix(444, 5).unwrap();
-            /// let num: usize = radix.into();
+            #[doc = concat!("let num: ", stringify!($type), " = radix.into();")]
             ///
-            /// assert_eq!(num, 124);
+            #[doc = concat!("assert_eq!(num, 124", stringify!($type), ");")]
             /// ```
             #[inline]
             fn from(radix: &Radix) -> Self {
@@ -854,9 +854,9 @@ macro_rules! impl_froms {
             /// use ognlib::num::radix::StringRadix;
             ///
             /// let radix = StringRadix::from_radix("444", 5).unwrap();
-            /// let num: usize = radix.into();
+            #[doc = concat!("let num: ", stringify!($type), " = radix.into();")]
             ///
-            /// assert_eq!(num, 124);
+            #[doc = concat!("assert_eq!(num, 124", stringify!($type), ");")]
             /// ```
             #[inline]
             fn from(radix: &StringRadix) -> Self {

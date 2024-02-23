@@ -87,8 +87,8 @@ impl Prime for isize {
     /// ```
     /// use ognlib::algorithm::prime::Prime;
     ///
-    /// assert!(13.is_prime());
-    /// assert!(!455.is_prime());
+    /// assert!(13isize.is_prime());
+    /// assert!(!455isize.is_prime());
     /// ```
     #[cfg(feature = "num-bigint")]
     #[inline]
@@ -100,8 +100,8 @@ impl Prime for isize {
     /// ```
     /// use ognlib::algorithm::prime::Prime;
     ///
-    /// assert!(13.is_probably_prime());
-    /// assert!(7.is_probably_prime());
+    /// assert!(13isize.is_probably_prime());
+    /// assert!(7isize.is_probably_prime());
     /// ```
     #[inline]
     fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
@@ -112,8 +112,8 @@ impl Prime for isize {
     /// ```
     /// use ognlib::algorithm::prime::Prime;
     ///
-    /// assert!(!13.is_composite());
-    /// assert!(455.is_composite());
+    /// assert!(!13isize.is_composite());
+    /// assert!(455isize.is_composite());
     /// ```
     #[cfg(feature = "num-bigint")]
     #[inline]
@@ -130,12 +130,12 @@ impl Prime for isize {
 /// ```
 /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
 ///
-/// assert_eq!(sqrtest(1).unwrap_err().to_string(), "This number is neither prime nor composite",);
-/// assert_eq!(sqrtest(13).ok(), Some(PrimeStatus::Prime));
-/// assert_eq!(sqrtest(455).ok(), Some(PrimeStatus::Composite));
+/// assert_eq!(sqrtest(1isize).unwrap_err().to_string(), "This number is neither prime nor composite",);
+/// assert_eq!(sqrtest(13isize).ok(), Some(PrimeStatus::Prime));
+/// assert_eq!(sqrtest(455isize).ok(), Some(PrimeStatus::Composite));
 /// ```
 pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
-    if let ..=1 = num {
+    if num < 2 {
         Err(PrimeStatusError)
     } else {
         // FIXME: https://github.com/rust-lang/rust/issues/116226
@@ -162,11 +162,11 @@ pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(
-///     wilson_th(1).unwrap_err().to_string(),
+///     wilson_th(1isize).unwrap_err().to_string(),
 ///     "This number is neither prime nor composite",
 /// );
-/// assert_eq!(wilson_th(13).ok(), Some(PrimeStatus::Prime));
-/// assert_eq!(wilson_th(455).ok(), Some(PrimeStatus::Composite));
+/// assert_eq!(wilson_th(13isize).ok(), Some(PrimeStatus::Prime));
+/// assert_eq!(wilson_th(455isize).ok(), Some(PrimeStatus::Composite));
 /// ```
 #[cfg(feature = "num-bigint")]
 pub fn wilson_th(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
@@ -195,11 +195,11 @@ pub fn wilson_th(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// use ognlib::algorithm::prime::{miller_rabin, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(
-///     miller_rabin(1).unwrap_err().to_string(),
+///     miller_rabin(1isize).unwrap_err().to_string(),
 ///     "This number is neither prime nor composite",
 /// );
-/// assert_eq!(miller_rabin(13).ok(), Some(PrimeStatus::ProbablyPrime));
-/// assert_eq!(miller_rabin(455).ok(), Some(PrimeStatus::Composite));
+/// assert_eq!(miller_rabin(13isize).ok(), Some(PrimeStatus::ProbablyPrime));
+/// assert_eq!(miller_rabin(455isize).ok(), Some(PrimeStatus::Composite));
 /// ```
 pub fn miller_rabin(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
     match num {
