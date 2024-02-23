@@ -8,7 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_FLAGS: '-C target-cpu=native'
+  RUSTFLAGS: '-C target-cpu=native'
 
 jobs:
   ubuntu:
