@@ -1,9 +1,9 @@
 //! Structs for radix numbers (String nums and int nums). All numbers are unsigned integers.
 
 use {
+    super::methods::Num,
     std::{cmp::Ordering, num::ParseIntError, ops, str::FromStr},
     thiserror::Error,
-    super::methods::Num,
 };
 
 /// Reference to slice of chars from '0' to 'Z' (maximum base is 36).
@@ -925,18 +925,16 @@ impl Radix {
     pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
-            _ => {
-                RADIX
-                    .iter()
-                    .take(10)
-                    .skip(base.into())
-                    .find_map(|i| {
-                        number
-                            .has_digit(i.to_string().parse().unwrap())
-                            .then_some(Err(RadixError::NumberError(*i, base)))
-                    })
-                    .map_or(Ok(Self { number, base }), |err| err)
-            },
+            _ => RADIX
+                .iter()
+                .take(10)
+                .skip(base.into())
+                .find_map(|i| {
+                    number
+                        .has_digit(i.to_string().parse().unwrap())
+                        .then_some(Err(RadixError::NumberError(*i, base)))
+                })
+                .map_or(Ok(Self { number, base }), |err| err),
         }
     }
 

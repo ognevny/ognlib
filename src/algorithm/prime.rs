@@ -141,11 +141,7 @@ pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
             // FIXME: https://github.com/rust-lang/rust/issues/116226
             // let sqrt_res = num.isqrt().unsigned_abs()
             let sqrt_res = (num as f64).sqrt().ceil() as usize;
-            if (3..=sqrt_res)
-                .into_par_iter()
-                .find_any(|&i| num.unsigned_abs() % i == 0)
-                .is_some()
-            {
+            if (3..=sqrt_res).into_par_iter().find_any(|&i| num.unsigned_abs() % i == 0).is_some() {
                 Ok(PrimeStatus::Composite)
             } else {
                 Ok(PrimeStatus::Prime)
