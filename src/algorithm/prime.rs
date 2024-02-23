@@ -130,7 +130,10 @@ impl Prime for isize {
 /// ```
 /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
 ///
-/// assert_eq!(sqrtest(1isize).unwrap_err().to_string(), "This number is neither prime nor composite",);
+/// assert_eq!(
+///     sqrtest(1isize).unwrap_err().to_string(),
+///     "This number is neither prime nor composite",
+/// );
 /// assert_eq!(sqrtest(13isize).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455isize).ok(), Some(PrimeStatus::Composite));
 /// ```
