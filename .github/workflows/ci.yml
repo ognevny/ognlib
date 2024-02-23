@@ -25,12 +25,14 @@ jobs:
           rustup component add rustfmt clippy
           sudo apt-get update && sudo apt-get install mold
       - name: build
-        run: mold -run cargo b -v --profile testing
+        run: RUSTFLAGS="-C target-cpu=native" mold -run cargo b -v --profile testing
       - name: fmt and clippy check
         if: ${{ matrix.toolchain == 'nightly' }}
-        run: cargo fmt -- --check; mold -run cargo clippy --profile testing -- -D warnings
+        run: |
+          cargo fmt -- --check
+          RUSTFLAGS="-C target-cpu=native" mold -run cargo clippy --profile testing -- -D warnings
       - name: test
-        run: mold -run cargo t -v --profile testing
+        run: RUSTFLAGS="-C target-cpu=native" mold -run cargo t -v --profile testing
 
   macos:
     name: full check on macos (${{ matrix.toolchain }} channel)
@@ -46,21 +48,24 @@ jobs:
           rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
           rustup component add rustfmt clippy
       - name: build
-        run: cargo b -v --profile testing
+        run: RUSTFLAGS="-C target-cpu=native" cargo b -v --profile testing
       - name: fmt and clippy check
         if: ${{ matrix.toolchain == 'nightly' }}
-        run: cargo fmt -- --check; cargo clippy --profile testing -- -D warnings
+        run: |
+          cargo fmt -- --check
+          RUSTFLAGS="-C target-cpu=native" cargo clippy --profile testing -- -D warnings
       - name: test
-        run: cargo t -v --profile testing
+        run: RUSTFLAGS="-C target-cpu=native" cargo t -v --profile testing
       - name: very pedantic clippy
         if: ${{ matrix.toolchain == 'nightly' }}
         run: |
-          RUSTFLAGS="-Zmacro-backtrace" \
+          RUSTFLAGS="-Zmacro-backtrace -C target-cpu=native" \
           rustup run nightly cargo clippy --profile testing --all -- \
           -W clippy::all \
           -W clippy::pedantic \
           -W clippy::restriction \
           -W clippy::nursery || true
+        continue-on-error: true
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})
@@ -77,6 +82,6 @@ jobs:
           msystem: ${{ matrix.sys }}
           pacboy: rust:p
       - name: build
-        run: msys2 -c 'cargo b -v --profile testing'
+        run: msys2 -c 'RUSTFLAGS="-C target-cpu=native" cargo b -v --profile testing'
       - name: test
-        run: msys2 -c 'cargo t -v --profile testing'
+        run: msys2 -c 'RUSTFLAGS="-C target-cpu=native" cargo t -v --profile testing'
