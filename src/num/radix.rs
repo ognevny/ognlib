@@ -3,6 +3,7 @@
 use {
     std::{cmp::Ordering, num::ParseIntError, ops, str::FromStr},
     thiserror::Error,
+    super::methods::Num,
 };
 
 /// Reference to slice of chars from '0' to 'Z' (maximum base is 36).
@@ -925,8 +926,6 @@ impl Radix {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
             _ => {
-                use super::methods::Num;
-
                 RADIX
                     .iter()
                     .take(10)
