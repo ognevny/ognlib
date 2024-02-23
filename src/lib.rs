@@ -15,6 +15,8 @@
 #![allow(clippy::integer_division)]
 #![allow(clippy::shadow_reuse)]
 #![allow(clippy::single_call_fn)]
+#![allow(clippy::indexing_slicing)]
+#![allow(clippy::blanket_clippy_restriction_lints)]
 
 pub mod num {
     pub mod methods;
