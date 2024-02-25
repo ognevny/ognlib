@@ -6,11 +6,14 @@ use {
     thiserror::Error,
 };
 
-/// Reference to slice of chars from '0' to 'Z' (maximum base is 36).
+/// Reference to a slice of chars from '0' to 'Z' (maximum base is 36).
 pub const RADIX: &[char] = &[
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
     'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 ];
+
+/// Reference to a slice of [`usize`] integers from 0 to 9 (maximum base is 10)
+const RADIX10: &[usize] = &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 /// Translate [`Radix`] or [`StringRadix`], `integer` or [`String`] number from given base into a
 /// [`usize`] dec number.
@@ -53,7 +56,7 @@ pub enum RadixError {
     #[error("Expected base in range `2..={0}`, found {1}")]
     BaseError(u8, u8),
     #[error("Number contains a digit ({0}) that is more or equal than base ({1})")]
-    NumberError(char, u8),
+    NumberError(String, u8),
     #[error(transparent)]
     ParseError(#[from] ParseIntError),
 }
@@ -925,14 +928,12 @@ impl Radix {
     pub fn from_radix(number: usize, base: u8) -> Result<Self, RadixError> {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
-            _ => RADIX
+            _ => RADIX10
                 .iter()
                 .take(10)
                 .skip(base.into())
-                .find_map(|i| {
-                    number
-                        .has_digit(i.to_string().parse().unwrap())
-                        .then_some(Err(RadixError::NumberError(*i, base)))
+                .find_map(|&i| {
+                    number.has_digit(i).then_some(Err(RadixError::NumberError(i.to_string(), base)))
                 })
                 .map_or(Ok(Self { number, base }), |err| err),
         }
@@ -1213,7 +1214,9 @@ impl StringRadix {
             _ => RADIX
                 .iter()
                 .skip(base.into())
-                .find_map(|&i| number.contains(i).then_some(Err(RadixError::NumberError(i, base))))
+                .find_map(|&i| {
+                    number.contains(i).then_some(Err(RadixError::NumberError(i.to_string(), base)))
+                })
                 .map_or_else(|| Ok(Self { number: number.to_owned(), base }), |err| err),
         }
     }
