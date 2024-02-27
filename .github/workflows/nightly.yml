@@ -2,9 +2,9 @@ name: CI-nightly
 
 on:
   push:
-    paths: ['**.rs', '**.toml', '**/ci.yml']
+    paths: ['**.rs', '**.toml', '**/ci.yml', '**/nightly.yml']
   pull_request:
-    paths: ['**.rs', '**.toml', '**/ci.yml']
+    paths: ['**.rs', '**.toml', '**/ci.yml', '**/nightly.yml']
 
 env:
   CARGO_TERM_COLOR: always
@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
-      - run: nproc
+      - run: sysctl hw.logicalcpu
       - name: default to rust nightly
         run: |
           rustup update nightly && rustup default nightly
