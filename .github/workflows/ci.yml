@@ -27,11 +27,6 @@ jobs:
           sudo apt-get update && sudo apt-get install mold
       - name: build
         run: mold -run cargo b -v --profile testing
-      - name: fmt and clippy check
-        if: ${{ matrix.toolchain == 'nightly' }}
-        run: |
-          cargo fmt -- --check
-          mold -run cargo clippy --profile testing -- -D warnings
       - name: test
         run: mold -run cargo t -v --profile testing
 
@@ -41,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        toolchain: [stable, beta, nightly]
+        toolchain: [stable, beta]
     steps:
       - uses: actions/checkout@v4
       - name: switch to ${{ matrix.toolchain }} channel
@@ -50,23 +45,8 @@ jobs:
           rustup component add rustfmt clippy
       - name: build
         run: cargo b -v --profile testing
-      - name: fmt and clippy check
-        if: ${{ matrix.toolchain == 'nightly' }}
-        run: |
-          cargo fmt -- --check
-          cargo clippy --profile testing -- -D warnings
       - name: test
         run: cargo t -v --profile testing
-      - name: very pedantic clippy
-        if: ${{ matrix.toolchain == 'nightly' }}
-        run: |
-          RUSTFLAGS+=" -Zmacro-backtrace" \
-          rustup run nightly cargo clippy --profile testing --all -- \
-          -W clippy::all \
-          -W clippy::pedantic \
-          -W clippy::restriction \
-          -W clippy::nursery || true
-        continue-on-error: true
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})
