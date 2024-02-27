@@ -4,20 +4,6 @@
 //! efficient code already in Crates.io. Nevertheless, with this code I can better learn Rust and
 //! features it has.
 
-#![allow(clippy::modulo_arithmetic)]
-#![allow(clippy::arithmetic_side_effects)]
-#![allow(clippy::missing_inline_in_public_items)]
-#![allow(clippy::implicit_return)]
-#![allow(clippy::default_numeric_fallback)]
-#![allow(clippy::std_instead_of_core)]
-#![allow(clippy::module_name_repetitions)]
-#![allow(clippy::question_mark_used)]
-#![allow(clippy::integer_division)]
-#![allow(clippy::shadow_reuse)]
-#![allow(clippy::single_call_fn)]
-#![allow(clippy::indexing_slicing)]
-#![allow(clippy::blanket_clippy_restriction_lints)]
-
 pub mod num {
     pub mod methods;
     pub mod power;
