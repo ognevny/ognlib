@@ -64,10 +64,8 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper, "lower bound can't be greater than upper bound");
 
-    let mask = mask.replace('*', ".*");
-    let mask = mask.replace('?', ".?");
     let mut re = "^".to_owned();
-    re.push_str(&mask);
+    re.push_str(&mask.replace('*', ".*").replace('?', ".?"));
     re.push('$');
     let re = Regex::new(&re).unwrap();
     (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
