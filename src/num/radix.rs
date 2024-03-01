@@ -56,7 +56,7 @@ pub enum RadixError {
     #[error("Expected base in range `2..={0}`, found {1}")]
     BaseError(u8, u8),
     #[error("Number contains a digit ({0}) that is more or equal than base ({1})")]
-    NumberError(String, u8),
+    NumberError(char, u8),
     #[error(transparent)]
     ParseError(#[from] ParseIntError),
 }
@@ -933,7 +933,7 @@ impl Radix {
                 .take(10)
                 .skip(base.into())
                 .find_map(|&i| {
-                    number.has_digit(i).then_some(Err(RadixError::NumberError(i.to_string(), base)))
+                    number.has_digit(i).then_some(Err(RadixError::NumberError(RADIX[i], base)))
                 })
                 .map_or(Ok(Self { number, base }), |err| err),
         }
@@ -1214,9 +1214,7 @@ impl StringRadix {
             _ => RADIX
                 .iter()
                 .skip(base.into())
-                .find_map(|&i| {
-                    number.contains(i).then_some(Err(RadixError::NumberError(i.to_string(), base)))
-                })
+                .find_map(|&i| number.contains(i).then_some(Err(RadixError::NumberError(i, base))))
                 .map_or_else(|| Ok(Self { number: number.to_owned(), base }), |err| err),
         }
     }
