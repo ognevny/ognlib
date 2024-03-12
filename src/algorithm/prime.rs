@@ -2,7 +2,7 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-#[cfg(feature = "num-bigint")] use num_bigint::BigInt;
+#[cfg(feature = "num-bigint")] use num_bigint::BigUint;
 use {crate::num::power::modpow, rand::Rng, rayon::prelude::*, thiserror::Error};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
@@ -26,8 +26,8 @@ impl PrimeStatus {
     /// ```
     /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus};
     ///
-    /// assert!(sqrtest(13).unwrap().is_prime());
-    /// assert!(!sqrtest(455).unwrap().is_prime());
+    /// assert!(sqrtest(13usize).unwrap().is_prime());
+    /// assert!(!sqrtest(455usize).unwrap().is_prime());
     /// ```
     ///
     /// [`Prime`]: PrimeStatus::Prime
@@ -41,8 +41,8 @@ impl PrimeStatus {
     /// ```
     /// use ognlib::algorithm::prime::{miller_rabin, PrimeStatus};
     ///
-    /// assert!(miller_rabin(13).unwrap().is_probably_prime());
-    /// assert!(miller_rabin(7).unwrap().is_probably_prime());
+    /// assert!(miller_rabin(13usize).unwrap().is_probably_prime());
+    /// assert!(miller_rabin(7usize).unwrap().is_probably_prime());
     /// ```
     ///
     /// [`Composite`]: PrimeStatus::Composite
@@ -56,8 +56,8 @@ impl PrimeStatus {
     /// ```
     /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus};
     ///
-    /// assert!(!sqrtest(13).unwrap().is_composite());
-    /// assert!(sqrtest(455).unwrap().is_composite());
+    /// assert!(!sqrtest(13usize).unwrap().is_composite());
+    /// assert!(sqrtest(455usize).unwrap().is_composite());
     /// ```
     ///
     /// [`Composite`]: PrimeStatus::Composite
@@ -80,15 +80,15 @@ pub trait Prime {
     fn is_composite(&self) -> bool;
 }
 
-impl Prime for isize {
+impl Prime for usize {
     /// Returns `true` if number is prime.
     /// # Examples
     ///
     /// ```
     /// use ognlib::algorithm::prime::Prime;
     ///
-    /// assert!(13isize.is_prime());
-    /// assert!(!455isize.is_prime());
+    /// assert!(13usize.is_prime());
+    /// assert!(!455usize.is_prime());
     /// ```
     #[cfg(feature = "num-bigint")]
     #[inline]
@@ -100,8 +100,8 @@ impl Prime for isize {
     /// ```
     /// use ognlib::algorithm::prime::Prime;
     ///
-    /// assert!(13isize.is_probably_prime());
-    /// assert!(7isize.is_probably_prime());
+    /// assert!(13usize.is_probably_prime());
+    /// assert!(7usize.is_probably_prime());
     /// ```
     #[inline]
     fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
@@ -112,8 +112,8 @@ impl Prime for isize {
     /// ```
     /// use ognlib::algorithm::prime::Prime;
     ///
-    /// assert!(!13isize.is_composite());
-    /// assert!(455isize.is_composite());
+    /// assert!(!13usize.is_composite());
+    /// assert!(455usize.is_composite());
     /// ```
     #[cfg(feature = "num-bigint")]
     #[inline]
@@ -131,20 +131,20 @@ impl Prime for isize {
 /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(
-///     sqrtest(1isize).unwrap_err().to_string(),
+///     sqrtest(1usize).unwrap_err().to_string(),
 ///     "This number is neither prime nor composite",
 /// );
-/// assert_eq!(sqrtest(13isize).ok(), Some(PrimeStatus::Prime));
-/// assert_eq!(sqrtest(455isize).ok(), Some(PrimeStatus::Composite));
+/// assert_eq!(sqrtest(13usize).ok(), Some(PrimeStatus::Prime));
+/// assert_eq!(sqrtest(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
-pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     if num < 2 {
         Err(PrimeStatusError)
     } else {
         // FIXME: https://github.com/rust-lang/rust/issues/116226
         // let sqrt_res = num.isqrt().unsigned_abs()
         let sqrt_res = (num as f64).sqrt().ceil() as usize;
-        if (3..=sqrt_res).into_par_iter().find_any(|&i| num.unsigned_abs() % i == 0).is_some() {
+        if (3..=sqrt_res).into_par_iter().find_any(|&i| num % i == 0).is_some() {
             Ok(PrimeStatus::Composite)
         } else {
             Ok(PrimeStatus::Prime)
@@ -165,24 +165,28 @@ pub fn sqrtest(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(
-///     wilson_th(1isize).unwrap_err().to_string(),
+///     wilson_th(1usize).unwrap_err().to_string(),
 ///     "This number is neither prime nor composite",
 /// );
-/// assert_eq!(wilson_th(13isize).ok(), Some(PrimeStatus::Prime));
-/// assert_eq!(wilson_th(455isize).ok(), Some(PrimeStatus::Composite));
+/// assert_eq!(wilson_th(13usize).ok(), Some(PrimeStatus::Prime));
+/// assert_eq!(wilson_th(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
 #[cfg(feature = "num-bigint")]
-pub fn wilson_th(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+pub fn wilson_th(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     if num < 2 {
         return Err(PrimeStatusError);
     }
 
-    let mut fact = BigInt::from(1);
+    let mut fact = BigUint::from(1u8);
     for i in 2..num {
         fact = (fact * i) % num;
     }
 
-    if fact + 1 == BigInt::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
+    if fact + 1u8 == BigUint::from(num) {
+        Ok(PrimeStatus::Prime)
+    } else {
+        Ok(PrimeStatus::Composite)
+    }
 }
 
 /// Miller-Rabin's prime test. From
@@ -198,15 +202,15 @@ pub fn wilson_th(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
 /// use ognlib::algorithm::prime::{miller_rabin, PrimeStatus, PrimeStatusError};
 ///
 /// assert_eq!(
-///     miller_rabin(1isize).unwrap_err().to_string(),
+///     miller_rabin(1usize).unwrap_err().to_string(),
 ///     "This number is neither prime nor composite",
 /// );
-/// assert_eq!(miller_rabin(13isize).ok(), Some(PrimeStatus::ProbablyPrime));
-/// assert_eq!(miller_rabin(455isize).ok(), Some(PrimeStatus::Composite));
+/// assert_eq!(miller_rabin(13usize).ok(), Some(PrimeStatus::ProbablyPrime));
+/// assert_eq!(miller_rabin(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
-pub fn miller_rabin(num: isize) -> Result<PrimeStatus, PrimeStatusError> {
+pub fn miller_rabin(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     match num {
-        ..=1 => Err(PrimeStatusError),
+        0 | 1 => Err(PrimeStatusError),
         5 => Ok(PrimeStatus::Prime),
         _ if num % 2 == 0 || num % 3 == 0 => Ok(PrimeStatus::Composite),
         _ => {

@@ -1,7 +1,7 @@
 //! Functions for operations with number digits. It has already been tested, that Iterators are less
 //! quick, than `while` loops in these cases.
 
-#[cfg(feature = "num-bigint")] use {num_bigint::BigInt, rayon::prelude::*};
+#[cfg(feature = "num-bigint")] use {num_bigint::BigUint, rayon::prelude::*};
 
 pub trait Num {
     /// Represent number as bool like in C.
@@ -22,8 +22,8 @@ pub trait Num {
     fn sum(self) -> Self;
 
     #[cfg(feature = "num-bigint")]
-    /// Calculates factorial of number (result is [`num_bigint::BigInt`]).
-    fn factorial(self) -> num_bigint::BigInt;
+    /// Calculates factorial of number (result is [`num_bigint::BigUint`]).
+    fn factorial(self) -> num_bigint::BigUint;
 }
 
 /// impl Num trait's methods
@@ -119,21 +119,22 @@ macro_rules! impl_num {
                 false
             }
 
-            /// Factorial of number (result is [`num_bigint::BigInt`]).
+            /// Factorial of number (result is [`num_bigint::BigUint`]).
             /// # Examples
             ///
             /// ```
-            /// use {ognlib::num::methods::Num, num_bigint::BigInt};
+            /// use {ognlib::num::methods::Num, num_bigint::BigUint};
             ///
             /// let (n1, n2) = (3.factorial(), 5.factorial());
-            /// assert_eq!(n1, BigInt::from(6));
-            /// assert_eq!(n2, BigInt::from(120))
+            /// assert_eq!(n1, BigUint::from(6u8));
+            /// assert_eq!(n2, BigUint::from(120u8))
             /// ```
             #[cfg(feature = "num-bigint")]
-            fn factorial(self) -> BigInt {
-                match self {
-                    0 | 1 => BigInt::from(1),
-                    _ => (2..=self).into_par_iter().map(BigInt::from).product(),
+            fn factorial(self) -> BigUint {
+                let num = self as usize;
+                match num {
+                    0 | 1 => BigUint::from(1u8),
+                    _ => (2..=num).into_par_iter().map(BigUint::from).product(),
                 }
             }
         })*
