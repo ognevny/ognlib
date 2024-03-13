@@ -63,11 +63,11 @@ pub fn search<T: Ord>(arr: &mut [T]) {
 /// insertion(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-pub fn insertion<T: Ord>(arr: &mut [T]) {
+pub fn insertion<T: Ord + Copy>(arr: &mut [T]) {
     for i in 1..arr.len() {
-        let key = &arr[i];
+        let key = arr[i];
         let mut j = i;
-        let pos = arr[..i].binary_search(key).unwrap_or_else(|pos| pos);
+        let pos = arr[..i].binary_search(&key).unwrap_or_else(|pos| pos);
         while j > pos {
             arr.swap(j - 1, j);
             j -= 1;
