@@ -2,6 +2,9 @@
 
 #![cfg(feature = "std")]
 
+extern crate alloc;
+extern crate std;
+
 /// Read a line from stdin and parse it to a certain type. Took from
 /// [stackoverflow](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
 ///
@@ -80,7 +83,7 @@ macro_rules! read_vec {
     ($out:ident as String) => {
         use ::alloc::string::String;
         let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).unwrap();
+        ::std::io::stdin().read_line(&mut inner).unwrap();
         let $out: Vec<String> = inner.trim().split_whitespace().collect();
     };
 }
