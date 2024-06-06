@@ -1,5 +1,7 @@
 //! Some macros.
 
+#![cfg(feature = "std")]
+
 /// Read a line from stdin and parse it to a certain type. Took from
 /// [stackoverflow](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
 ///
@@ -17,8 +19,8 @@
 #[macro_export]
 macro_rules! read {
     ($out:ident as $type:ty) => {
-        let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).unwrap();
+        let mut inner = ::alloc::string::String::new();
+        ::std::io::stdin().read_line(&mut inner).unwrap();
         let $out = inner.trim().parse::<$type>().unwrap();
     };
 }
@@ -40,8 +42,8 @@ macro_rules! read {
 #[macro_export]
 macro_rules! read_str {
     ($out:ident) => {
-        let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).unwrap();
+        let mut inner = ::alloc::string::String::new();
+        ::std::io::stdin().read_line(&mut inner).unwrap();
         let $out = inner.trim();
     };
 }
@@ -67,8 +69,8 @@ macro_rules! read_str {
 #[macro_export]
 macro_rules! read_vec {
     ($out:ident as $type:ty) => {
-        let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).unwrap();
+        let mut inner = ::alloc::string::String::new();
+        ::std::io::stdin().read_line(&mut inner).unwrap();
         let $out: <Vec<$type> = inner
             .trim()
             .split_whitespace()
@@ -76,6 +78,7 @@ macro_rules! read_vec {
             .collect();
     };
     ($out:ident as String) => {
+        use ::alloc::string::String;
         let mut inner = String::new();
         std::io::stdin().read_line(&mut inner).unwrap();
         let $out: Vec<String> = inner.trim().split_whitespace().collect();

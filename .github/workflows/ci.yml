@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    paths: ['**.rs', '**.toml', '**/ci.yml']
+    paths: ["**.rs", "**.toml", "**/ci.yml"]
   pull_request:
-    paths: ['**.rs', '**.toml', '**/ci.yml']
+    paths: ["**.rs", "**.toml", "**/ci.yml"]
 
 env:
   CARGO_TERM_COLOR: always
-  RUSTFLAGS: '-C target-cpu=native'
+  RUSTFLAGS: "-C target-cpu=native"
 
 jobs:
   ubuntu:
@@ -47,6 +47,16 @@ jobs:
         run: cargo b -v --profile testing
       - name: test
         run: cargo t -v --profile testing
+
+  macos-no-std:
+    name: check without std
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: run test
+        run: cargo t -v --no-default-features
 
   msys2:
     name: full check on windows (msys2 - ${{ matrix.sys }})

@@ -1,6 +1,14 @@
 //! A list of algorithms that is not categorized currently.
 
-use {rayon::prelude::*, regex::Regex};
+use core::cmp::Ordering;
+
+extern crate alloc;
+#[cfg(all(feature = "rayon", feature = "regex"))]
+use {
+    alloc::{borrow::ToOwned, string::ToString, vec::Vec},
+    rayon::prelude::*,
+    regex::Regex,
+};
 
 /// A binary search algorithm (sorted array is requiered).
 /// # Examples
@@ -13,8 +21,6 @@ use {rayon::prelude::*, regex::Regex};
 /// assert_eq!(bin_search(&arr, &6), None);
 /// ```
 pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
-    use std::cmp::Ordering;
-
     let (mut left, mut right) = (0, arr.len() - 1);
     while left <= right {
         let mid = (right + left) / 2;
@@ -60,6 +66,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
 ///     123575673, 123664567, 123833567, 123865677, 123925672,
 /// ])
 /// ```
+#[cfg(all(feature = "rayon", feature = "regex"))]
 #[must_use]
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper, "lower bound can't be greater than upper bound");

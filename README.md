@@ -17,9 +17,9 @@ numbers and some algorithms.
 
 ## Features
 
-By default feature `num-bigint` is enabled, which adds `num-bigint` dependency. if you don't need to
-use such methods as `wilson_th`, `factorial` and other ones depend on it, you can disable it by
-setting `default-features = false`
+By default the feature `std` is enable. If you want to use the crate with `#![no_std]`, remove
+default features. `std` feature ships with a bunch of dependencies, which can be partially enabled
+(still requires the std available).
 
 ## Contributing
 

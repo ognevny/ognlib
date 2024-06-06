@@ -4,6 +4,8 @@
 //! efficient code already in Crates.io. Nevertheless, with this code I can better learn Rust and
 //! features it has.
 
+#![no_std]
+
 pub mod num {
     pub mod methods;
     pub mod power;

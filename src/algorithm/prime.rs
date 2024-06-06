@@ -2,8 +2,12 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-#[cfg(feature = "num-bigint")] use num_bigint::BigUint;
-use {crate::num::power::modpow, rand::Rng, rayon::prelude::*, thiserror::Error};
+#![cfg(feature = "std")]
+
+extern crate std;
+use {
+    crate::num::power::modpow, num_bigint::BigUint, rand::Rng, rayon::prelude::*, thiserror::Error,
+};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
@@ -33,7 +37,9 @@ impl PrimeStatus {
     /// [`Prime`]: PrimeStatus::Prime
     #[inline]
     #[must_use]
-    pub fn is_prime(self) -> bool { self == Self::Prime }
+    pub fn is_prime(self) -> bool {
+        self == Self::Prime
+    }
 
     /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
     /// # Examples
@@ -48,7 +54,9 @@ impl PrimeStatus {
     /// [`Composite`]: PrimeStatus::Composite
     #[inline]
     #[must_use]
-    pub fn is_probably_prime(self) -> bool { self != Self::Composite }
+    pub fn is_probably_prime(self) -> bool {
+        self != Self::Composite
+    }
 
     /// Returns `true` if [`PrimeStatus`] is [`Composite`].
     /// # Examples
@@ -63,20 +71,20 @@ impl PrimeStatus {
     /// [`Composite`]: PrimeStatus::Composite
     #[inline]
     #[must_use]
-    pub fn is_composite(self) -> bool { self == Self::Composite }
+    pub fn is_composite(self) -> bool {
+        self == Self::Composite
+    }
 }
 
 /// Methods to check prime status.
 pub trait Prime {
     /// Returns `true` if number is prime.
-    #[cfg(feature = "num-bigint")]
     fn is_prime(&self) -> bool;
 
     /// Returns `true` if number is either prime or probably prime.
     fn is_probably_prime(&self) -> bool;
 
     /// Returns `true` if number is composite.
-    #[cfg(feature = "num-bigint")]
     fn is_composite(&self) -> bool;
 }
 
@@ -90,9 +98,10 @@ impl Prime for usize {
     /// assert!(13usize.is_prime());
     /// assert!(!455usize.is_prime());
     /// ```
-    #[cfg(feature = "num-bigint")]
     #[inline]
-    fn is_prime(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Prime) }
+    fn is_prime(&self) -> bool {
+        wilson_th(*self) == Ok(PrimeStatus::Prime)
+    }
 
     /// Returns `true` if number is either prime or probably prime.
     /// # Examples
@@ -104,7 +113,9 @@ impl Prime for usize {
     /// assert!(7usize.is_probably_prime());
     /// ```
     #[inline]
-    fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
+    fn is_probably_prime(&self) -> bool {
+        miller_rabin(*self) != Ok(PrimeStatus::Composite)
+    }
 
     /// Returns `true` if number is composite.
     /// # Examples
@@ -115,9 +126,10 @@ impl Prime for usize {
     /// assert!(!13usize.is_composite());
     /// assert!(455usize.is_composite());
     /// ```
-    #[cfg(feature = "num-bigint")]
     #[inline]
-    fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
+    fn is_composite(&self) -> bool {
+        wilson_th(*self) == Ok(PrimeStatus::Composite)
+    }
 }
 
 /// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3

@@ -2,13 +2,13 @@ name: CI-nightly
 
 on:
   push:
-    paths: ['**.rs', '**.toml', '**/ci.yml', '**/nightly.yml']
+    paths: ["**.rs", "**.toml", "**/ci.yml", "**/nightly.yml"]
   pull_request:
-    paths: ['**.rs', '**.toml', '**/ci.yml', '**/nightly.yml']
+    paths: ["**.rs", "**.toml", "**/ci.yml", "**/nightly.yml"]
 
 env:
   CARGO_TERM_COLOR: always
-  RUSTFLAGS: '-C target-cpu=native -Zmacro-backtrace -Zthreads=3'
+  RUSTFLAGS: "-C target-cpu=native -Zmacro-backtrace -Zthreads=3"
 
 jobs:
   lint:
@@ -16,6 +16,7 @@ jobs:
     runs-on: macos-14
     strategy:
       fail-fast: false
+      matrix:
     steps:
       - uses: actions/checkout@v4
       - name: default to rust nightly
@@ -39,7 +40,6 @@ jobs:
           -A clippy::missing_inline_in_public_items \
           -A clippy::implicit_return \
           -A clippy::default_numeric_fallback \
-          -A clippy::std_instead_of_core \
           -A clippy::module_name_repetitions \
           -A clippy::question_mark_used \
           -A clippy::integer_division \
