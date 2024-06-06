@@ -13,9 +13,7 @@ use core::ops::{BitAnd, Mul, MulAssign, Rem, RemAssign, ShrAssign};
 /// assert_eq!(bin_pow(0.5, 4), 0.0625);
 /// ```
 pub fn bin_pow<N>(mut base: N, mut exp: u8) -> N
-where
-    N: MulAssign + From<u8> + Copy,
-{
+where N: MulAssign + From<u8> + Copy {
     let mut vi = N::from(1);
     while exp != 0 {
         if (exp & 1) != 0 {
@@ -40,16 +38,14 @@ where
 /// assert_eq!(mod2, 1);
 /// ```
 pub fn modpow<N>(mut base: N, mut exp: N, modulo: N) -> N
-where
-    N: Mul<Output = N>
+where N: Mul<Output = N>
         + Rem<Output = N>
         + RemAssign
         + From<u8>
         + Copy
         + Eq
         + BitAnd<Output = N>
-        + ShrAssign<i32>,
-{
+        + ShrAssign<i32> {
     let mut res = 1.into();
     base %= modulo;
     while exp != 0.into() {

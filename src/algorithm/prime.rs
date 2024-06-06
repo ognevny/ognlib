@@ -37,9 +37,7 @@ impl PrimeStatus {
     /// [`Prime`]: PrimeStatus::Prime
     #[inline]
     #[must_use]
-    pub fn is_prime(self) -> bool {
-        self == Self::Prime
-    }
+    pub fn is_prime(self) -> bool { self == Self::Prime }
 
     /// Returns `true` if [`PrimeStatus`] is not [`Composite`].
     /// # Examples
@@ -54,9 +52,7 @@ impl PrimeStatus {
     /// [`Composite`]: PrimeStatus::Composite
     #[inline]
     #[must_use]
-    pub fn is_probably_prime(self) -> bool {
-        self != Self::Composite
-    }
+    pub fn is_probably_prime(self) -> bool { self != Self::Composite }
 
     /// Returns `true` if [`PrimeStatus`] is [`Composite`].
     /// # Examples
@@ -71,9 +67,7 @@ impl PrimeStatus {
     /// [`Composite`]: PrimeStatus::Composite
     #[inline]
     #[must_use]
-    pub fn is_composite(self) -> bool {
-        self == Self::Composite
-    }
+    pub fn is_composite(self) -> bool { self == Self::Composite }
 }
 
 /// Methods to check prime status.
@@ -99,9 +93,7 @@ impl Prime for usize {
     /// assert!(!455usize.is_prime());
     /// ```
     #[inline]
-    fn is_prime(&self) -> bool {
-        wilson_th(*self) == Ok(PrimeStatus::Prime)
-    }
+    fn is_prime(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Prime) }
 
     /// Returns `true` if number is either prime or probably prime.
     /// # Examples
@@ -113,9 +105,7 @@ impl Prime for usize {
     /// assert!(7usize.is_probably_prime());
     /// ```
     #[inline]
-    fn is_probably_prime(&self) -> bool {
-        miller_rabin(*self) != Ok(PrimeStatus::Composite)
-    }
+    fn is_probably_prime(&self) -> bool { miller_rabin(*self) != Ok(PrimeStatus::Composite) }
 
     /// Returns `true` if number is composite.
     /// # Examples
@@ -127,9 +117,7 @@ impl Prime for usize {
     /// assert!(455usize.is_composite());
     /// ```
     #[inline]
-    fn is_composite(&self) -> bool {
-        wilson_th(*self) == Ok(PrimeStatus::Composite)
-    }
+    fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
 }
 
 /// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3

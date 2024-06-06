@@ -960,9 +960,7 @@ impl Radix {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn number(&self) -> usize {
-        self.number
-    }
+    pub const fn number(&self) -> usize { self.number }
 
     /// Returns a base of [`Radix`].
     ///
@@ -977,9 +975,7 @@ impl Radix {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn base(&self) -> u8 {
-        self.base
-    }
+    pub const fn base(&self) -> u8 { self.base }
 
     /// Returns a full [`Radix`] as tuple (number, base).
     ///
@@ -994,9 +990,7 @@ impl Radix {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn radix(&self) -> (usize, u8) {
-        (self.number, self.base)
-    }
+    pub const fn radix(&self) -> (usize, u8) { (self.number, self.base) }
 
     /// Translate [`Radix`] to another [`Radix`].
     ///
@@ -1031,21 +1025,18 @@ impl Radix {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
             10 => Ok(self.to_dec()),
-            _ => {
+            _ =>
                 if self.base == 10 {
                     Ok(self.to_radix_from_dec(base)?)
                 } else {
                     Ok(self.to_dec().to_radix_from_dec(base)?)
-                }
-            },
+                },
         }
     }
 
     /// convert a [`Radix`] into [`Radix`] with base 10
     #[inline]
-    fn to_dec(self) -> Self {
-        Self::from(dec!(self))
-    }
+    fn to_dec(self) -> Self { Self::from(dec!(self)) }
 
     /// convert a [`Radix`] with base 10 to a [`Radix`] with new base
     fn to_radix_from_dec(mut self, base: u8) -> Result<Self, RadixError> {
@@ -1085,13 +1076,12 @@ impl Radix {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             10 => Ok(StringRadix::from(self.to_dec().number)),
-            _ => {
+            _ =>
                 if self.base == 10 {
                     Ok(self.to_str_radix_from_dec(base)?)
                 } else {
                     Ok(self.to_dec().to_str_radix_from_dec(base)?)
-                }
-            },
+                },
         }
     }
 
@@ -1250,9 +1240,7 @@ impl StringRadix {
     /// ```
     #[inline]
     #[must_use]
-    pub fn number(&self) -> &str {
-        &self.number
-    }
+    pub fn number(&self) -> &str { &self.number }
 
     /// Returns a base of [`StringRadix`].
     ///
@@ -1267,9 +1255,7 @@ impl StringRadix {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn base(&self) -> u8 {
-        self.base
-    }
+    pub const fn base(&self) -> u8 { self.base }
 
     /// Returns a full [`StringRadix`] as tuple `(number, base)`.
     ///
@@ -1284,9 +1270,7 @@ impl StringRadix {
     /// ```
     #[inline]
     #[must_use]
-    pub fn radix(&self) -> (&str, u8) {
-        (&self.number, self.base)
-    }
+    pub fn radix(&self) -> (&str, u8) { (&self.number, self.base) }
 
     /// Translate [`StringRadix`] to another [`StringRadix`].
     ///
@@ -1316,21 +1300,18 @@ impl StringRadix {
         match base {
             0 | 1 | 37.. => Err(RadixError::BaseError(36, base)),
             10 => Ok(Self::from(self.to_dec().number)),
-            _ => {
+            _ =>
                 if self.base == 10 {
                     Ok(Self::from_dec(&mut Radix::from(self.number.parse::<usize>()?), base)?)
                 } else {
                     Ok(Self::from_dec(&mut self.to_dec(), base)?)
-                }
-            },
+                },
         }
     }
 
     /// convert [`StringRadix`] to a [`Radix`] number with base 10
     #[inline]
-    fn to_dec(&self) -> Radix {
-        Radix::from(dec!(self))
-    }
+    fn to_dec(&self) -> Radix { Radix::from(dec!(self)) }
 
     /// convert a [`Radix`] number with base 10 to a new [`StringRadix`] number with another base
     fn from_dec(radix: &mut Radix, base: u8) -> Result<Self, RadixError> {
@@ -1370,7 +1351,7 @@ impl StringRadix {
         match base {
             0 | 1 | 11.. => Err(RadixError::BaseError(10, base)),
             10 => Ok(self.to_dec()),
-            _ => {
+            _ =>
                 if self.base == 10 {
                     Ok(Self::from_dec_to_int(
                         &mut Radix::from(self.number.parse::<usize>()?),
@@ -1378,8 +1359,7 @@ impl StringRadix {
                     )?)
                 } else {
                     Ok(Self::from_dec_to_int(&mut self.to_dec(), base)?)
-                }
-            },
+                },
         }
     }
 
