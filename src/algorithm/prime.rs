@@ -171,7 +171,6 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
 /// assert_eq!(wilson_th(13usize).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(wilson_th(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
-#[cfg(feature = "num-bigint")]
 pub fn wilson_th(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     if num < 2 {
         return Err(PrimeStatusError);

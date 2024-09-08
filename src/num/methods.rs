@@ -1,8 +1,7 @@
 //! Functions for operations with number digits. It has already been tested, that Iterators are less
 //! quick, than `while` loops in these cases.
 
-#[cfg(all(feature = "num-bigint", feature = "rayon"))]
-use {num_bigint::BigUint, rayon::prelude::*};
+#[cfg(all(feature = "rayon"))] use {num_bigint::BigUint, rayon::prelude::*};
 
 pub trait Num {
     /// Represent number as bool like in C.
@@ -23,7 +22,7 @@ pub trait Num {
     fn sum(self) -> Self;
 
     /// Calculates factorial of number (result is [`num_bigint::BigUint`]).
-    #[cfg(all(feature = "num-bigint", feature = "rayon"))]
+    #[cfg(all(feature = "rayon"))]
     fn factorial(self) -> num_bigint::BigUint;
 }
 
@@ -130,7 +129,7 @@ macro_rules! impl_num {
             /// assert_eq!(n1, BigUint::from(6u8));
             /// assert_eq!(n2, BigUint::from(120u8))
             /// ```
-            #[cfg(all(feature = "num-bigint", feature = "rayon"))]
+            #[cfg(all(feature = "rayon"))]
             fn factorial(self) -> BigUint {
                 let num = self as usize;
                 match num {

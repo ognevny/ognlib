@@ -3,7 +3,7 @@
 use core::cmp::Ordering;
 
 extern crate alloc;
-#[cfg(all(feature = "rayon", feature = "regex"))]
+#[cfg(all(feature = "rayon"))]
 use {
     alloc::{borrow::ToOwned, string::ToString, vec::Vec},
     rayon::prelude::*,
@@ -66,7 +66,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
 ///     123575673, 123664567, 123833567, 123865677, 123925672,
 /// ])
 /// ```
-#[cfg(all(feature = "rayon", feature = "regex"))]
+#[cfg(all(feature = "rayon"))]
 #[must_use]
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper, "lower bound can't be greater than upper bound");

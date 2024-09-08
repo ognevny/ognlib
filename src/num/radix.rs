@@ -2,14 +2,15 @@
 
 #![cfg(feature = "std")]
 
-extern crate std;
-
 extern crate alloc;
-use alloc::{borrow::ToOwned, string::ToString};
+extern crate std;
 
 use {
     super::methods::Num,
-    alloc::string::String,
+    alloc::{
+        borrow::ToOwned,
+        string::{String, ToString},
+    },
     core::{cmp::Ordering, num::ParseIntError, ops, str::FromStr},
     thiserror::Error,
 };
