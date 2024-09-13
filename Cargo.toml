@@ -1,36 +1,27 @@
 [package]
 name = "ognlib"
-version = "0.6.1"
+version = "0.7.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Some code that is written to practice Rust"
 authors = ["Maksim Bondarenkov"]
 repository = "https://github.com/ognevnydemon/ognlib"
 readme = "README.md"
-rust-version = "1.67.1"
+rust-version = "1.81.0"
 
 [dependencies]
+fastrand = { version = "2", default-features = false }
 num-bigint = { version = "0", default-features = false }
 rayon = { version = "1", optional = true }
 thiserror = { version = "1", optional = true }
-
-[dependencies.rand]
-version = "0"
-default-features = false
-features = ["std", "std_rng"]
-optional = true
 
 [dependencies.regex]
 version = "1"
 default-features = false
 
 [features]
-default = ["rand", "rayon", "thiserror"]
-rand = ["dep:rand", "std"]
-rayon = ["dep:rayon", "std"]
-# FIXME: this should support #![no_std] soon
-thiserror = ["dep:thiserror", "std"]
-std = []
+default = ["std"]
+std = ["rayon", "thiserror"]
 
 [profile.testing]
 debug = true

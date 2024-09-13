@@ -1,7 +1,7 @@
 //! Some sort algorithmes
 
 extern crate alloc;
-#[cfg(feature = "rayon")] use alloc::vec::Vec;
+#[cfg(feature = "std")] use alloc::vec::Vec;
 
 // TODO: write a code for more sorts.
 
@@ -88,7 +88,7 @@ pub fn insertion<T: Ord + Copy>(arr: &mut [T]) {
 /// merge(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-#[cfg(feature = "rayon")]
+#[cfg(feature = "std")]
 pub fn merge<T>(slice: &mut [T])
 where T: Ord + Clone + Copy + Send + Sync {
     let len = slice.len();
@@ -104,7 +104,7 @@ where T: Ord + Clone + Copy + Send + Sync {
 }
 
 /// merge slice
-#[cfg(feature = "rayon")]
+#[cfg(feature = "std")]
 fn merging<S, T>(slice: &mut S)
 where
     S: AsMut<[T]> + AsRef<[T]> + Sync + Send + ?Sized,
@@ -185,7 +185,7 @@ pub fn cocktail_shaker<T: Ord>(arr: &mut [T]) {
 /// quick(&mut arr);
 /// assert_eq!(arr, [1, 2, 3, 4, 5]);
 /// ```
-#[cfg(feature = "rayon")]
+#[cfg(feature = "std")]
 pub fn quick<T>(arr: &mut [T])
 where T: Ord + Send + Clone {
     if arr.len() <= 1 {
@@ -198,7 +198,7 @@ where T: Ord + Send + Clone {
 }
 
 /// make pivot for partition
-#[cfg(feature = "rayon")]
+#[cfg(feature = "std")]
 fn partition<T>(arr: &mut [T]) -> usize
 where T: Ord + Send + Clone {
     let len = arr.len();

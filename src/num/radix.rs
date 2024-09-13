@@ -53,6 +53,8 @@ macro_rules! dec {
     };
 }
 
+/// A error type for radix functions.
+///
 /// You can have 2 problems with radix numbers: first, base could be incorrect when it's not in
 /// range `2..=10` for [`Radix`] or `2..=36` for [`StringRadix`]; second, number can be incorrect,
 /// as number contains digits that are more or equal than base. Also there is can be convertsion

@@ -5,7 +5,9 @@
 extern crate alloc;
 extern crate std;
 
-/// Read a line from stdin and parse it to a certain type. Took from
+/// Read a line from stdin and parse it to a certain type.
+///
+/// Took from
 /// [stackoverflow](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
 ///
 /// # Panics
@@ -28,7 +30,9 @@ macro_rules! read {
     };
 }
 
-/// Read a [`String`] from stdin and trim it. Took from
+/// Read a [`String`] from stdin and trim it.
+///
+/// Took from
 /// [stackoverflow](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
 ///
 /// # Panics
@@ -51,7 +55,9 @@ macro_rules! read_str {
     };
 }
 
-/// Read a line from stdin and parse it to a [`Vec`]. Based on
+/// Read a line from stdin and parse it to a [`Vec`].
+///
+/// Based on
 /// [stackoverflow code](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
 /// with addition to read String vec.
 ///

@@ -2,18 +2,28 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-#![cfg(feature = "std")]
-
-extern crate std;
 use {
-    crate::num::power::modpow, num_bigint::BigUint, rand::Rng, rayon::prelude::*, thiserror::Error,
+    crate::num::power::modpow,
+    core::{
+        error::Error,
+        fmt::{self, Display, Formatter},
+    },
+    fastrand::Rng,
+    num_bigint::BigUint,
 };
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
-#[derive(Debug, Error, PartialEq, Eq)]
-#[error("This number is neither prime nor composite")]
+#[derive(Debug, PartialEq, Eq)]
 pub struct PrimeStatusError;
+
+impl Display for PrimeStatusError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "This number is neither prime nor composite")
+    }
+}
+
+impl Error for PrimeStatusError {}
 
 #[non_exhaustive]
 #[derive(Debug, PartialEq, Eq)]
@@ -28,10 +38,10 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus};
+    /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus};
     ///
-    /// assert!(sqrtest(13usize).unwrap().is_prime());
-    /// assert!(!sqrtest(455usize).unwrap().is_prime());
+    /// assert!(wilson_th(13usize).unwrap().is_prime());
+    /// assert!(!wilson_th(455usize).unwrap().is_prime());
     /// ```
     ///
     /// [`Prime`]: PrimeStatus::Prime
@@ -58,10 +68,10 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{sqrtest, PrimeStatus};
+    /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus};
     ///
-    /// assert!(!sqrtest(13usize).unwrap().is_composite());
-    /// assert!(sqrtest(455usize).unwrap().is_composite());
+    /// assert!(!wilson_th(13usize).unwrap().is_composite());
+    /// assert!(wilson_th(455usize).unwrap().is_composite());
     /// ```
     ///
     /// [`Composite`]: PrimeStatus::Composite
@@ -120,6 +130,8 @@ impl Prime for usize {
     fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
 }
 
+/// Simple prime test.
+///
 /// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3
 /// to ceil with step 2.
 ///
@@ -137,7 +149,11 @@ impl Prime for usize {
 /// assert_eq!(sqrtest(13usize).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
+#[cfg(feature = "std")]
 pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
+    extern crate std;
+    use rayon::prelude::*;
+
     if num < 2 {
         Err(PrimeStatusError)
     } else {
@@ -152,10 +168,12 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     }
 }
 
-/// Wilson's theory. From [Wikipedia](https://en.wikipedia.org/wiki/Wilson%27s_theorem): "Wilson's
-/// theorem states that a natural number n > 1 is a prime number if and only if the product of all
-/// the positive integers less than n is one less than a multiple of n. That is the factorial
-/// (n - 1)! satisfies (n - 1)! % n == -1".
+/// Wilson's theory.
+///
+/// From [Wikipedia](https://en.wikipedia.org/wiki/Wilson%27s_theorem): "Wilson's theorem states
+/// that a natural number n > 1 is a prime number if and only if the product of all the positive
+/// integers less than n is one less than a multiple of n. That is the factorial (n - 1)! satisfies
+/// (n - 1)! % n == -1".
 ///
 /// # Errors
 /// Returns a [`PrimeStatusError`] if number <= 1
@@ -188,10 +206,15 @@ pub fn wilson_th(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     }
 }
 
-/// Miller-Rabin's prime test. From
+/// Miller-Rabin's prime test.
+///
+/// From
 /// [Wikipedia](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test): the Miller–Rabin
 /// primality test or Rabin–Miller primality test is a probabilistic primality test: an algorithm
 /// which determines whether a given number is likely to be prime.
+///
+/// NOTE:
+/// This function is *not* cryptographically safe
 ///
 /// # Errors
 /// Returns a [`PrimeStatusError`] if number <= 1
@@ -213,14 +236,14 @@ pub fn miller_rabin(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
         5 => Ok(PrimeStatus::Prime),
         _ if num % 2 == 0 || num % 3 == 0 => Ok(PrimeStatus::Composite),
         _ => {
-            let log_sqr = num.ilog2() * num.ilog2();
+            let log_sqr = (num.ilog2() * num.ilog2()).into();
             let (mut temp, mut su) = (num - 1, 0);
             while temp % 2 == 0 {
                 temp /= 2;
                 su += 1;
             }
-            'outer: for _i in 0..log_sqr {
-                let rand_num = rand::thread_rng().gen_range(2..num - 1);
+            'outer: for i in 0..log_sqr {
+                let rand_num = Rng::with_seed(i).usize(2..num - 1);
                 let mut x_num = modpow(rand_num, temp, num);
                 if x_num == 1 || x_num == num - 1 {
                     continue;

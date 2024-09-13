@@ -3,7 +3,7 @@
 use core::cmp::Ordering;
 
 extern crate alloc;
-#[cfg(all(feature = "rayon"))]
+#[cfg(feature = "std")]
 use {
     alloc::{borrow::ToOwned, string::ToString, vec::Vec},
     rayon::prelude::*,
@@ -33,9 +33,11 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
     None
 }
 
-/// Russian informatics exam has a task that asks you to find the numbers, that matches the "mask"
-/// (for example "123*567?") between lower and upper bounds. Actually, this is not full
-/// implementation, as this also has external condition.
+/// A part for solving one exam's task.
+///
+/// You need to find the numbers, that matches the "mask" (for example "123*567?") between lower
+/// and upper bounds. Actually, this is not full implementation, as task also applies external
+/// condition.
 ///
 /// # Panics
 /// panics if lower bound is greater than lower bound
@@ -66,7 +68,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
 ///     123575673, 123664567, 123833567, 123865677, 123925672,
 /// ])
 /// ```
-#[cfg(all(feature = "rayon"))]
+#[cfg(feature = "std")]
 #[must_use]
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper, "lower bound can't be greater than upper bound");
