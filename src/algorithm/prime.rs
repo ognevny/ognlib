@@ -2,6 +2,9 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
+#[cfg(feature = "std")]
+use rayon::prelude::*;
+
 use {crate::num::power::modpow, fastrand::Rng, num_bigint::BigUint, thiserror::Error};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
@@ -136,9 +139,6 @@ impl Prime for usize {
 /// ```
 #[cfg(feature = "std")]
 pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
-    extern crate std;
-    use rayon::prelude::*;
-
     if num < 2 {
         Err(PrimeStatusError)
     } else {

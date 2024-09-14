@@ -93,7 +93,7 @@ impl FromStr for Radix {
     /// # Examples
     ///
     /// ```
-    /// use {ognlib::num::radix::Radix, core::str::FromStr};
+    /// use {core::str::FromStr, ognlib::num::radix::Radix};
     ///
     /// let n = Radix::from_str("123").unwrap();
     /// assert_eq!(n.radix(), (123, 10));
@@ -131,7 +131,7 @@ impl FromStr for StringRadix {
     /// # Examples
     ///
     /// ```
-    /// use {ognlib::num::radix::StringRadix, core::str::FromStr};
+    /// use {core::str::FromStr, ognlib::num::radix::StringRadix};
     ///
     /// let n = StringRadix::from_str("123").unwrap();
     /// assert_eq!(n.radix(), ("123", 10));

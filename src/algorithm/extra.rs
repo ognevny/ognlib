@@ -3,12 +3,12 @@
 use core::cmp::Ordering;
 
 extern crate alloc;
-#[cfg(feature = "std")]
 use {
     alloc::{borrow::ToOwned, string::ToString, vec::Vec},
-    rayon::prelude::*,
     regex::Regex,
 };
+#[cfg(feature = "std")]
+use rayon::prelude::*;
 
 /// A binary search algorithm (sorted array is requiered).
 /// # Examples
@@ -57,7 +57,7 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
 /// If you wish to apply extra conditions, you can use power of [`Iterator`] for this. Then boost
 /// the proccess a bit using [`rayon`].
 ///
-/// ```
+/// ```ignore
 /// use {ognlib::algorithm::extra::mask_match, rayon::prelude::*};
 ///
 /// let nums_div_by_169: Vec<usize> =
@@ -68,7 +68,6 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
 ///     123575673, 123664567, 123833567, 123865677, 123925672,
 /// ])
 /// ```
-#[cfg(feature = "std")]
 #[must_use]
 pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     assert!(lower <= upper, "lower bound can't be greater than upper bound");
@@ -77,5 +76,8 @@ pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     re.push_str(&mask.replace('*', ".*").replace('?', ".?"));
     re.push('$');
     let re = Regex::new(&re).unwrap();
-    (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
+    #[cfg(feature = "std")]
+    return (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect();
+    #[cfg(not(feature = "std"))]
+    return (lower..=upper).filter(|num| re.is_match(&num.to_string())).collect();
 }

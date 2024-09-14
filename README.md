@@ -17,9 +17,9 @@ numbers and some algorithms.
 
 ## Features
 
-By default the feature `std` is enable. If you want to use the crate with `#![no_std]`, remove
-default features. `std` feature ships with a bunch of dependencies, which can be partially enabled
-(still requires the std available).
+By default the feature `std` is enable. It's enabled for `rayon` crate, which doesn't provide
+`no_std` feature. You can disable it with `default-features = false`. This makes some code a bit
+slower and makes some sort algorithmes unavialable.
 
 ## Contributing
 
