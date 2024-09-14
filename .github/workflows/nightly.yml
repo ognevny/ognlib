@@ -29,7 +29,7 @@ jobs:
       - name: fmt and clippy check
         run: |
           cargo fmt -- --check
-          cargo clippy --profile testing --all -- \
+          cargo clippy --all -- \
           -W clippy::all \
           -W clippy::pedantic \
           -W clippy::restriction \
