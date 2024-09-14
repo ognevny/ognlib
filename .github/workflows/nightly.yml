@@ -45,4 +45,6 @@ jobs:
           -A clippy::shadow_reuse \
           -A clippy::single_call_fn \
           -A clippy::indexing_slicing \
-          -A clippy::blanket_clippy_restriction_lints || true
+          -A clippy::blanket_clippy_restriction_lints
+          -A clippy::unseparated_literal_suffix
+          -A clippy::integer_division_remainder_used || true
