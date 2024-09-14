@@ -2,8 +2,7 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-#[cfg(feature = "std")]
-use rayon::prelude::*;
+#[cfg(feature = "std")] use rayon::prelude::*;
 
 use {crate::num::power::modpow, fastrand::Rng, num_bigint::BigUint, thiserror::Error};
 

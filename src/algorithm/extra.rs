@@ -3,12 +3,11 @@
 use core::cmp::Ordering;
 
 extern crate alloc;
+#[cfg(feature = "std")] use rayon::prelude::*;
 use {
     alloc::{borrow::ToOwned, string::ToString, vec::Vec},
     regex::Regex,
 };
-#[cfg(feature = "std")]
-use rayon::prelude::*;
 
 /// A binary search algorithm (sorted array is requiered).
 /// # Examples

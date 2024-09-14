@@ -2,8 +2,7 @@
 //! quick, than `while` loops in these cases.
 
 use num_bigint::BigUint;
-#[cfg(feature = "std")]
-use rayon::prelude::*;
+#[cfg(feature = "std")] use rayon::prelude::*;
 
 pub trait Num {
     /// Represent number as bool like in C.
