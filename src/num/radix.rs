@@ -1,9 +1,6 @@
 //! Structs for radix numbers (String nums and int nums). All numbers are unsigned integers.
 
-#![cfg(feature = "std")]
-
 extern crate alloc;
-extern crate std;
 
 use {
     super::methods::Num,
@@ -58,9 +55,9 @@ macro_rules! dec {
 /// You can have 2 problems with radix numbers: first, base could be incorrect when it's not in
 /// range `2..=10` for [`Radix`] or `2..=36` for [`StringRadix`]; second, number can be incorrect,
 /// as number contains digits that are more or equal than base. Also there is can be convertsion
-/// error, which is just [`ParseIntError`] from std.
+/// error, which is just [`ParseIntError`] from core.
 ///
-/// [`ParseIntError`]: std::num::ParseIntError
+/// [`ParseIntError`]: core::num::ParseIntError
 #[non_exhaustive]
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum RadixError {
@@ -91,12 +88,12 @@ impl FromStr for Radix {
     /// # Errors
     /// Returns [`ParseIntError`] if number contains invalid digits.
     ///
-    /// [`ParseIntError`]: std::num::ParseIntError
+    /// [`ParseIntError`]: core::num::ParseIntError
     ///
     /// # Examples
     ///
     /// ```
-    /// use {ognlib::num::radix::Radix, std::str::FromStr};
+    /// use {ognlib::num::radix::Radix, core::str::FromStr};
     ///
     /// let n = Radix::from_str("123").unwrap();
     /// assert_eq!(n.radix(), (123, 10));
@@ -129,12 +126,12 @@ impl FromStr for StringRadix {
     /// # Errors
     /// Returns [`ParseIntError`] if number contains invalid digit.
     ///
-    /// [`ParseIntError`]: std::num::ParseIntError
+    /// [`ParseIntError`]: core::num::ParseIntError
     ///
     /// # Examples
     ///
     /// ```
-    /// use {ognlib::num::radix::StringRadix, std::str::FromStr};
+    /// use {ognlib::num::radix::StringRadix, core::str::FromStr};
     ///
     /// let n = StringRadix::from_str("123").unwrap();
     /// assert_eq!(n.radix(), ("123", 10));

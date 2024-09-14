@@ -2,28 +2,13 @@
 //! results; second group is for probabilistic tests, which can only suppose whether number is prime
 //! or not.
 
-use {
-    crate::num::power::modpow,
-    core::{
-        error::Error,
-        fmt::{self, Display, Formatter},
-    },
-    fastrand::Rng,
-    num_bigint::BigUint,
-};
+use {crate::num::power::modpow, fastrand::Rng, num_bigint::BigUint, thiserror::Error};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Error, PartialEq, Eq)]
+#[error("This number is neither prime nor composite")]
 pub struct PrimeStatusError;
-
-impl Display for PrimeStatusError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "This number is neither prime nor composite")
-    }
-}
-
-impl Error for PrimeStatusError {}
 
 #[non_exhaustive]
 #[derive(Debug, PartialEq, Eq)]

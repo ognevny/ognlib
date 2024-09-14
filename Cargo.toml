@@ -13,7 +13,7 @@ rust-version = "1.81.0"
 fastrand = { version = "2", default-features = false }
 num-bigint = { version = "0", default-features = false }
 rayon = { version = "1", optional = true }
-thiserror = { version = "1", optional = true }
+thiserror = { version = "1", default-features = false }
 
 [dependencies.regex]
 version = "1"
@@ -21,7 +21,7 @@ default-features = false
 
 [features]
 default = ["std"]
-std = ["rayon", "thiserror"]
+std = ["rayon"]
 
 [profile.testing]
 debug = true
@@ -31,3 +31,7 @@ inherits = "release"
 lto = false
 overflow-checks = true
 strip = false
+
+[patch.crates-io.thiserror]
+git = "https://github.com/dtolnay/thiserror.git"
+rev = "refs/pull/304/head"
