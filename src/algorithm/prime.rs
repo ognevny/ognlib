@@ -4,12 +4,12 @@
 
 #[cfg(feature = "std")] use rayon::prelude::*;
 
-use {crate::num::power::modpow, fastrand::Rng, num_bigint::BigUint, thiserror::Error};
+use {crate::num::power::modpow, fastrand::Rng, num_bigint::BigUint, snafu::Snafu};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
-#[derive(Debug, Error, PartialEq, Eq)]
-#[error("This number is neither prime nor composite")]
+#[derive(Debug, Snafu, PartialEq, Eq)]
+#[snafu(display("This number is neither prime nor composite"))]
 pub struct PrimeStatusError;
 
 #[non_exhaustive]

@@ -14,12 +14,12 @@ fastrand = { version = "2", default-features = false }
 num-bigint = { version = "0", default-features = false }
 rayon = { version = "1", optional = true }
 regex = { version = "1", default-features = false }
-thiserror = { version = "1", default-features = false }
+
+[dependencies.snafu]
+version = "0"
+default-features = false
+features = ["rust_1_81"]
 
 [features]
 default = ["std"]
 std = ["rayon"]
-
-[patch.crates-io.thiserror]
-git = "https://github.com/dtolnay/thiserror.git"
-rev = "refs/pull/304/head"
