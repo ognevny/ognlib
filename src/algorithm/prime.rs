@@ -25,7 +25,7 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus};
+    /// use ognlib::algorithm::prime::{PrimeStatus, wilson_th};
     ///
     /// assert!(wilson_th(13usize).unwrap().is_prime());
     /// assert!(!wilson_th(455usize).unwrap().is_prime());
@@ -40,7 +40,7 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{miller_rabin, PrimeStatus};
+    /// use ognlib::algorithm::prime::{PrimeStatus, miller_rabin};
     ///
     /// assert!(miller_rabin(13usize).unwrap().is_probably_prime());
     /// assert!(miller_rabin(7usize).unwrap().is_probably_prime());
@@ -55,7 +55,7 @@ impl PrimeStatus {
     /// # Examples
     ///
     /// ```
-    /// use ognlib::algorithm::prime::{wilson_th, PrimeStatus};
+    /// use ognlib::algorithm::prime::{PrimeStatus, wilson_th};
     ///
     /// assert!(!wilson_th(13usize).unwrap().is_composite());
     /// assert!(wilson_th(455usize).unwrap().is_composite());
@@ -127,7 +127,7 @@ impl Prime for usize {
 ///
 /// # Examples
 /// ```
-/// use ognlib::algorithm::prime::{sqrtest, PrimeStatus, PrimeStatusError};
+/// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, sqrtest};
 ///
 /// assert_eq!(
 ///     sqrtest(1usize).unwrap_err().to_string(),
@@ -164,7 +164,7 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
 ///
 /// # Examples
 /// ```
-/// use ognlib::algorithm::prime::{wilson_th, PrimeStatus, PrimeStatusError};
+/// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, wilson_th};
 ///
 /// assert_eq!(
 ///     wilson_th(1usize).unwrap_err().to_string(),
@@ -205,7 +205,7 @@ pub fn wilson_th(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
 ///
 /// # Examples
 /// ```
-/// use ognlib::algorithm::prime::{miller_rabin, PrimeStatus, PrimeStatusError};
+/// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, miller_rabin};
 ///
 /// assert_eq!(
 ///     miller_rabin(1usize).unwrap_err().to_string(),
