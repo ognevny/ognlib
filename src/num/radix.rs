@@ -941,7 +941,9 @@ impl Radix {
                 .take(10)
                 .skip(base.into())
                 .find_map(|&i| {
-                    number.has_digit(i).then_some(Err(RadixError::NumberError{ digit: RADIX[i], base}))
+                    number
+                        .has_digit(i)
+                        .then_some(Err(RadixError::NumberError { digit: RADIX[i], base }))
                 })
                 .map_or(Ok(Self { number, base }), |err| err),
         }
@@ -1023,7 +1025,7 @@ impl Radix {
     /// ```
     pub fn to_radix(self, base: u8) -> Result<Self, RadixError> {
         match base {
-            0 | 1 | 11.. => Err(RadixError::BaseError{ expected: 10, actual: base}),
+            0 | 1 | 11.. => Err(RadixError::BaseError { expected: 10, actual: base }),
             10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
@@ -1074,7 +1076,7 @@ impl Radix {
     /// ```
     pub fn to_str_radix(self, base: u8) -> Result<StringRadix, RadixError> {
         match base {
-            0 | 1 | 37.. => Err(RadixError::BaseError{ expected: 36, actual: base }),
+            0 | 1 | 37.. => Err(RadixError::BaseError { expected: 36, actual: base }),
             10 => Ok(StringRadix::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
@@ -1218,11 +1220,13 @@ impl StringRadix {
     /// ```
     pub fn from_radix(number: &str, base: u8) -> Result<Self, RadixError> {
         match base {
-            0 | 1 | 37.. => Err(RadixError::BaseError {expected: 36, actual: base}),
+            0 | 1 | 37.. => Err(RadixError::BaseError { expected: 36, actual: base }),
             _ => RADIX
                 .iter()
                 .skip(base.into())
-                .find_map(|&i| number.contains(i).then_some(Err(RadixError::NumberError {digit: i, base})))
+                .find_map(|&i| {
+                    number.contains(i).then_some(Err(RadixError::NumberError { digit: i, base }))
+                })
                 .map_or_else(|| Ok(Self { number: number.to_owned(), base }), |err| err),
         }
     }
@@ -1298,7 +1302,7 @@ impl StringRadix {
     /// ```
     pub fn to_radix(&mut self, base: u8) -> Result<Self, RadixError> {
         match base {
-            0 | 1 | 37.. => Err(RadixError::BaseError {expected: 36, actual: base }),
+            0 | 1 | 37.. => Err(RadixError::BaseError { expected: 36, actual: base }),
             10 => Ok(Self::from(self.to_dec().number)),
             _ =>
                 if self.base == 10 {
@@ -1349,7 +1353,7 @@ impl StringRadix {
     /// ```
     pub fn to_int_radix(&mut self, base: u8) -> Result<Radix, RadixError> {
         match base {
-            0 | 1 | 11.. => Err(RadixError::BaseError {expected: 10, actual: base}),
+            0 | 1 | 11.. => Err(RadixError::BaseError { expected: 10, actual: base }),
             10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
