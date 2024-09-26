@@ -1,4 +1,3 @@
-edition = "2021"
 match_block_trailing_comma = true
 max_width = 100
 newline_style = "Unix"
@@ -23,7 +22,7 @@ match_arm_blocks = false
 normalize_comments = true
 overflow_delimited_expr = true
 reorder_impl_items = true
+style_edition = "2024"
 unstable_features = true
-version = "Two"
 where_single_line = true
 wrap_comments = true

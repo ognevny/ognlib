@@ -75,8 +75,11 @@ pub fn mask_match(lower: usize, upper: usize, mask: &str) -> Vec<usize> {
     re.push_str(&mask.replace('*', ".*").replace('?', ".?"));
     re.push('$');
     let re = Regex::new(&re).unwrap();
-    #[cfg(feature = "std")]
-    return (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect();
-    #[cfg(not(feature = "std"))]
-    return (lower..=upper).filter(|num| re.is_match(&num.to_string())).collect();
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "std")] {
+            (lower..=upper).into_par_iter().filter(|num| re.is_match(&num.to_string())).collect()
+        } else {
+            (lower..=upper).filter(|num| re.is_match(&num.to_string())).collect()
+        }
+    }
 }

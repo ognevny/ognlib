@@ -134,10 +134,13 @@ macro_rules! impl_num {
                 match num {
                     0 | 1 => BigUint::from(1u8),
                     _ => {
-                        #[cfg(feature = "std")]
-                        return (2..=num).into_par_iter().map(BigUint::from).product();
-                        #[cfg(not(feature = "std"))]
-                        return (2..=num).map(BigUint::from).product();
+                        cfg_if::cfg_if! {
+                            if #[cfg(feature = "std")] {
+                                (2..=num).into_par_iter().map(BigUint::from).product()
+                            } else {
+                                (2..=num).map(BigUint::from).product()
+                            }
+                        }
                     },
                 }
             }

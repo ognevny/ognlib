@@ -2,7 +2,6 @@
 
 #![cfg(feature = "std")]
 
-extern crate alloc;
 extern crate std;
 
 /// Read a line from stdin and parse it to a certain type.
@@ -20,12 +19,11 @@ extern crate std;
 /// // this creates a variable `x` from the line and parses it into i32
 /// read!(x as i32);
 /// ```
-#[cfg(not(doctest))]
 #[macro_export]
 macro_rules! read {
     ($out:ident as $type:ty) => {
-        let mut inner = ::alloc::string::String::new();
-        ::std::io::stdin().read_line(&mut inner).unwrap();
+        let mut inner = std::string::String::new();
+        std::io::stdin().read_line(&mut inner).unwrap();
         let $out = inner.trim().parse::<$type>().unwrap();
     };
 }
@@ -45,12 +43,11 @@ macro_rules! read {
 /// // this creates a String `x` from the line and trims it
 /// read_str!(x);
 /// ```
-#[cfg(not(doctest))]
 #[macro_export]
 macro_rules! read_str {
     ($out:ident) => {
-        let mut inner = ::alloc::string::String::new();
-        ::std::io::stdin().read_line(&mut inner).unwrap();
+        let mut inner = std::string::String::new();
+        std::io::stdin().read_line(&mut inner).unwrap();
         let $out = inner.trim();
     };
 }
@@ -72,24 +69,19 @@ macro_rules! read_str {
 /// read_vec!(x as i32);
 ///
 /// // this creates a Vec `y` from the line which contains every word
-/// read_vec!(y as String)
+/// read_vec!(y as String);
 /// ```
-#[cfg(not(doctest))]
 #[macro_export]
 macro_rules! read_vec {
     ($out:ident as $type:ty) => {
-        let mut inner = ::alloc::string::String::new();
-        ::std::io::stdin().read_line(&mut inner).unwrap();
-        let $out: <Vec<$type> = inner
-            .trim()
-            .split_whitespace()
-            .map(|s| s.parse::<$type>().unwrap())
-            .collect();
+        let mut inner = std::string::String::new();
+        std::io::stdin().read_line(&mut inner).unwrap();
+        let $out: Vec<$type> =
+            inner.trim().split_whitespace().map(|s| s.parse::<$type>().unwrap()).collect();
     };
     ($out:ident as String) => {
-        use ::alloc::string::String;
-        let mut inner = String::new();
-        ::std::io::stdin().read_line(&mut inner).unwrap();
-        let $out: Vec<String> = inner.trim().split_whitespace().collect();
+        let mut inner = std::string::String::new();
+        std::io::stdin().read_line(&mut inner).unwrap();
+        let $out: Vec<std::string::String> = inner.trim().split_whitespace().collect();
     };
 }
