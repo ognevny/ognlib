@@ -1,6 +1,7 @@
-target
-.vscode
-.idea
-*.lock
+/target
+/.vscode
+/.idea
+/*.lock
+/.zed
 # internal script
-clean
+/clean

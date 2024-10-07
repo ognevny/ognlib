@@ -4,7 +4,10 @@
 
 #[cfg(feature = "std")] use rayon::prelude::*;
 
-use {crate::num::power::modpow, fastrand::Rng, num_bigint::BigUint, snafu::Snafu};
+use {
+    crate::num::power::modpow, fastrand::Rng, integer_sqrt::IntegerSquareRoot, num_bigint::BigUint,
+    snafu::Snafu,
+};
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
@@ -142,8 +145,8 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
         Err(PrimeStatusError)
     } else {
         // FIXME: https://github.com/rust-lang/rust/issues/116226
-        // let sqrt_res = num.isqrt().unsigned_abs()
-        let sqrt_res = (num as f64).sqrt().ceil() as usize;
+        // let sqrt_res = num.isqrt() + 1;
+        let sqrt_res = num.integer_sqrt() + 1;
         if (3..=sqrt_res).into_par_iter().find_any(|&i| num % i == 0).is_some() {
             Ok(PrimeStatus::Composite)
         } else {
