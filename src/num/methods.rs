@@ -23,7 +23,7 @@ pub trait Num {
     fn sum(self) -> Self;
 
     /// Calculates factorial of number (result is [`num_bigint::BigUint`]).
-    fn factorial(self) -> num_bigint::BigUint;
+    fn factorial(self) -> BigUint;
 }
 
 /// impl Num trait's methods
