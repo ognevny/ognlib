@@ -387,9 +387,7 @@ macro_rules! impl_traits {
             }
         }
         impl ops::SubAssign for $radix {
-            /// Performs a `-=` operation. The same rules as [`Sub`] are applied.
-            ///
-            /// [`Sub`]: Radix::Sub
+            /// Performs a `-=` operation. The same rules as for common sub are applied.
             ///
             /// # Examples
             ///
@@ -415,9 +413,9 @@ macro_rules! impl_traits {
             }
         }
         impl ops::SubAssign<usize> for $radix {
-            /// Performs a `-=` operation ([`usize`] as rhs). The same rules as [`Sub`] are applied.
+            /// Performs a `-=` operation ([`usize`] as rhs).
             ///
-            /// [`Sub`]: Radix::Sub
+            /// The same rules as for common sub are applied.
             ///
             /// # Examples
             ///

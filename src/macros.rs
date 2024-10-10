@@ -43,6 +43,8 @@ macro_rules! read {
 /// // this creates a String `x` from the line and trims it
 /// read_str!(x);
 /// ```
+///
+/// [`String`]: std::string::String
 #[macro_export]
 macro_rules! read_str {
     ($out:ident) => {
@@ -71,6 +73,8 @@ macro_rules! read_str {
 /// // this creates a Vec `y` from the line which contains every word
 /// read_vec!(y as String);
 /// ```
+///
+/// [`Vec`]: std::vec::Vec
 #[macro_export]
 macro_rules! read_vec {
     ($out:ident as $type:ty) => {

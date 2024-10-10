@@ -11,12 +11,12 @@ use {
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
-#[derive(Debug, Snafu, PartialEq, Eq)]
+#[derive(Debug, Snafu, PartialEq, Eq, Clone, Copy)]
 #[snafu(display("This number is neither prime nor composite"))]
 pub struct PrimeStatusError;
 
 #[non_exhaustive]
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum PrimeStatus {
     Prime,
     Composite,
@@ -120,6 +120,50 @@ impl Prime for usize {
     fn is_composite(&self) -> bool { wilson_th(*self) == Ok(PrimeStatus::Composite) }
 }
 
+impl Prime for Result<PrimeStatus, PrimeStatusError> {
+    /// Applied to result of prime test.
+    ///
+    /// Returns true if test is successful and value under result is [`PrimeStatus::Prime`].
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::{Prime, sqrtest};
+    ///
+    /// assert!(sqrtest(13).is_prime());
+    /// assert!(!sqrtest(455).is_prime());
+    /// ```
+    #[inline]
+    fn is_prime(&self) -> bool { self.is_ok_and(|st| st == PrimeStatus::Prime) }
+
+    /// Applied to result of prime test.
+    ///
+    /// Returns true if test is successful and value under result is [`PrimeStatus::ProbablyPrime`].
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::{Prime, miller_rabin};
+    ///
+    /// assert!(miller_rabin(13).is_probably_prime());
+    /// assert!(miller_rabin(7).is_probably_prime());
+    /// ```
+    #[inline]
+    fn is_probably_prime(&self) -> bool { self.is_ok_and(|st| st == PrimeStatus::ProbablyPrime) }
+
+    /// Applied to result of prime test.
+    ///
+    /// Returns true if test is successful and value under result is [`PrimeStatus::Composite`].
+    /// # Examples
+    ///
+    /// ```
+    /// use ognlib::algorithm::prime::{Prime, sqrtest};
+    ///
+    /// assert!(!sqrtest(13).is_composite());
+    /// assert!(sqrtest(455).is_composite());
+    /// ```
+    #[inline]
+    fn is_composite(&self) -> bool { self.is_ok_and(|st| st == PrimeStatus::Composite) }
+}
+
 /// Simple prime test.
 ///
 /// Prime test that takes ceil of sqrt(n) as upper bound and checks if there is any divisor from 3
@@ -139,7 +183,6 @@ impl Prime for usize {
 /// assert_eq!(sqrtest(13usize).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
-#[cfg(feature = "std")]
 pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
     if num < 2 {
         Err(PrimeStatusError)
@@ -147,11 +190,14 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
         // FIXME: https://github.com/rust-lang/rust/issues/116226
         // let sqrt_res = num.isqrt() + 1;
         let sqrt_res = num.integer_sqrt() + 1;
-        if (3..=sqrt_res).into_par_iter().find_any(|&i| num % i == 0).is_some() {
-            Ok(PrimeStatus::Composite)
-        } else {
-            Ok(PrimeStatus::Prime)
-        }
+        cfg_if::cfg_if! {
+            if #[cfg(feature = "std")] {
+                let cond = (3..=sqrt_res).into_par_iter().find_any(|&i| num % i == 0).is_some();
+            } else {
+                let cond = (3..=sqrt_res).any(|i| num & i == 0);
+            }
+        };
+        if cond { Ok(PrimeStatus::Composite) } else { Ok(PrimeStatus::Prime) }
     }
 }
 
