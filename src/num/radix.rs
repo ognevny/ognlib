@@ -3,10 +3,10 @@
 extern crate alloc;
 
 use {
-    super::methods::Num,
+    super::methods::Num as _,
     alloc::{
-        borrow::ToOwned,
-        string::{String, ToString},
+        borrow::ToOwned as _,
+        string::{String, ToString as _},
     },
     core::{cmp::Ordering, num::ParseIntError, ops, str::FromStr},
     snafu::Snafu,

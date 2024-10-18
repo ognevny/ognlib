@@ -5,7 +5,7 @@ use core::cmp::Ordering;
 extern crate alloc;
 #[cfg(feature = "std")] use rayon::prelude::*;
 use {
-    alloc::{borrow::ToOwned, string::ToString, vec::Vec},
+    alloc::{borrow::ToOwned as _, string::ToString as _, vec::Vec},
     regex::Regex,
 };
 

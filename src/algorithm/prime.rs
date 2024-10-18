@@ -5,8 +5,8 @@
 #[cfg(feature = "std")] use rayon::prelude::*;
 
 use {
-    crate::num::power::modpow, fastrand::Rng, integer_sqrt::IntegerSquareRoot, num_bigint::BigUint,
-    snafu::Snafu,
+    crate::num::power::modpow, fastrand::Rng, integer_sqrt::IntegerSquareRoot as _,
+    num_bigint::BigUint, snafu::Snafu,
 };
 
 /// If number is less than 2, we can't say that number is either prime or composite.
