@@ -23,7 +23,8 @@ pub fn bin_search<T: Ord>(arr: &[T], targ: &T) -> Option<usize> {
     let (mut left, mut right) = (0, arr.len() - 1);
     while left <= right {
         let mid = (right + left) / 2;
-        match arr.get(mid)?.cmp(targ) {
+        // SAFETY: mid is always in valid range for input array
+        match unsafe { arr.get_unchecked(mid).cmp(targ) } {
             Ordering::Equal => return Some(mid),
             Ordering::Greater => right = mid - 1,
             Ordering::Less => left = mid + 1,
