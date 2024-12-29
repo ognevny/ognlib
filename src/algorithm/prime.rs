@@ -6,13 +6,13 @@
 
 use {
     crate::num::power::modpow, fastrand::Rng, integer_sqrt::IntegerSquareRoot as _,
-    num_bigint::BigUint, snafu::Snafu,
+    num_bigint::BigUint, thiserror::Error,
 };
 
 /// If number is less than 2, we can't say that number is either prime or composite.
 #[non_exhaustive]
-#[derive(Debug, Snafu, PartialEq, Eq, Clone, Copy)]
-#[snafu(display("This number is neither prime nor composite"))]
+#[derive(Debug, Error, PartialEq, Eq, Clone, Copy)]
+#[error("This number is neither prime nor composite")]
 pub struct PrimeStatusError;
 
 #[non_exhaustive]
