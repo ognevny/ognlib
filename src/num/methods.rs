@@ -53,7 +53,6 @@ macro_rules! impl_num_signed {
             /// assert_eq!(123.sum(), 6);
             /// assert_eq!(444.sum(), 12);
             /// ```
-            #[must_use]
             fn sum(self) -> Self {
                 let mut num = self.abs();
                 let mut sum = 0;
@@ -87,7 +86,6 @@ macro_rules! impl_num_signed {
             /// assert_eq!(123.rev(), 321);
             /// assert_eq!(444.rev(), 444);
             /// ```
-            #[must_use]
             fn rev(self) -> Self {
                 let is_neg = self < 0;
                 let mut num = self.abs();
@@ -187,7 +185,6 @@ macro_rules! impl_num_unsigned {
             /// assert_eq!(123.sum(), 6);
             /// assert_eq!(444.sum(), 12);
             /// ```
-            #[must_use]
             fn sum(self) -> Self {
                 let mut num = self;
                 let mut sum = 0;
@@ -221,7 +218,6 @@ macro_rules! impl_num_unsigned {
             /// assert_eq!(123.rev(), 321);
             /// assert_eq!(444.rev(), 444);
             /// ```
-            #[must_use]
             fn rev(self) -> Self {
                 let mut num = self;
                 let mut rev = 0;

@@ -14,8 +14,8 @@ use {
 
 /// Reference to a slice of chars from '0' to 'Z' (maximum base is 36).
 pub const RADIX: &[char] = &[
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-    'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 ];
 
 /// A error type for radix functions.
@@ -70,9 +70,7 @@ impl<T: Sized + Copy + FromStr<Err = ParseIntError>> FromStr for Radix<T> {
     /// assert_eq!(e.to_string(), "invalid digit found in string");
     /// ```
     #[inline]
-    fn from_str(number: &str) -> Result<Self, Self::Err> {
-        Ok(Self { number: number.parse()?, base: 10 })
-    }
+    fn from_str(number: &str) -> Result<Self, Self::Err> { Ok(Self { number: number.parse()?, base: 10 }) }
 }
 
 /// Radix number, that is usually written as *number*<sub>*base*</sub> (444<sub>8</sub> for
@@ -1180,9 +1178,7 @@ impl PartialOrd for StringRadix {
 }
 
 impl Ord for StringRadix {
-    fn cmp(&self, other: &Self) -> Ordering {
-        Into::<usize>::into(self).cmp(&Into::<usize>::into(other))
-    }
+    fn cmp(&self, other: &Self) -> Ordering { Into::<usize>::into(self).cmp(&Into::<usize>::into(other)) }
 
     fn max(self, other: Self) -> Self { if self > other { self } else { other } }
 
@@ -1216,9 +1212,7 @@ impl ops::Add for StringRadix {
     /// assert_eq!(res_str.radix(), ("227", 8));
     /// ```
     fn add(self, rhs: Self) -> Self::Output {
-        Self::from(Into::<usize>::into(&self) + Into::<usize>::into(&rhs))
-            .to_radix(self.base)
-            .unwrap()
+        Self::from(Into::<usize>::into(&self) + Into::<usize>::into(&rhs)).to_radix(self.base).unwrap()
     }
 }
 impl ops::AddAssign for StringRadix {
@@ -1255,13 +1249,9 @@ impl ops::Sub for StringRadix {
     /// ```
     fn sub(self, rhs: Self) -> Self::Output {
         if self > rhs {
-            Self::from(Into::<usize>::into(&self) - Into::<usize>::into(&rhs))
-                .to_radix(self.base)
-                .unwrap()
+            Self::from(Into::<usize>::into(&self) - Into::<usize>::into(&rhs)).to_radix(self.base).unwrap()
         } else {
-            Self::from(Into::<usize>::into(&rhs) - Into::<usize>::into(&self))
-                .to_radix(rhs.base)
-                .unwrap()
+            Self::from(Into::<usize>::into(&rhs) - Into::<usize>::into(&self)).to_radix(rhs.base).unwrap()
         }
     }
 }
@@ -1298,9 +1288,7 @@ impl ops::Mul for StringRadix {
     /// assert_eq!(res_str.radix(), ("6424", 8));
     /// ```
     fn mul(self, rhs: Self) -> Self::Output {
-        Self::from(Into::<usize>::into(&self) * Into::<usize>::into(&rhs))
-            .to_radix(self.base)
-            .unwrap()
+        Self::from(Into::<usize>::into(&self) * Into::<usize>::into(&rhs)).to_radix(self.base).unwrap()
     }
 }
 impl ops::MulAssign for StringRadix {
@@ -1335,9 +1323,7 @@ impl ops::Div for StringRadix {
     /// assert_eq!(res_str.radix(), ("4", 8));
     /// ```
     fn div(self, rhs: Self) -> Self::Output {
-        Self::from(Into::<usize>::into(&self) / Into::<usize>::into(&rhs))
-            .to_radix(self.base)
-            .unwrap()
+        Self::from(Into::<usize>::into(&self) / Into::<usize>::into(&rhs)).to_radix(self.base).unwrap()
     }
 }
 impl ops::DivAssign for StringRadix {
@@ -1372,9 +1358,7 @@ impl ops::Rem for StringRadix {
     /// assert_eq!(res_str.radix(), ("20", 8));
     /// ```
     fn rem(self, rhs: Self) -> Self::Output {
-        Self::from(Into::<usize>::into(&self) % Into::<usize>::into(&rhs))
-            .to_radix(self.base)
-            .unwrap()
+        Self::from(Into::<usize>::into(&self) % Into::<usize>::into(&rhs)).to_radix(self.base).unwrap()
     }
 }
 impl ops::RemAssign for StringRadix {
@@ -1583,10 +1567,7 @@ impl StringRadix {
             10 => Ok(self.to_dec()),
             _ =>
                 if self.base == 10 {
-                    Ok(Self::from_dec_to_int(
-                        &mut Radix::from(self.number.parse::<usize>()?),
-                        base,
-                    )?)
+                    Ok(Self::from_dec_to_int(&mut Radix::from(self.number.parse::<usize>()?), base)?)
                 } else {
                     Ok(Self::from_dec_to_int(&mut self.to_dec(), base)?)
                 },
@@ -1622,9 +1603,7 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (227, 8));
     /// ```
     #[inline]
-    pub fn add_to_int(self, rhs: Self, base: u8) -> Result<Radix<usize>, RadixError> {
-        (self + rhs).to_int_radix(base)
-    }
+    pub fn add_to_int(self, rhs: Self, base: u8) -> Result<Radix<usize>, RadixError> { (self + rhs).to_int_radix(base) }
 
     /// Sub 2 [`StringRadix`] to new [`Radix`].
     ///
@@ -1645,9 +1624,7 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (141, 8));
     /// ```
     #[inline]
-    pub fn sub_to_int(self, rhs: Self, base: u8) -> Result<Radix<usize>, RadixError> {
-        (self - rhs).to_int_radix(base)
-    }
+    pub fn sub_to_int(self, rhs: Self, base: u8) -> Result<Radix<usize>, RadixError> { (self - rhs).to_int_radix(base) }
 
     /// Mul 2 [`StringRadix`] to new [`Radix`].
     ///
@@ -1668,7 +1645,5 @@ impl StringRadix {
     /// assert_eq!(res.radix(), (6424, 8));
     /// ```
     #[inline]
-    pub fn mul_to_int(self, rhs: Self, base: u8) -> Result<Radix<usize>, RadixError> {
-        (self * rhs).to_int_radix(base)
-    }
+    pub fn mul_to_int(self, rhs: Self, base: u8) -> Result<Radix<usize>, RadixError> { (self * rhs).to_int_radix(base) }
 }

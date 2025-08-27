@@ -173,10 +173,7 @@ impl Prime for Result<PrimeStatus, PrimeStatusError> {
 /// ```
 /// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, sqrtest};
 ///
-/// assert_eq!(
-///     sqrtest(1usize).unwrap_err().to_string(),
-///     "This number is neither prime nor composite",
-/// );
+/// assert_eq!(sqrtest(1usize).unwrap_err().to_string(), "This number is neither prime nor composite");
 /// assert_eq!(sqrtest(13usize).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(sqrtest(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
@@ -210,10 +207,7 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 /// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, wilson_th};
 ///
-/// assert_eq!(
-///     wilson_th(1usize).unwrap_err().to_string(),
-///     "This number is neither prime nor composite",
-/// );
+/// assert_eq!(wilson_th(1usize).unwrap_err().to_string(), "This number is neither prime nor composite");
 /// assert_eq!(wilson_th(13usize).ok(), Some(PrimeStatus::Prime));
 /// assert_eq!(wilson_th(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```
@@ -227,11 +221,7 @@ pub fn wilson_th(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
         fact = (fact * i) % num;
     }
 
-    if fact + 1u8 == BigUint::from(num) {
-        Ok(PrimeStatus::Prime)
-    } else {
-        Ok(PrimeStatus::Composite)
-    }
+    if fact + 1u8 == BigUint::from(num) { Ok(PrimeStatus::Prime) } else { Ok(PrimeStatus::Composite) }
 }
 
 /// Miller-Rabin's prime test.
@@ -251,10 +241,7 @@ pub fn wilson_th(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
 /// ```
 /// use ognlib::algorithm::prime::{PrimeStatus, PrimeStatusError, miller_rabin};
 ///
-/// assert_eq!(
-///     miller_rabin(1usize).unwrap_err().to_string(),
-///     "This number is neither prime nor composite",
-/// );
+/// assert_eq!(miller_rabin(1usize).unwrap_err().to_string(), "This number is neither prime nor composite");
 /// assert_eq!(miller_rabin(13usize).ok(), Some(PrimeStatus::ProbablyPrime));
 /// assert_eq!(miller_rabin(455usize).ok(), Some(PrimeStatus::Composite));
 /// ```

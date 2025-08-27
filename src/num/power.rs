@@ -38,14 +38,7 @@ where N: MulAssign + From<u8> + Copy {
 /// assert_eq!(mod2, 1);
 /// ```
 pub fn modpow<N>(mut base: N, mut exp: N, modulo: N) -> N
-where N: Mul<Output = N>
-        + Rem<Output = N>
-        + RemAssign
-        + From<u8>
-        + Copy
-        + Eq
-        + BitAnd<Output = N>
-        + ShrAssign<i32> {
+where N: Mul<Output = N> + Rem<Output = N> + RemAssign + From<u8> + Copy + Eq + BitAnd<Output = N> + ShrAssign<i32> {
     let mut res = 1.into();
     base %= modulo;
     while exp != 0.into() {

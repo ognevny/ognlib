@@ -80,8 +80,7 @@ macro_rules! read_vec {
     ($out:ident as $type:ty) => {
         let mut inner = std::string::String::new();
         std::io::stdin().read_line(&mut inner).unwrap();
-        let $out: Vec<$type> =
-            inner.trim().split_whitespace().map(|s| s.parse::<$type>().unwrap()).collect();
+        let $out: Vec<$type> = inner.trim().split_whitespace().map(|s| s.parse::<$type>().unwrap()).collect();
     };
     ($out:ident as String) => {
         let mut inner = std::string::String::new();
