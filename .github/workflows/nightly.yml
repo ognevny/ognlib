@@ -29,22 +29,4 @@ jobs:
       - name: fmt and clippy check
         run: |
           cargo fmt -- --check
-          cargo clippy --all -- \
-          -W clippy::all \
-          -W clippy::pedantic \
-          -W clippy::restriction \
-          -W clippy::nursery \
-          -A clippy::modulo_arithmetic \
-          -A clippy::arithmetic_side_effects \
-          -A clippy::missing_inline_in_public_items \
-          -A clippy::implicit_return \
-          -A clippy::default_numeric_fallback \
-          -A clippy::module_name_repetitions \
-          -A clippy::question_mark_used \
-          -A clippy::integer_division \
-          -A clippy::shadow_reuse \
-          -A clippy::single_call_fn \
-          -A clippy::indexing_slicing \
-          -A clippy::blanket_clippy_restriction_lints \
-          -A clippy::unseparated_literal_suffix \
-          -A clippy::integer_division_remainder_used || true
+          cargo clippy
