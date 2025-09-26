@@ -19,7 +19,7 @@ jobs:
       matrix:
         toolchain: [stable, beta, nightly]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: switch to ${{ matrix.toolchain }} channel and download mold
         run: |
           rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
@@ -38,7 +38,7 @@ jobs:
       matrix:
         toolchain: [stable, beta]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: switch to ${{ matrix.toolchain }} channel
         run: |
           rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
@@ -56,7 +56,7 @@ jobs:
       matrix:
         sys: [CLANG64, UCRT64]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: msys2/setup-msys2@v2
         with:
           update: true
