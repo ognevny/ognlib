@@ -32,7 +32,7 @@ jobs:
 
   macos:
     name: full check on macos (${{ matrix.toolchain }} channel)
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
