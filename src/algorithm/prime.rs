@@ -182,12 +182,9 @@ pub fn sqrtest(num: usize) -> Result<PrimeStatus, PrimeStatusError> {
         Err(PrimeStatusError)
     } else {
         let sqrt_res = num.isqrt() + 1;
-        cfg_if::cfg_if! {
-            if #[cfg(feature = "std")] {
-                let cond = (3..=sqrt_res).into_par_iter().find_any(|&i| num % i == 0).is_some();
-            } else {
-                let cond = (3..=sqrt_res).any(|i| num & i == 0);
-            }
+        let cond = cfg_select! {
+            feature = "std" => (3..=sqrt_res).into_par_iter().find_any(|&i| num % i == 0).is_some(),
+            _ => (3..=sqrt_res).any(|i| num & i == 0),
         };
         if cond { Ok(PrimeStatus::Composite) } else { Ok(PrimeStatus::Prime) }
     }

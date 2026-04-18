@@ -139,17 +139,14 @@ macro_rules! impl_num_signed {
                     self >= 0,
                     "Factorial can't be calculated for negative numbers at the moment"
                 );
-                // hack to prevent checkeng for negative values (even after assertion)
+                // hack to prevent checking for negative values (even after assertion)
                 let num = self.unsigned_abs();
                 match num {
                     0 | 1 => BigUint::from(1u8),
                     _ => {
-                        cfg_if::cfg_if! {
-                            if #[cfg(feature = "std")] {
-                                (2..=num).into_par_iter().map(BigUint::from).product()
-                            } else {
-                                (2..=num).map(BigUint::from).product()
-                            }
+                        cfg_select! {
+                            feature = "std" => (2..=num).into_par_iter().map(BigUint::from).product(),
+                            _ => (2..=num).map(BigUint::from).product(),
                         }
                     },
                 }
@@ -263,12 +260,9 @@ macro_rules! impl_num_unsigned {
                 match self {
                     0 | 1 => BigUint::from(1u8),
                     _ => {
-                        cfg_if::cfg_if! {
-                            if #[cfg(feature = "std")] {
-                                (2..=self).into_par_iter().map(BigUint::from).product()
-                            } else {
-                                (2..=self).map(BigUint::from).product()
-                            }
+                        cfg_select! {
+                            feature = "std" => (2..=self).into_par_iter().map(BigUint::from).product(),
+                            _ => (2..=self).map(BigUint::from).product(),
                         }
                     },
                 }

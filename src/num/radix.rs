@@ -1437,7 +1437,7 @@ impl StringRadix {
                 .iter()
                 .skip(base.into())
                 .find_map(|&i| number.contains(i).then_some(Err(RadixError::NumberError(i, base))))
-                .map_or_else(|| Ok(Self { number: number.to_owned(), base }), |err| err),
+                .unwrap_or_else(|| Ok(Self { number: number.to_owned(), base })),
         }
     }
 
