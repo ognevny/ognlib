@@ -5,7 +5,7 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Some code that is written to practice Rust"
 authors = ["Maksim Bondarenkov"]
-repository = "https://github.com/ognevnydemon/ognlib"
+repository = "https://github.com/ognevny/ognlib"
 readme = "README.md"
 rust-version = "1.95.0"
 
