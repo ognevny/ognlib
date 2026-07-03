@@ -11,7 +11,7 @@ rust-version = "1.95.0"
 
 [dependencies]
 fastrand = { version = "2.4", default-features = false }
-num-bigint = { version = "0.4", default-features = false }
+num-bigint = { version = "0.5", default-features = false }
 rayon = { version = "1.12", optional = true }
 regex = { version = "1.12", default-features = false }
 thiserror = { version = "2.0", default-features = false }
